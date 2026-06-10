@@ -153,6 +153,7 @@ body.mode-view .note{max-height:38px;overflow:hidden}
 .log-head{display:flex;align-items:center;gap:12px;color:#fff;margin:0 2px 12px}
 .log-ic{font-size:22px}
 .log-head b{font-size:16px;font-weight:800;display:block;line-height:1.2}
+.log-month{opacity:.6;font-weight:700}
 .log-head small{font-size:12px;opacity:.6}
 .log-add{display:none;gap:8px;flex-wrap:wrap;background:var(--paper);border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 body.mode-edit .log-add{display:flex}
@@ -597,7 +598,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
       </div>
     </section>
 <section class="log" id="log-sec">
-  <div class="log-head"><span class="log-ic">📋</span><div><b>Registro de entregas</b><small>O que a MediaGrowth realizou pra você — data, descrição e arquivos.</small></div></div>
+  <div class="log-head"><span class="log-ic">📋</span><div><b>Registro de entregas <span id="log-month" class="log-month"></span></b><small>O que a MediaGrowth realizou pra você — data, descrição e arquivos.</small></div></div>
   <div class="log-add">
     <input type="date" id="log-day">
     <input type="text" id="log-cat" list="log-cats" placeholder="Categoria" maxlength="40">
@@ -619,6 +620,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
 (function(){
   var SLUG="feira", START=1, CAL=[{"name": "Janeiro", "short": "Jan", "season": "Verão", "icon": "🌞", "focus": "Auge da alta temporada: Jurerê Internacional lotado de turistas. É o melhor momento da feira (qua e sex, 17h–22h) — máximo fluxo e venda.", "events": [{"d": 1, "label": "Ano Novo", "cat": "nacional", "emoji": "🎉"}], "campaigns": [{"title": "Feira de verão ao pôr do sol", "tag": "Sazonal"}, {"title": "Sua lembrança de Floripa, feita à mão", "tag": "Turista"}]}, {"name": "Fevereiro", "short": "Fev", "season": "Verão", "icon": "🎭", "focus": "Carnaval e verão mantêm Jurerê cheio — pico de fluxo na feira.", "events": [{"d": 16, "label": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 17, "label": "Carnaval", "cat": "nacional", "emoji": "🎭"}], "campaigns": [{"title": "Carnaval na feira", "tag": "Sazonal"}, {"title": "Achados de verão", "tag": "Turista"}]}, {"name": "Março", "short": "Mar", "season": "Início do outono", "icon": "🍂", "focus": "Fim da temporada: Jurerê começa a esvaziar, mas março ainda tem fluxo. Últimas semanas de verão.", "events": [{"d": 8, "label": "Dia da Mulher", "cat": "comercial", "emoji": "♀️"}, {"d": 19, "label": "Dia Nacional do Artesão", "cat": "nicho", "emoji": "🧵"}, {"d": 20, "label": "Início do outono / fim da temporada", "cat": "especial", "emoji": "🍂"}], "campaigns": [{"title": "Dia do Artesão", "tag": "Âncora"}, {"title": "Últimas semanas de verão", "tag": "Sazonal"}]}, {"name": "Abril", "short": "Abr", "season": "Outono", "icon": "🍂", "focus": "Baixa temporada: o fluxo cai com a saída dos turistas. O movimento se concentra nos feriados prolongados (Páscoa, Tiradentes).", "events": [{"d": 3, "label": "Sexta-feira Santa", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Páscoa", "cat": "comercial", "emoji": "🐣"}, {"d": 21, "label": "Tiradentes", "cat": "nacional", "emoji": "🇧🇷"}], "campaigns": [{"title": "Feira de feriado (Páscoa/Tiradentes)", "tag": "Feriadão"}, {"title": "Presente artesanal de Páscoa", "tag": "Presente"}]}, {"name": "Maio", "short": "Mai", "season": "Outono", "icon": "🍂", "focus": "Baixa temporada (frio chegando). Mesmo assim, Dia das Mães (10/05) é PICO de presente artesanal — vale edição especial.", "events": [{"d": 1, "label": "Dia do Trabalho", "cat": "nacional", "emoji": "🛠️"}, {"d": 10, "label": "Dia das Mães", "cat": "comercial", "emoji": "💐"}], "campaigns": [{"title": "Presente de Mãe feito à mão", "tag": "Presente"}, {"title": "Feira de inverno (edições pontuais)", "tag": "Sazonal"}]}, {"name": "Junho", "short": "Jun", "season": "Inverno", "icon": "❄️", "focus": "Baixa temporada de inverno. Namorados (12/06) traz pico de presente artesanal e festas juninas dão temática.", "events": [{"d": 4, "label": "Corpus Christi", "cat": "nacional", "emoji": "✝️"}, {"d": 12, "label": "Dia dos Namorados", "cat": "comercial", "emoji": "❤️"}, {"d": 21, "label": "Início do inverno", "cat": "especial", "emoji": "❄️"}, {"d": 24, "label": "São João", "cat": "nacional", "emoji": "🔥"}], "campaigns": [{"title": "Presente de Namorados artesanal", "tag": "Presente"}, {"title": "Arraiá criativo (edição junina)", "tag": "Temático"}]}, {"name": "Julho", "short": "Jul", "season": "Inverno", "icon": "❄️", "focus": "Férias de julho trazem um fluxo de inverno modesto a Floripa — vale edições pontuais.", "events": [], "campaigns": [{"title": "Feira nas férias de julho", "tag": "Sazonal"}, {"title": "Vitrine online dos artesãos", "tag": "Conteúdo"}]}, {"name": "Agosto", "short": "Ago", "season": "Inverno", "icon": "🌬️", "focus": "Baixa temporada segue, mas Dia dos Pais (09/08) é pico de presente artesanal — edição especial.", "events": [{"d": 9, "label": "Dia dos Pais", "cat": "comercial", "emoji": "👔"}], "campaigns": [{"title": "Presente de Pai feito à mão", "tag": "Presente"}, {"title": "Histórias dos artesãos", "tag": "Conteúdo"}]}, {"name": "Setembro", "short": "Set", "season": "Primavera", "icon": "🌸", "focus": "Primavera reaquece o fluxo e o clima ao ar livre. Jurerê volta a atrair aos poucos.", "events": [{"d": 7, "label": "Independência do Brasil", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 21, "label": "Início da primavera", "cat": "especial", "emoji": "🌸"}], "campaigns": [{"title": "Primavera reabre a feira", "tag": "Sazonal"}, {"title": "Chamada de expositores pro verão", "tag": "Expositor"}]}, {"name": "Outubro", "short": "Out", "season": "Primavera", "icon": "🌷", "focus": "Pré-temporada: o movimento cresce rumo ao verão. Dia das Crianças (12/10) puxa artesanato infantil/brinquedo.", "events": [{"d": 12, "label": "Dia das Crianças", "cat": "comercial", "emoji": "🧸"}, {"d": 15, "label": "Dia do Professor", "cat": "comercial", "emoji": "🍎"}], "campaigns": [{"title": "Dia das Crianças artesanal", "tag": "Comercial"}, {"title": "Esquenta da temporada", "tag": "Sazonal"}]}, {"name": "Novembro", "short": "Nov", "season": "Primavera", "icon": "🌻", "focus": "Pré-temporada forte: fluxo crescendo. Black Friday (27/11) = achados artesanais com condição especial.", "events": [{"d": 2, "label": "Finados", "cat": "nacional", "emoji": "🕯️"}, {"d": 15, "label": "Proclamação da República", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 20, "label": "Consciência Negra", "cat": "nacional", "emoji": "✊🏿"}, {"d": 27, "label": "Black Friday", "cat": "comercial", "emoji": "🛍️"}], "campaigns": [{"title": "Black Friday da feira", "tag": "Comercial"}, {"title": "Esquenta de Natal artesanal", "tag": "Sazonal"}]}, {"name": "Dezembro", "short": "Dez", "season": "Verão", "icon": "🌞", "focus": "Volta a alta temporada: Jurerê enche de novo. Natal (25/12) é o pico de presente artesanal feito à mão.", "events": [{"d": 21, "label": "Início do verão", "cat": "especial", "emoji": "☀️"}, {"d": 25, "label": "Natal", "cat": "nacional", "emoji": "🎄"}, {"d": 31, "label": "Réveillon", "cat": "comercial", "emoji": "🎆"}], "campaigns": [{"title": "Natal feito à mão", "tag": "Comercial"}, {"title": "Feira de Réveillon (verão volta)", "tag": "Sazonal"}]}], NU={"title": "Onde estamos agora", "month": "Este mês", "week": "Esta semana", "next": "Prepare-se · próximos meses", "noweek": "Sem datas marcadas esta semana", "focus": "Foco", "today": "hoje", "plan": "Planejamento 2027", "off": "Abra o calendário em 2026 pra ver o contexto da semana."};
   var KEY='cal2026:'+SLUG;
+  var LOGEMPTY="Nenhuma entrega registrada em {m}.";
   var today=new Date();
   var inYear=(today.getFullYear()===2026);
   var curMonth=inYear?(today.getMonth()+1):START;
@@ -632,6 +634,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
     cur=Math.max(1,Math.min(12,n));
     months.forEach(function(s){s.classList.toggle('on', +s.dataset.month===cur);});
     tabs.forEach(function(t){t.classList.toggle('on', +t.dataset.go===cur);});
+    if(typeof renderLogTable==='function')renderLogTable();
     window.scrollTo({top:0,behavior:'smooth'});
   }
   tabs.forEach(function(t){t.addEventListener('click',function(){show(+t.dataset.go);});});
@@ -696,8 +699,11 @@ body.mode-edit .th-act{display:table-cell;width:140px}
   }
   function renderLogTable(){
     if(!logBody)return;
-    var rows=LOG.slice().sort(function(a,b){ return a.day<b.day?1:a.day>b.day?-1:(a.id<b.id?1:-1); });
-    if(!rows.length){ logBody.innerHTML=''; if(logEmpty)logEmpty.style.display=''; return; }
+    var ml=document.getElementById('log-month'); var mname=(CAL[cur-1]||{}).name||'';
+    if(ml)ml.textContent=mname?('· '+mname):'';
+    var rows=LOG.filter(function(r){ return parseInt((''+r.day).split('-')[1],10)===cur; })
+                .sort(function(a,b){ return a.day<b.day?1:a.day>b.day?-1:(a.id<b.id?1:-1); });
+    if(!rows.length){ logBody.innerHTML=''; if(logEmpty){ logEmpty.style.display=''; logEmpty.textContent=LOGEMPTY.replace('{m}',mname); } return; }
     if(logEmpty)logEmpty.style.display='none';
     logBody.innerHTML=rows.map(function(r){
       var cat=r.categoria?('<span class="lcat" style="background:'+catColor(r.categoria)+'">'+esc(r.categoria)+'</span>'):'<span class="lcat lcat-none">—</span>';
