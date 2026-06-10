@@ -148,6 +148,42 @@ body.mode-view .note{cursor:default}
 .log-tb tbody tr{transition:background .35s}
 /* nota do cliente nunca estoura a célula no modo visual */
 body.mode-view .note{max-height:38px;overflow:hidden}
+/* ===================== MOBILE: calendário otimizado + topo NÃO-FIXO ===================== */
+@media(max-width:680px){
+  /* 1) nada fixo no topo: o cabeçalho e os meses rolam junto -> calendário ganha a tela inteira */
+  .topbar{position:static}
+  .nav{position:static}
+  .tb-in{padding:10px 14px;gap:10px}
+  .tb-logo{height:34px}
+  .tb-tt b{font-size:15px}
+  .tb-meta{font-size:11px}
+  .nav-in{padding:8px 12px}
+  .legend{padding:9px 14px 2px;gap:10px}
+  .hint{padding:3px 14px 10px}
+  /* 2) grade compacta e LEGÍVEL: chips em 1 linha, NUNCA quebram letra a letra */
+  .wrap{padding:0 8px 34px}
+  .month{border-radius:12px;margin-top:4px}
+  .m-hero{padding:14px;flex-direction:column;align-items:flex-start;gap:10px}
+  .m-name{font-size:22px}
+  .m-season i{max-width:100%}
+  .ribbons{padding:10px 14px 0}
+  .m-body{padding:12px 10px 20px;gap:14px}
+  .wd-row,.grid{gap:3px}
+  .wd{font-size:9px;padding:2px 0}
+  .cell{min-height:60px;border-radius:7px;padding:4px 3px 3px}
+  .dnum{font-size:11px}
+  .chips{gap:2px;margin:3px 0 1px}
+  .chip,.dl-chip{font-size:8px;padding:1px 4px;line-height:1.2;border-radius:4px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;word-break:normal;max-width:100%}
+  .daylog{gap:2px;max-height:38px}
+  .note{min-height:0;font-size:9px;padding-top:1px}
+  body.mode-view .note{max-height:24px}
+  .cell.today:after{font-size:7px;top:4px;right:5px}
+  /* planilha de entregas embaixo: a fonte legível e completa do que foi feito */
+  .log{padding:0 10px}
+  .log-tb{font-size:12px}
+  .log-tb td,.log-tb thead th{padding:9px 10px}
+}
 /* ---------- planilha de entregas (Notion-style, embaixo do calendário) ---------- */
 .log{max-width:1240px;margin:20px auto 0;padding:0 16px}
 .log-head{display:flex;align-items:center;gap:12px;color:#fff;margin:0 2px 12px}
