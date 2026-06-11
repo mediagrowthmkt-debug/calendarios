@@ -155,6 +155,12 @@ body.mode-edit .ntag{cursor:grab}
 .led-day{font-family:inherit;font-size:12px;border:1px solid #dcdce0;border-radius:7px;padding:5px 6px;color:#222;background:#fff}
 .led-day:focus{outline:none;border-color:var(--brand)}
 .ltdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle;flex:0 0 auto}
+.led-color{width:26px;height:26px;border:1px solid #dcdce0;border-radius:7px;padding:0;cursor:pointer;background:#fff;vertical-align:middle;margin-right:6px;flex:0 0 auto}
+.led-cat{font-family:inherit;font-size:12.5px;border:1px solid #dcdce0;border-radius:7px;padding:5px 7px;width:108px;color:#222;vertical-align:middle}
+.led-cat:focus{outline:none;border-color:var(--brand)}
+.led-title{font-family:inherit;font-size:13px;border:1px solid #dcdce0;border-radius:7px;padding:6px 9px;width:100%;color:#222}
+.led-title:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 14%,transparent)}
+.lcatc{white-space:nowrap}
 /* sidebar */
 .side{display:flex;flex-direction:column;gap:16px}
 .panel{background:var(--soft);color:var(--soft-txt);border-radius:14px;padding:16px 17px}
@@ -812,11 +818,17 @@ body.mode-edit .th-act{display:table-cell;width:140px}
     if(logEmpty)logEmpty.style.display='none';
     logBody.innerHTML=rows.map(function(r){
       var col=itemColor(r);
-      var cat=r.categoria?('<span class="lcat" style="background:'+col+'">'+esc(r.categoria)+'</span>'):'<span class="lcat lcat-none">—</span>';
       var files=fileChips(r);
-      var dayc=EDIT?('<input type="date" class="led-day" data-id="'+r.id+'" value="'+r.day+'">'):fmtDay(r.day);
-      var acts=EDIT?('<td class="lact"><button class="lbtn" data-addfile="'+r.id+'" title="Anexar arquivo">📎</button><button class="lbtn" data-addlink="'+r.id+'" title="Anexar link">🔗</button><button class="lbtn" data-edit="'+r.id+'" title="Editar">✏️</button><button class="lbtn lbtn-del" data-del="'+r.id+'" title="Excluir">🗑️</button></td>'):'';
-      return '<tr data-day="'+r.day+'"><td class="lday">'+dayc+'</td><td class="lcatc">'+cat+'</td><td class="ltit"><span class="ltdot" style="background:'+col+'"></span><div class="ltit-t">'+esc(r.titulo)+'</div>'+(files?('<div class="lfiles">'+files+'</div>'):'')+'</td>'+acts+'</tr>';
+      if(EDIT){
+        var acts='<td class="lact"><button class="lbtn" data-addfile="'+r.id+'" title="Anexar arquivo">📎</button><button class="lbtn" data-addlink="'+r.id+'" title="Anexar link">🔗</button><button class="lbtn lbtn-del" data-del="'+r.id+'" title="Excluir">🗑️</button></td>';
+        return '<tr data-day="'+r.day+'">'
+          +'<td class="lday"><input type="date" class="led-day" data-id="'+r.id+'" value="'+r.day+'"></td>'
+          +'<td class="lcatc"><input type="color" class="led-color" data-id="'+r.id+'" value="'+col+'" title="cor do item"><input type="text" class="led-cat" data-id="'+r.id+'" list="log-cats" value="'+esc(r.categoria||'').replace(/"/g,'&quot;')+'" placeholder="categoria"></td>'
+          +'<td class="ltit"><input type="text" class="led-title" data-id="'+r.id+'" value="'+esc(r.titulo).replace(/"/g,'&quot;')+'" placeholder="o que é esse item...">'+(files?('<div class="lfiles">'+files+'</div>'):'')+'</td>'
+          +acts+'</tr>';
+      }
+      var cat=r.categoria?('<span class="lcat" style="background:'+col+'">'+esc(r.categoria)+'</span>'):'<span class="lcat lcat-none">—</span>';
+      return '<tr data-day="'+r.day+'"><td class="lday">'+fmtDay(r.day)+'</td><td class="lcatc">'+cat+'</td><td class="ltit"><span class="ltdot" style="background:'+col+'"></span><div class="ltit-t">'+esc(r.titulo)+'</div>'+(files?('<div class="lfiles">'+files+'</div>'):'')+'</td></tr>';
     }).join('');
   }
   function renderLog(){ renderLogTable(); renderBlocks(); }
@@ -1071,10 +1083,14 @@ body.mode-edit .th-act{display:table-cell;width:140px}
       var arr2=(r4.arquivos||[]).slice(); arr2.splice(fi,1); logUpdate(rid,{arquivos:arr2}); }
   });
   if(logBody)logBody.addEventListener('change',function(e){
-    if(e.target.classList.contains('led-day')){
-      var id=+e.target.dataset.id, nd=e.target.value;
-      if(/^\d{4}-\d{2}-\d{2}$/.test(nd)) logUpdate(id,{day:nd});
-    }
+    var t=e.target, id=+t.dataset.id;
+    if(t.classList.contains('led-day')){ if(/^\d{4}-\d{2}-\d{2}$/.test(t.value)) logUpdate(id,{day:t.value}); }
+    else if(t.classList.contains('led-color')){ logUpdate(id,{color:t.value}); }
+    else if(t.classList.contains('led-cat')){ logUpdate(id,{categoria:(t.value||'').trim().slice(0,40)}); }
+    else if(t.classList.contains('led-title')){ var v=(t.value||'').trim(); if(v)logUpdate(id,{titulo:v}); }
+  });
+  if(logBody)logBody.addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&(e.target.classList.contains('led-title')||e.target.classList.contains('led-cat'))){ e.preventDefault(); e.target.blur(); }
   });
   if(logFileInput)logFileInput.addEventListener('change',function(){
     var f=this.files[0]; var id=pendingFileRow; pendingFileRow=null;
