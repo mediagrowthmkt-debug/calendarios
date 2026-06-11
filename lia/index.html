@@ -102,6 +102,7 @@ body.mode-view .notes:empty:before{content:""}
 /* ---------- anotações por dia: TAGS coloridas (texto + cor), separadas e legíveis ---------- */
 .notes{display:flex;flex-direction:column;align-items:flex-start;gap:3px;margin-top:auto;padding-top:3px;min-height:14px}
 .ntag{font-size:9.5px;font-weight:800;color:#fff;line-height:1.3;padding:2px 9px;border-radius:20px;background:var(--brand);max-width:100%;word-break:break-word;letter-spacing:.2px}
+.ntag-note{background:#FEF3C7!important;color:#713F12!important;font-weight:600;font-style:italic;letter-spacing:0;border-radius:5px 5px 5px 0;border-left:3px solid #EAB308;text-align:left;white-space:normal;padding:3px 7px;line-height:1.25}
 .cell.has-notes{background:#fff;border-color:var(--brand)}
 body.mode-edit .cell:not(.empty){cursor:pointer}
 body.mode-edit .cell:not(.empty):hover{box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 45%,transparent),0 6px 16px rgba(0,0,0,.12)}
@@ -169,6 +170,8 @@ body.mode-edit .ntag{cursor:grab}
 .de-preset{font-size:11.5px;font-weight:700;color:#444;background:#fff;border:1.5px solid #e6e6ea;border-left:4px solid var(--pc);border-radius:7px;padding:3px 9px;cursor:pointer;user-select:none;line-height:1.5}
 .de-preset:hover{border-color:var(--pc);color:var(--pc)}
 .de-preset.on{background:var(--pc);border-color:var(--pc);color:#fff}
+.de-preset-note{--pc:#EAB308;background:#FEFCE8}
+.de-preset-note.on{color:#1a1a1f}
 /* sidebar */
 .side{display:flex;flex-direction:column;gap:16px}
 .panel{background:var(--soft);color:var(--soft-txt);border-radius:14px;padding:16px 17px}
@@ -772,7 +775,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
     {label:'Post',color:'#3B82F6'},{label:'Reel',color:'#EF4444'},{label:'Carrossel',color:'#8B5CF6'},
     {label:'Story',color:'#EC4899'},{label:'Campanha',color:'#F59E0B'},{label:'Anúncio',color:'#F97316'},
     {label:'Conteúdo',color:'#10B981'},{label:'Reunião',color:'#14B8A6'},{label:'Vídeo',color:'#D946EF'},
-    {label:'Blog',color:'#6366F1'}
+    {label:'Blog',color:'#6366F1'},{label:'Nota',color:'#EAB308',note:true}
   ];
   var noteBoxes=[].slice.call(document.querySelectorAll('.notes'));
   function dParts(k){ var p=(''+k).split('-'); return new Date(+p[0],(+p[1])-1,+p[2]); }
@@ -799,17 +802,30 @@ body.mode-edit .th-act{display:table-cell;width:140px}
     if(!t){ var w=(''+(r.titulo||'')).trim().split(/\s+/); t=w.slice(0,2).join(' '); }
     return t;
   }
-  // cor por TAG: paleta fixa pras categorias comuns + hash estável pras demais
-  var CATCOLORS={'otimização':'#F59E0B','otimizacao':'#F59E0B','post':'#3B82F6','campanha':'#8B5CF6','conteúdo':'#10B981','conteudo':'#10B981','ideia':'#EC4899','documento':'#6366F1','site':'#06B6D4','website':'#06B6D4','relatório':'#EF4444','relatorio':'#EF4444','reunião':'#14B8A6','reuniao':'#14B8A6','planejamento':'#0EA5E9','anúncio':'#F97316','anuncio':'#F97316','vídeo':'#D946EF','video':'#D946EF','design':'#E11D48','arte':'#E11D48'};
-  var CATPAL=['#F59E0B','#3B82F6','#8B5CF6','#10B981','#EC4899','#6366F1','#06B6D4','#EF4444','#14B8A6','#F97316','#0EA5E9','#84CC16','#D946EF','#E11D48'];
+  // COR FIXA por tipo de tag — cada tipo tem cor única (Reel ≠ Carrossel ≠ Post ...)
+  var TAGCOLORS={
+    post:'#3B82F6', reel:'#EF4444', reels:'#EF4444', carrossel:'#8B5CF6',
+    story:'#EC4899', stories:'#EC4899', campanha:'#F59E0B', anuncio:'#F97316',
+    conteudo:'#10B981', reuniao:'#14B8A6', video:'#D946EF', blog:'#6366F1',
+    nota:'#EAB308', site:'#06B6D4', website:'#06B6D4', design:'#E11D48', arte:'#E11D48',
+    relatorio:'#0EA5E9', proposta:'#84CC16', contrato:'#A855F7', otimizacao:'#F43F5E',
+    planejamento:'#0891B2', ideia:'#FB7185', documento:'#64748B', crm:'#7C3AED',
+    seo:'#65A30D', copy:'#DB2777', analytics:'#0D9488', identidade:'#C026D3',
+    estruturacao:'#475569', atendimento:'#2563EB', indicadores:'#16A34A', entrega:'#059669'
+  };
+  function norm(s){ return (''+(s||'')).trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  var CATPAL=['#3B82F6','#EF4444','#8B5CF6','#EC4899','#F59E0B','#F97316','#10B981','#14B8A6','#D946EF','#6366F1','#06B6D4','#84CC16','#0EA5E9','#E11D48'];
   function catColor(cat){
-    var k=(''+(cat||'')).trim().toLowerCase();
-    if(!k)return '#94A3B8';
-    if(CATCOLORS[k])return CATCOLORS[k];
+    var k=norm(cat); if(!k)return '#94A3B8';
+    if(TAGCOLORS[k])return TAGCOLORS[k];
     var h=0; for(var i=0;i<k.length;i++){ h=(h*31+k.charCodeAt(i))>>>0; }
     return CATPAL[h%CATPAL.length];
   }
-  function itemColor(r){ return r.color || (r.categoria ? catColor(r.categoria) : NDEF); }
+  function itemColor(r){
+    var k=norm(r.categoria);
+    if(k&&TAGCOLORS[k])return TAGCOLORS[k];            // tipo conhecido → cor fixa do tipo
+    return r.color||(k?catColor(r.categoria):NDEF);    // sem tipo → cor própria do item (ex.: nota)
+  }
   function itemsByDay(day){ return LOG.filter(function(r){ return r.day===day; }).sort(function(a,b){ return (a.id||0)-(b.id||0); }); }
   var BLK_CAP=5;
   function renderBlocks(){
@@ -820,6 +836,9 @@ body.mode-edit .th-act{display:table-cell;width:140px}
       if(!list.length){ box.innerHTML=''; if(cell)cell.classList.remove('has-notes'); return; }
       var shown=list.slice(0,BLK_CAP);
       var h=shown.map(function(r){
+        if(norm(r.categoria)==='nota'){
+          return '<span class="ntag ntag-note" draggable="'+(EDIT?'true':'false')+'" data-id="'+r.id+'" title="'+esc(r.titulo)+'">📝 '+esc(r.titulo)+'</span>';
+        }
         var col=itemColor(r);
         return '<span class="ntag" draggable="'+(EDIT?'true':'false')+'" data-id="'+r.id+'" style="background:'+col+';color:'+txtOn(col)+'" title="'+esc(r.titulo)+'">'+esc(dlTag(r))+'</span>';
       }).join('');
@@ -937,10 +956,10 @@ body.mode-edit .th-act{display:table-cell;width:140px}
     var rows=list.length?list.map(deRow).join(''):'<div class="de-empty">Nenhum item nesse dia ainda. Escreva abaixo pra adicionar.</div>';
     dayedList.innerHTML=rows
       +'<div class="de-add">'
-        +'<div class="de-presets">'+TAGPRESETS.map(function(p){ return '<span class="de-preset'+(p.label===DE_NEWCAT?' on':'')+'" data-lbl="'+p.label+'" data-c="'+p.color+'" style="--pc:'+p.color+'">'+p.label+'</span>'; }).join('')+'</div>'
+        +'<div class="de-presets">'+TAGPRESETS.map(function(p){ return '<span class="de-preset'+(p.note?' de-preset-note':'')+(p.label===DE_NEWCAT?' on':'')+'" data-lbl="'+p.label+'" data-c="'+p.color+'" style="--pc:'+p.color+'">'+(p.note?'📝 ':'')+p.label+'</span>'; }).join('')+'</div>'
         +'<div class="de-addrow">'
           +'<button class="de-dot de-newdot" data-act="newpal" title="cor" style="background:'+DE_NEWCOLOR+'"></button>'
-          +'<input class="de-newinp" type="text" placeholder="'+(DE_NEWCAT?('detalhe do '+DE_NEWCAT.toLowerCase()+'... (ou deixe vazio)'):'escreva um novo item...')+'">'
+          +'<input class="de-newinp" type="text" placeholder="'+(DE_NEWCAT==='Nota'?'escreva a nota...':(DE_NEWCAT?('detalhe do '+DE_NEWCAT.toLowerCase()+'... (ou deixe vazio)'):'escreva um novo item...'))+'">'
           +'<button class="de-addbtn">+ adicionar</button>'
           +'<div class="de-palwrap de-newpal" style="display:none">'+paletteHtml(DE_NEWCOLOR)+'</div>'
         +'</div>'
@@ -990,7 +1009,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
   function addNewItem(){
     var key=DAYED_OPEN; if(!key)return;
     var inp=dayedList.querySelector('.de-newinp'); var txt=((inp||{}).value||'').trim();
-    var titulo=txt||DE_NEWCAT;                          // sem texto + tag escolhida = a própria tag vira o item
+    var titulo=txt||((DE_NEWCAT==='Nota')?'':DE_NEWCAT);   // tag sem texto vira o item; nota exige texto
     if(!titulo){ if(inp)inp.focus(); return; }
     var days=collectDays(key), col=DE_NEWCOLOR, cat=DE_NEWCAT;
     days.forEach(function(d){ logInsert({slug:SLUG,day:d,categoria:cat,titulo:titulo,color:col,arquivos:[]}); });
