@@ -211,6 +211,9 @@ body.mode-edit .ntag{cursor:grab}
 .dl-more{font-size:8.5px;font-weight:800;color:var(--brand);cursor:pointer}
 .lrow-hl td{background:color-mix(in srgb,var(--brand) 20%,#fff)!important}
 .log-tb tbody tr{transition:background .35s}
+@keyframes lrowflash{0%,100%{background:color-mix(in srgb,var(--brand) 34%,#fff)}50%{background:transparent}}
+.lrow-flash td{animation:lrowflash .34s steps(1) 4;box-shadow:inset 3px 0 0 var(--brand)}
+.ntag{cursor:pointer}
 /* tags do cliente: compactas, sem cursor de edição no modo visual */
 body.mode-view .cell:not(.empty){cursor:default}
 .notes:empty{min-height:0}
@@ -839,7 +842,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
       var files=fileChips(r);
       if(EDIT && EDITROWS[r.id]){
         var actsE='<td class="lact"><button class="lbtn" data-addfile="'+r.id+'" title="Anexar arquivo">📎</button><button class="lbtn" data-addlink="'+r.id+'" title="Anexar link">🔗</button><button class="lbtn lbtn-ok" data-done="'+r.id+'" title="Concluir">✓</button><button class="lbtn lbtn-del" data-del="'+r.id+'" title="Excluir">🗑️</button></td>';
-        return '<tr data-day="'+r.day+'" class="lrow-edit">'
+        return '<tr data-day="'+r.day+'" data-id="'+r.id+'" class="lrow-edit">'
           +'<td class="lday"><input type="date" class="led-day" data-id="'+r.id+'" value="'+r.day+'"></td>'
           +'<td class="lcatc"><input type="color" class="led-color" data-id="'+r.id+'" value="'+col+'" title="cor do item"><input type="text" class="led-cat" data-id="'+r.id+'" list="log-cats" value="'+esc(r.categoria||'').replace(/"/g,'&quot;')+'" placeholder="categoria"></td>'
           +'<td class="ltit"><input type="text" class="led-title" data-id="'+r.id+'" value="'+esc(r.titulo).replace(/"/g,'&quot;')+'" placeholder="o que é esse item...">'+(files?('<div class="lfiles">'+files+'</div>'):'')+'</td>'
@@ -847,7 +850,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
       }
       var cat=r.categoria?('<span class="lcat" style="background:'+col+'">'+esc(r.categoria)+'</span>'):'<span class="lcat lcat-none">—</span>';
       var actsD=EDIT?('<td class="lact"><button class="lbtn" data-editrow="'+r.id+'" title="Editar">✏️</button></td>'):'';
-      return '<tr data-day="'+r.day+'"><td class="lday">'+fmtDay(r.day)+'</td><td class="lcatc">'+cat+'</td><td class="ltit"><span class="ltdot" style="background:'+col+'"></span><div class="ltit-t">'+esc(r.titulo)+'</div>'+(files?('<div class="lfiles">'+files+'</div>'):'')+'</td>'+actsD+'</tr>';
+      return '<tr data-day="'+r.day+'" data-id="'+r.id+'"><td class="lday">'+fmtDay(r.day)+'</td><td class="lcatc">'+cat+'</td><td class="ltit"><span class="ltdot" style="background:'+col+'"></span><div class="ltit-t">'+esc(r.titulo)+'</div>'+(files?('<div class="lfiles">'+files+'</div>'):'')+'</td>'+actsD+'</tr>';
     }).join('');
   }
   function renderLog(){ renderLogTable(); renderBlocks(); }
@@ -993,8 +996,8 @@ body.mode-edit .th-act{display:table-cell;width:140px}
     var cell=box.closest('.cell'); if(!cell)return;
     cell.addEventListener('click',function(e){
       if(!EDIT)return;
-      if(e.target.closest('.dl-more'))return;   // "+N na planilha" tem ação própria
-      openDayEd(box.dataset.key);
+      if(e.target.closest('.ntag')||e.target.closest('.dl-more'))return;   // tag/"+N" → vão pra planilha
+      openDayEd(box.dataset.key);   // clicou no quadrado do dia (área vazia) → abre o menu de tags
     });
   });
   if(dayed){
@@ -1143,10 +1146,21 @@ body.mode-edit .th-act{display:table-cell;width:140px}
       if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
     },340);
   }
+  function highlightLogItem(id){
+    setTimeout(function(){
+      var tr=document.querySelector('#log-body tr[data-id="'+id+'"]');
+      if(!tr)return;
+      tr.classList.remove('lrow-flash'); void tr.offsetWidth;   // reinicia a animação se clicar de novo
+      tr.classList.add('lrow-flash');
+      tr.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(function(){ tr.classList.remove('lrow-flash'); },1600);
+    },340);
+  }
   document.addEventListener('click',function(e){
-    var el=e.target.closest('.dl-chip')||e.target.closest('.dl-more');
-    if(!el)return;
-    jumpToLog(); var d=el.getAttribute('data-day'); if(d)highlightLogDay(d);
+    var tag=e.target.closest('.ntag');
+    if(tag){ jumpToLog(); highlightLogItem(+tag.dataset.id); return; }   // clicou na tag → desce e pisca a linha
+    var el=e.target.closest('.dl-more');
+    if(el){ jumpToLog(); var d=el.getAttribute('data-day'); if(d)highlightLogDay(d); }
   });
   // login/logout do time MG
   var BL=document.getElementById('btn-login'), BO=document.getElementById('btn-logout'), MOD=document.getElementById('login-modal');
