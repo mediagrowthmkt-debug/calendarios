@@ -289,6 +289,15 @@ body.mode-edit .log-add{display:flex}
 .lf a{color:var(--ink);font-weight:600}
 .lf a:hover{color:var(--brand)}
 .lf-x{border:none;background:none;color:#c44;font-weight:800;cursor:pointer;font-size:13px;padding:0 1px;line-height:1}
+.lf-img{display:inline-flex;align-items:center;padding:0;background:transparent;position:relative}
+.lf-img a{display:inline-flex}
+.lf-img img{height:58px;max-width:140px;object-fit:cover;border-radius:9px;border:1px solid #e3e3e7;display:block}
+.lf-img .lf-x{position:absolute;top:-6px;right:-6px;background:#fff;border:1px solid #e3e3e7;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);font-size:12px;padding:0}
+.de-files{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 4px 30px}
+.de-pastehint{font-size:11.5px;color:#a0a0a8;margin-top:10px;line-height:1.4}
+.de-pastehint b{color:var(--brand)}
+.cal-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);background:#1a1a1f;color:#fff;font-size:13px;font-weight:600;padding:10px 16px;border-radius:11px;box-shadow:0 14px 40px rgba(0,0,0,.32);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:9999;max-width:88vw;text-align:center}
+.cal-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .th-act{display:none}
 body.mode-edit .th-act{display:table-cell;width:140px}
 .lact{white-space:nowrap}
@@ -843,9 +852,13 @@ body.mode-edit .th-act{display:table-cell;width:140px}
       if(cell)cell.classList.add('has-notes');
     });
   }
+  function isImgFile(f){ return /^image\//.test(f.type||'') || /\.(png|jpe?g|gif|webp|bmp|svg)(\?|$)/i.test(f.url||''); }
   function fileChips(r){
     return (r.arquivos||[]).map(function(f,i){
       var rm=EDIT?('<button class="lf-x" data-rmfile="'+r.id+'|'+i+'" title="remover">×</button>'):'';
+      if(isImgFile(f)){
+        return '<span class="lf lf-img"><a href="'+esc(f.url||'#')+'" target="_blank" rel="noopener" title="'+esc(f.name||'imagem')+'"><img src="'+esc(f.url||'')+'" alt="'+esc(f.name||'imagem')+'" loading="lazy"></a>'+rm+'</span>';
+      }
       return '<span class="lf"><a href="'+esc(f.url||'#')+'" target="_blank" rel="noopener">📎 '+esc(f.name||'arquivo')+'</a>'+rm+'</span>';
     }).join(' ');
   }
@@ -937,13 +950,15 @@ body.mode-edit .th-act{display:table-cell;width:140px}
   }
   function deRow(r){
     var c=itemColor(r);
-    return '<div class="de-row" data-id="'+r.id+'">'
+    var html='<div class="de-row" data-id="'+r.id+'">'
       +'<button class="de-dot" data-act="pal" title="cor" style="background:'+c+'"></button>'
       +'<input class="de-inp" type="text" value="'+esc(r.titulo).replace(/"/g,'&quot;')+'" placeholder="o que é esse item...">'
       +'<input class="de-date" type="date" value="'+r.day+'" title="mover de data">'
       +'<button class="de-del" data-act="del" title="excluir">×</button>'
       +'<div class="de-palwrap" style="display:none">'+paletteHtml(c)+'</div>'
       +'</div>';
+    if((r.arquivos||[]).length) html+='<div class="de-files">'+fileChips(r)+'</div>';
+    return html;
   }
   function eFlush(){ for(var id in EDIRTY){ logUpdate(+id,{titulo:EDIRTY[id]}); } EDIRTY={}; }
   function renderDayed(){
@@ -964,6 +979,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           +'<div class="de-mrow">intervalo: <input type="date" class="de-from" value="'+key+'"> até <input type="date" class="de-to" value="'+key+'"></div>'
           +'<div class="de-mrow"><label><input type="checkbox" class="de-wk"> repetir toda <b>'+weekdayName(key)+'</b> por <input type="number" class="de-wkn" value="4" min="1" max="52"> semanas</label></div>'
         +'</div>'
+        +'<div class="de-pastehint">📋 Copie uma imagem e aperte <b>Ctrl+V</b> aqui pra anexar nesse dia.</div>'
       +'</div>';
   }
   function refreshEditorLive(){
@@ -1049,6 +1065,8 @@ body.mode-edit .th-act{display:table-cell;width:140px}
         if(e.key==='Enter'&&e.target.classList.contains('de-newinp')){ e.preventDefault(); addNewItem(); }
       });
       dayedList.addEventListener('click',function(e){
+        var rmf=e.target.closest('[data-rmfile]');
+        if(rmf){ var pp=rmf.dataset.rmfile.split('|'); var rid=+pp[0],fi=+pp[1]; var rr=rowById(rid); if(rr){ var a2=(rr.arquivos||[]).slice(); a2.splice(fi,1); logUpdate(rid,{arquivos:a2}); renderDayed(); } return; }
         var pre=e.target.closest('.de-preset');
         if(pre){
           var inp0=dayedList.querySelector('.de-newinp'); var keep=inp0?inp0.value:'';
@@ -1143,19 +1161,70 @@ body.mode-edit .th-act{display:table-cell;width:140px}
   if(logBody)logBody.addEventListener('keydown',function(e){
     if(e.key==='Enter'&&(e.target.classList.contains('led-title')||e.target.classList.contains('led-cat'))){ e.preventDefault(); e.target.blur(); }
   });
-  if(logFileInput)logFileInput.addEventListener('change',function(){
-    var f=this.files[0]; var id=pendingFileRow; pendingFileRow=null;
-    if(!f||!SB||id==null){ this.value=''; return; }
-    var safe=f.name.replace(/[^\w.\-]+/g,'_');
+  // ---- anexos: upload por botão + colar imagem (Ctrl+V) ----
+  function calToast(msg,ms){
+    var t=document.getElementById('cal-toast');
+    if(!t){ t=document.createElement('div'); t.id='cal-toast'; t.className='cal-toast'; document.body.appendChild(t); }
+    t.textContent=msg; t.classList.add('on');
+    clearTimeout(t._h); if(ms!==0){ t._h=setTimeout(function(){ t.classList.remove('on'); }, ms||1800); }
+  }
+  function attachToRow(id,file,cb){
+    if(!SB){ alert('Faça login (botão Entrar) para anexar arquivos.'); if(cb)cb(); return; }
+    calToast('📤 Enviando imagem…',0);
+    var safe=(file.name||'colado.png').replace(/[^\w.\-]+/g,'_');
     var path=SLUG+'/'+id+'/'+Date.now()+'-'+safe;
-    var inp=this;
-    SB.storage.from('calendar-files').upload(path,f,{upsert:false,contentType:f.type||undefined}).then(function(res){
-      if(res&&res.error){ alert('Falha no upload: '+(res.error.message||'')); inp.value=''; return; }
-      var pub=SB.storage.from('calendar-files').getPublicUrl(path);
-      var url=pub&&pub.data&&pub.data.publicUrl;
-      var r=rowById(id); if(!r){ inp.value=''; return; }
-      var arr=(r.arquivos||[]).slice(); arr.push({name:f.name.slice(0,80),url:url}); logUpdate(id,{arquivos:arr}); inp.value='';
-    },function(){ alert('Falha no upload.'); inp.value=''; });
+    SB.storage.from('calendar-files').upload(path,file,{upsert:false,contentType:file.type||undefined}).then(function(res){
+      if(res&&res.error){ calToast('⚠️ Falha no upload',2400); if(cb)cb(); return; }
+      var pub=SB.storage.from('calendar-files').getPublicUrl(path); var url=pub&&pub.data&&pub.data.publicUrl;
+      var r=rowById(id); if(!r){ calToast('⚠️ Item não encontrado',2000); if(cb)cb(); return; }
+      var arr=(r.arquivos||[]).slice(); arr.push({name:(file.name||'imagem colada').slice(0,80),url:url}); logUpdate(id,{arquivos:arr});
+      if(DAYED_OPEN)renderDayed();
+      calToast('✅ Imagem anexada',1500); if(cb)cb(url);
+    },function(){ calToast('⚠️ Falha no upload',2400); if(cb)cb(); });
+  }
+  function insertItemWithImage(o,file){
+    if(!SB){ alert('Faça login (botão Entrar) para colar imagens.'); return; }
+    calToast('📤 Enviando imagem…',0);
+    var safe=(file.name||'colado.png').replace(/[^\w.\-]+/g,'_');
+    var path=SLUG+'/_colado/'+Date.now()+'-'+safe;
+    SB.storage.from('calendar-files').upload(path,file,{upsert:false,contentType:file.type||undefined}).then(function(res){
+      if(res&&res.error){ calToast('⚠️ Falha no upload',2400); return; }
+      var pub=SB.storage.from('calendar-files').getPublicUrl(path); var url=pub&&pub.data&&pub.data.publicUrl;
+      o.arquivos=[{name:(file.name||'imagem colada').slice(0,80),url:url}];
+      SB.from(LOGTABLE).insert([o]).then(function(){},function(){});   // realtime traz a linha já com a imagem
+      calToast('✅ Imagem anexada',1500);
+    },function(){ calToast('⚠️ Falha no upload',2400); });
+  }
+  function imageFromClipboard(e){
+    var items=(e.clipboardData&&e.clipboardData.items)||[];
+    for(var i=0;i<items.length;i++){ if(items[i].kind==='file'&&/^image\//.test(items[i].type||'')){ var f=items[i].getAsFile(); if(f)return f; } }
+    return null;
+  }
+  if(logFileInput)logFileInput.addEventListener('change',function(){
+    var f=this.files[0]; var id=pendingFileRow; pendingFileRow=null; var inp=this;
+    if(!f||id==null){ inp.value=''; return; }
+    attachToRow(id,f,function(){ inp.value=''; });
+  });
+  // colar imagem com Ctrl+V → anexa ao dia aberto ou à linha em edição da planilha
+  document.addEventListener('paste',function(e){
+    if(!EDIT)return;
+    var file=imageFromClipboard(e); if(!file)return;   // sem imagem no clipboard → deixa o colar de texto normal
+    e.preventDefault();
+    if(!SB){ alert('Faça login (botão Entrar) para colar imagens no calendário.'); return; }
+    var ae=document.activeElement;
+    var er=ae&&ae.closest&&ae.closest('tr.lrow-edit');                 // 1) linha da planilha em edição
+    if(er&&er.dataset.id){ attachToRow(+er.dataset.id,file); return; }
+    if(DAYED_OPEN){                                                    // 2) editor do dia aberto
+      var drow=ae&&ae.closest&&ae.closest('.de-row');
+      if(drow&&drow.dataset.id){ attachToRow(+drow.dataset.id,file); return; }   // sobre um item → anexa nele
+      var inp2=dayedList&&dayedList.querySelector('.de-newinp'); var txt=((inp2||{}).value||'').trim();
+      var titulo=txt||DE_NEWCAT||'📷 Imagem';
+      insertItemWithImage({slug:SLUG,day:DAYED_OPEN,categoria:DE_NEWCAT,titulo:titulo,color:DE_NEWCOLOR},file);
+      if(inp2)inp2.value='';
+      return;
+    }
+    var keys=Object.keys(EDITROWS); if(keys.length===1){ attachToRow(+keys[0],file); return; }   // 3) só 1 linha em edição
+    calToast('Clique num dia (ou edite uma linha da planilha) e cole a imagem de novo.',2800);
   });
   function highlightLogDay(d){
     setTimeout(function(){
