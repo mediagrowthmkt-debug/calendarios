@@ -98,7 +98,15 @@ body.mode-view .notes:empty:before{content:""}
 .dnum{font-size:14px;font-weight:800;color:#3a3a42;line-height:1}
 .cell.we .dnum{color:var(--brand)}
 .chips{display:flex;flex-direction:column;gap:3px;margin:4px 0 2px}
-.chip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px;line-height:1.25;display:block;word-break:break-word}
+	.chip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px;line-height:1.25;display:block;word-break:break-word}
+	/* tabela estática de posts publicados: título e views ficam fora dos chips do calendário */
+	.pubsheet{margin:0 28px 28px;background:var(--paper);border:1px solid #ededf0;border-radius:14px;overflow:hidden}
+	.pubsheet h3{font-size:14px;font-weight:800;color:var(--ink);padding:14px 16px 10px}
+	.pubsheet table{width:100%;border-collapse:collapse;font-size:12.5px}
+	.pubsheet th{text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#8a8a92;background:var(--soft);padding:10px 12px}
+	.pubsheet td{padding:10px 12px;border-top:1px solid #f0f0f2;vertical-align:top;line-height:1.4}
+	.pubsheet td:first-child,.pubsheet td:last-child{white-space:nowrap;font-weight:800;color:var(--ink)}
+	.pubtag{display:inline-block;font-size:10px;font-weight:800;text-transform:lowercase;letter-spacing:.2px;padding:2px 9px;border-radius:20px;white-space:nowrap}
 /* ---------- anotações por dia: TAGS coloridas (texto + cor), separadas e legíveis ---------- */
 .notes{display:flex;flex-direction:column;align-items:flex-start;gap:3px;margin-top:auto;padding-top:3px;min-height:14px}
 .ntag{font-size:9.5px;font-weight:800;color:#fff;line-height:1.3;padding:2px 9px;border-radius:20px;background:var(--brand);max-width:100%;word-break:break-word;letter-spacing:.2px}
@@ -414,6 +422,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="2" style="--accent:#F2A03D;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -442,6 +451,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="3" style="--accent:#2A8C82;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -470,6 +480,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="4" style="--accent:#57A85C;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -498,6 +509,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="5" style="--accent:#1F5FAE;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -526,6 +538,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="6" style="--accent:#1F5FAE;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -554,6 +567,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="7" style="--accent:#4FA3D8;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -582,6 +596,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="8" style="--accent:#5B7C99;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -610,6 +625,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="9" style="--accent:#6BAE6B;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -638,6 +654,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="10" style="--accent:#57A85C;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -666,6 +683,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="11" style="--accent:#8FB04E;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -694,6 +712,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="12" style="--accent:#1F5FAE;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -722,6 +741,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
 <section class="log" id="log-sec">
   <div class="log-head"><span class="log-ic">📋</span><div><b>Registro de entregas <span id="log-month" class="log-month"></span></b><small>O que a MediaGrowth realizou pra você — data, descrição e arquivos.</small></div></div>
@@ -744,7 +764,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
 <div class="foot">Calendário Estratégico 2026 · feito pela MediaGrowth</div>
 <script>
 (function(){
-  var SLUG="gaia", START=1, CAL=[{"name": "Janeiro", "short": "Jan", "season": "Verão", "icon": "☀️", "focus": "Janeiro é o mês ideal para falar de segurança no mar, pertencimento costeiro e relação emocional com a água sem tom alarmista.", "events": [{"d": 1, "label": "Confraternização Universal", "cat": "nacional", "emoji": "🎉"}], "campaigns": [{"title": "Férias com consciência oceânica", "tag": "Educação"}, {"title": "O oceano não é cenário", "tag": "Projetos IGS"}]}, {"name": "Fevereiro", "short": "Fev", "season": "Verão", "icon": "🎭", "focus": "Mês bom para conteúdos leves de prevenção, segurança, respeito ao ambiente costeiro e turismo consciente.", "events": [{"d": 16, "label": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 17, "label": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 18, "label": "Quarta-feira de Cinzas", "cat": "nacional", "emoji": "✝️"}], "campaigns": [{"title": "Mar seguro no Carnaval", "tag": "Serviço"}, {"title": "Volta às aulas com oceano", "tag": "Educação"}]}, {"name": "Março", "short": "Mar", "season": "Início do outono", "icon": "💧", "focus": "Dia Mundial da Água é a grande âncora do mês para conectar oceano, corpo, clima e futuro.", "events": [{"d": 8, "label": "Dia Internacional da Mulher", "cat": "comercial", "emoji": "♀️"}, {"d": 22, "label": "Dia Mundial da Água", "cat": "nicho", "emoji": "💧"}], "campaigns": [{"title": "A água que nos atravessa", "tag": "Âncora"}, {"title": "Mulheres que educam para o oceano", "tag": "Institucional"}]}, {"name": "Abril", "short": "Abr", "season": "Outono", "icon": "🌎", "focus": "Abril concentra Dia Mundial da Saúde e Dia da Terra: ponte perfeita entre saúde humana, saúde do oceano e educação ambiental.", "events": [{"d": 3, "label": "Sexta-feira Santa", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Páscoa", "cat": "nacional", "emoji": "🐣"}, {"d": 7, "label": "Dia Mundial da Saúde", "cat": "nicho", "emoji": "❤️"}, {"d": 21, "label": "Tiradentes", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 22, "label": "Dia da Terra", "cat": "nicho", "emoji": "🌎"}], "campaigns": [{"title": "Saúde humana, saúde do oceano", "tag": "Autoridade"}, {"title": "Escolas pelo planeta azul", "tag": "Parcerias"}]}, {"name": "Maio", "short": "Mai", "season": "Outono", "icon": "🌊", "focus": "Maio deve preparar o terreno para Dia Mundial do Meio Ambiente e Dia Mundial dos Oceanos em junho.", "events": [{"d": 1, "label": "Dia do Trabalho", "cat": "nacional", "emoji": "🛠️"}, {"d": 10, "label": "Dia das Mães", "cat": "comercial", "emoji": "💐"}], "campaigns": [{"title": "Contagem regressiva para o mês do oceano", "tag": "Pré-campanha"}, {"title": "O oceano que as próximas gerações vão receber", "tag": "Cuidado"}]}, {"name": "Junho", "short": "Jun", "season": "Inverno", "icon": "🌊", "focus": "Junho é o mês-âncora do Instituto. Dia Mundial do Meio Ambiente e Dia Mundial dos Oceanos devem virar campanha editorial e institucional.", "events": [{"d": 4, "label": "Corpus Christi", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Dia Mundial do Meio Ambiente", "cat": "nicho", "emoji": "🌱"}, {"d": 8, "label": "Dia Mundial dos Oceanos", "cat": "nicho", "emoji": "🌊"}, {"d": 21, "label": "Início do inverno", "cat": "especial", "emoji": "❄️"}], "campaigns": [{"title": "Mês do Oceano Gaia Soul", "tag": "Âncora"}, {"title": "O oceano também cuida da mente", "tag": "Blue Mind"}, {"title": "Imersão Azul e Submarino 360", "tag": "Projetos IGS"}]}, {"name": "Julho", "short": "Jul", "season": "Inverno", "icon": "🐋", "focus": "Julho é bom para conteúdos de férias, crianças, ciência curiosa e vida marinha fascinante.", "events": [], "campaigns": [{"title": "Temporada das baleias", "tag": "Encantamento"}, {"title": "Ciência oceânica para férias", "tag": "Educação"}]}, {"name": "Agosto", "short": "Ago", "season": "Inverno", "icon": "🧠", "focus": "Agosto tem menos datas fortes, então funciona como mês de autoridade: Blue Mind, OceanoTerapia, ciência e bastidores.", "events": [{"d": 9, "label": "Dia dos Pais", "cat": "comercial", "emoji": "👔"}], "campaigns": [{"title": "Blue Mind sem misticismo", "tag": "Autoridade"}, {"title": "Projetos para escolas e empresas", "tag": "Captação"}]}, {"name": "Setembro", "short": "Set", "season": "Primavera", "icon": "🌸", "focus": "Setembro Amarelo exige cuidado editorial: falar de natureza, presença e acolhimento sem prometer cura ou simplificar sofrimento.", "events": [{"d": 7, "label": "Independência do Brasil", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 21, "label": "Início da primavera / Dia da Árvore", "cat": "especial", "emoji": "🌳"}], "campaigns": [{"title": "Natureza, presença e saúde mental", "tag": "Cuidado"}, {"title": "Primavera azul", "tag": "Educação"}]}, {"name": "Outubro", "short": "Out", "season": "Primavera", "icon": "📚", "focus": "Outubro combina Dia das Crianças, Dia do Professor, Dia Mundial da Alimentação e Dia Mundial da Saúde Mental.", "events": [{"d": 10, "label": "Dia Mundial da Saúde Mental", "cat": "nicho", "emoji": "🧠"}, {"d": 12, "label": "Dia das Crianças", "cat": "comercial", "emoji": "🧒"}, {"d": 15, "label": "Dia do Professor", "cat": "comercial", "emoji": "🍎"}, {"d": 16, "label": "Dia Mundial da Alimentação", "cat": "nicho", "emoji": "🌍"}], "campaigns": [{"title": "Professores multiplicadores do oceano", "tag": "Escolas"}, {"title": "Crianças que aprendem com o mar", "tag": "Famílias"}]}, {"name": "Novembro", "short": "Nov", "season": "Primavera", "icon": "🌱", "focus": "Novembro permite trabalhar consciência, responsabilidade social, empresas e planejamento de ações para 2027.", "events": [{"d": 2, "label": "Finados", "cat": "nacional", "emoji": "🕯️"}, {"d": 15, "label": "Proclamação da República", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 20, "label": "Consciência Negra", "cat": "nacional", "emoji": "✊🏿"}, {"d": 27, "label": "Black Friday", "cat": "comercial", "emoji": "🛍️"}, {"d": 30, "label": "Cyber Monday", "cat": "comercial", "emoji": "💻"}], "campaigns": [{"title": "Black Friday do bem: apoie educação oceânica", "tag": "Captação"}, {"title": "Projetos IGS para 2027", "tag": "Planejamento"}]}, {"name": "Dezembro", "short": "Dez", "season": "Verão", "icon": "🎄", "focus": "Dezembro deve fechar o ano com retrospectiva de impacto, prestação de contas, agradecimento e chamada para apoiar 2027.", "events": [{"d": 21, "label": "Início do verão", "cat": "especial", "emoji": "☀️"}, {"d": 25, "label": "Natal", "cat": "nacional", "emoji": "🎄"}, {"d": 31, "label": "Réveillon", "cat": "comercial", "emoji": "🎆"}], "campaigns": [{"title": "Retrospectiva Gaia Soul", "tag": "Impacto"}, {"title": "Presenteie o futuro azul", "tag": "Doação"}, {"title": "Mar seguro nas férias", "tag": "Verão"}]}], NU={"title": "Onde estamos agora", "month": "Este mês", "week": "Esta semana", "next": "Prepare-se · próximos meses", "noweek": "Sem datas marcadas esta semana", "focus": "Foco", "today": "hoje", "plan": "Planejamento 2027", "off": "Abra o calendário em 2026 pra ver o contexto da semana."};
+  var SLUG="gaia", START=1, CAL=[{"name": "Janeiro", "short": "Jan", "season": "Verão", "icon": "☀️", "focus": "Janeiro é o mês ideal para falar de segurança no mar, pertencimento costeiro e relação emocional com a água sem tom alarmista.", "events": [{"d": 1, "label": "Confraternização Universal", "full": "Confraternização Universal", "cat": "nacional", "emoji": "🎉"}], "campaigns": [{"title": "Férias com consciência oceânica", "tag": "Educação"}, {"title": "O oceano não é cenário", "tag": "Projetos IGS"}]}, {"name": "Fevereiro", "short": "Fev", "season": "Verão", "icon": "🎭", "focus": "Mês bom para conteúdos leves de prevenção, segurança, respeito ao ambiente costeiro e turismo consciente.", "events": [{"d": 16, "label": "Carnaval", "full": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 17, "label": "Carnaval", "full": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 18, "label": "Quarta-feira de Cinzas", "full": "Quarta-feira de Cinzas", "cat": "nacional", "emoji": "✝️"}], "campaigns": [{"title": "Mar seguro no Carnaval", "tag": "Serviço"}, {"title": "Volta às aulas com oceano", "tag": "Educação"}]}, {"name": "Março", "short": "Mar", "season": "Início do outono", "icon": "💧", "focus": "Dia Mundial da Água é a grande âncora do mês para conectar oceano, corpo, clima e futuro.", "events": [{"d": 8, "label": "Dia Internacional da Mulher", "full": "Dia Internacional da Mulher", "cat": "comercial", "emoji": "♀️"}, {"d": 22, "label": "Dia Mundial da Água", "full": "Dia Mundial da Água", "cat": "nicho", "emoji": "💧"}], "campaigns": [{"title": "A água que nos atravessa", "tag": "Âncora"}, {"title": "Mulheres que educam para o oceano", "tag": "Institucional"}]}, {"name": "Abril", "short": "Abr", "season": "Outono", "icon": "🌎", "focus": "Abril concentra Dia Mundial da Saúde e Dia da Terra: ponte perfeita entre saúde humana, saúde do oceano e educação ambiental.", "events": [{"d": 3, "label": "Sexta-feira Santa", "full": "Sexta-feira Santa", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Páscoa", "full": "Páscoa", "cat": "nacional", "emoji": "🐣"}, {"d": 7, "label": "Dia Mundial da Saúde", "full": "Dia Mundial da Saúde", "cat": "nicho", "emoji": "❤️"}, {"d": 21, "label": "Tiradentes", "full": "Tiradentes", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 22, "label": "Dia da Terra", "full": "Dia da Terra", "cat": "nicho", "emoji": "🌎"}], "campaigns": [{"title": "Saúde humana, saúde do oceano", "tag": "Autoridade"}, {"title": "Escolas pelo planeta azul", "tag": "Parcerias"}]}, {"name": "Maio", "short": "Mai", "season": "Outono", "icon": "🌊", "focus": "Maio deve preparar o terreno para Dia Mundial do Meio Ambiente e Dia Mundial dos Oceanos em junho.", "events": [{"d": 1, "label": "Dia do Trabalho", "full": "Dia do Trabalho", "cat": "nacional", "emoji": "🛠️"}, {"d": 10, "label": "Dia das Mães", "full": "Dia das Mães", "cat": "comercial", "emoji": "💐"}], "campaigns": [{"title": "Contagem regressiva para o mês do oceano", "tag": "Pré-campanha"}, {"title": "O oceano que as próximas gerações vão receber", "tag": "Cuidado"}]}, {"name": "Junho", "short": "Jun", "season": "Inverno", "icon": "🌊", "focus": "Junho é o mês-âncora do Instituto. Dia Mundial do Meio Ambiente e Dia Mundial dos Oceanos devem virar campanha editorial e institucional.", "events": [{"d": 4, "label": "Corpus Christi", "full": "Corpus Christi", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Dia Mundial do Meio Ambiente", "full": "Dia Mundial do Meio Ambiente", "cat": "nicho", "emoji": "🌱"}, {"d": 8, "label": "Dia Mundial dos Oceanos", "full": "Dia Mundial dos Oceanos", "cat": "nicho", "emoji": "🌊"}, {"d": 21, "label": "Início do inverno", "full": "Início do inverno", "cat": "especial", "emoji": "❄️"}], "campaigns": [{"title": "Mês do Oceano Gaia Soul", "tag": "Âncora"}, {"title": "O oceano também cuida da mente", "tag": "Blue Mind"}, {"title": "Imersão Azul e Submarino 360", "tag": "Projetos IGS"}]}, {"name": "Julho", "short": "Jul", "season": "Inverno", "icon": "🐋", "focus": "Julho é bom para conteúdos de férias, crianças, ciência curiosa e vida marinha fascinante.", "events": [], "campaigns": [{"title": "Temporada das baleias", "tag": "Encantamento"}, {"title": "Ciência oceânica para férias", "tag": "Educação"}]}, {"name": "Agosto", "short": "Ago", "season": "Inverno", "icon": "🧠", "focus": "Agosto tem menos datas fortes, então funciona como mês de autoridade: Blue Mind, OceanoTerapia, ciência e bastidores.", "events": [{"d": 9, "label": "Dia dos Pais", "full": "Dia dos Pais", "cat": "comercial", "emoji": "👔"}], "campaigns": [{"title": "Blue Mind sem misticismo", "tag": "Autoridade"}, {"title": "Projetos para escolas e empresas", "tag": "Captação"}]}, {"name": "Setembro", "short": "Set", "season": "Primavera", "icon": "🌸", "focus": "Setembro Amarelo exige cuidado editorial: falar de natureza, presença e acolhimento sem prometer cura ou simplificar sofrimento.", "events": [{"d": 7, "label": "Independência do Brasil", "full": "Independência do Brasil", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 21, "label": "Início da primavera / Dia da Árvore", "full": "Início da primavera / Dia da Árvore", "cat": "especial", "emoji": "🌳"}], "campaigns": [{"title": "Natureza, presença e saúde mental", "tag": "Cuidado"}, {"title": "Primavera azul", "tag": "Educação"}]}, {"name": "Outubro", "short": "Out", "season": "Primavera", "icon": "📚", "focus": "Outubro combina Dia das Crianças, Dia do Professor, Dia Mundial da Alimentação e Dia Mundial da Saúde Mental.", "events": [{"d": 10, "label": "Dia Mundial da Saúde Mental", "full": "Dia Mundial da Saúde Mental", "cat": "nicho", "emoji": "🧠"}, {"d": 12, "label": "Dia das Crianças", "full": "Dia das Crianças", "cat": "comercial", "emoji": "🧒"}, {"d": 15, "label": "Dia do Professor", "full": "Dia do Professor", "cat": "comercial", "emoji": "🍎"}, {"d": 16, "label": "Dia Mundial da Alimentação", "full": "Dia Mundial da Alimentação", "cat": "nicho", "emoji": "🌍"}], "campaigns": [{"title": "Professores multiplicadores do oceano", "tag": "Escolas"}, {"title": "Crianças que aprendem com o mar", "tag": "Famílias"}]}, {"name": "Novembro", "short": "Nov", "season": "Primavera", "icon": "🌱", "focus": "Novembro permite trabalhar consciência, responsabilidade social, empresas e planejamento de ações para 2027.", "events": [{"d": 2, "label": "Finados", "full": "Finados", "cat": "nacional", "emoji": "🕯️"}, {"d": 15, "label": "Proclamação da República", "full": "Proclamação da República", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 20, "label": "Consciência Negra", "full": "Consciência Negra", "cat": "nacional", "emoji": "✊🏿"}, {"d": 27, "label": "Black Friday", "full": "Black Friday", "cat": "comercial", "emoji": "🛍️"}, {"d": 30, "label": "Cyber Monday", "full": "Cyber Monday", "cat": "comercial", "emoji": "💻"}], "campaigns": [{"title": "Black Friday do bem: apoie educação oceânica", "tag": "Captação"}, {"title": "Projetos IGS para 2027", "tag": "Planejamento"}]}, {"name": "Dezembro", "short": "Dez", "season": "Verão", "icon": "🎄", "focus": "Dezembro deve fechar o ano com retrospectiva de impacto, prestação de contas, agradecimento e chamada para apoiar 2027.", "events": [{"d": 21, "label": "Início do verão", "full": "Início do verão", "cat": "especial", "emoji": "☀️"}, {"d": 25, "label": "Natal", "full": "Natal", "cat": "nacional", "emoji": "🎄"}, {"d": 31, "label": "Réveillon", "full": "Réveillon", "cat": "comercial", "emoji": "🎆"}], "campaigns": [{"title": "Retrospectiva Gaia Soul", "tag": "Impacto"}, {"title": "Presenteie o futuro azul", "tag": "Doação"}, {"title": "Mar seguro nas férias", "tag": "Verão"}]}], NU={"title": "Onde estamos agora", "month": "Este mês", "week": "Esta semana", "next": "Prepare-se · próximos meses", "noweek": "Sem datas marcadas esta semana", "focus": "Foco", "today": "hoje", "plan": "Planejamento 2027", "off": "Abra o calendário em 2026 pra ver o contexto da semana."};
   var KEY='cal2026:'+SLUG;
   var LOGEMPTY="Nenhuma entrega registrada em {m}.";
   var today=new Date();

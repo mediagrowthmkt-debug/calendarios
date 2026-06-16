@@ -98,7 +98,15 @@ body.mode-view .notes:empty:before{content:""}
 .dnum{font-size:14px;font-weight:800;color:#3a3a42;line-height:1}
 .cell.we .dnum{color:var(--brand)}
 .chips{display:flex;flex-direction:column;gap:3px;margin:4px 0 2px}
-.chip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px;line-height:1.25;display:block;word-break:break-word}
+	.chip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px;line-height:1.25;display:block;word-break:break-word}
+	/* tabela estática de posts publicados: título e views ficam fora dos chips do calendário */
+	.pubsheet{margin:0 28px 28px;background:var(--paper);border:1px solid #ededf0;border-radius:14px;overflow:hidden}
+	.pubsheet h3{font-size:14px;font-weight:800;color:var(--ink);padding:14px 16px 10px}
+	.pubsheet table{width:100%;border-collapse:collapse;font-size:12.5px}
+	.pubsheet th{text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#8a8a92;background:var(--soft);padding:10px 12px}
+	.pubsheet td{padding:10px 12px;border-top:1px solid #f0f0f2;vertical-align:top;line-height:1.4}
+	.pubsheet td:first-child,.pubsheet td:last-child{white-space:nowrap;font-weight:800;color:var(--ink)}
+	.pubtag{display:inline-block;font-size:10px;font-weight:800;text-transform:lowercase;letter-spacing:.2px;padding:2px 9px;border-radius:20px;white-space:nowrap}
 /* ---------- anotações por dia: TAGS coloridas (texto + cor), separadas e legíveis ---------- */
 .notes{display:flex;flex-direction:column;align-items:flex-start;gap:3px;margin-top:auto;padding-top:3px;min-height:14px}
 .ntag{font-size:9.5px;font-weight:800;color:#fff;line-height:1.3;padding:2px 9px;border-radius:20px;background:var(--brand);max-width:100%;word-break:break-word;letter-spacing:.2px}
@@ -414,6 +422,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="2" style="--accent:#F2A03D;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -442,6 +451,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="3" style="--accent:#C2702F;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -470,6 +480,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="4" style="--accent:#B4582A;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -498,6 +509,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="5" style="--accent:#8C6B4A;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -526,6 +538,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="6" style="--accent:#5B7C99;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -554,6 +567,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="7" style="--accent:#6985A0;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -582,6 +596,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="8" style="--accent:#7E9B86;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -610,6 +625,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="9" style="--accent:#6BAE6B;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -638,6 +654,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="10" style="--accent:#57A85C;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -666,6 +683,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="11" style="--accent:#8FB04E;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -694,6 +712,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="12" style="--accent:#E0A33A;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -722,6 +741,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
 <section class="log" id="log-sec">
   <div class="log-head"><span class="log-ic">📋</span><div><b>Registro de entregas <span id="log-month" class="log-month"></span></b><small>O que a MediaGrowth realizou pra você — data, descrição e arquivos.</small></div></div>
@@ -744,7 +764,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
 <div class="foot">Calendário Estratégico 2026 · feito pela MediaGrowth</div>
 <script>
 (function(){
-  var SLUG="mediagrowth", START=1, CAL=[{"name": "Janeiro", "short": "Jan", "season": "Verão", "icon": "☀️", "focus": "Início de ano: empresas refazem metas e orçamento de marketing. Janela quente pra captação de estruturação e fechamento de contrato.", "events": [{"d": 1, "label": "Confraternização Universal", "cat": "nacional", "emoji": "🎉"}], "campaigns": [{"title": "Planejamento 2026 (estruturação)", "tag": "Captação"}, {"title": "Metas que viram número", "tag": "Autoridade"}]}, {"name": "Fevereiro", "short": "Fev", "season": "Verão", "icon": "🎭", "focus": "Pré-carnaval devagar; pós-carnaval o mercado 'liga a chave'. Momento de reativar clientes e relançar ofertas.", "events": [{"d": 1, "label": "Dia do Publicitário", "cat": "nicho", "emoji": "🎯"}, {"d": 16, "label": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 17, "label": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 18, "label": "Quarta-feira de Cinzas", "cat": "nacional", "emoji": "✝️"}], "campaigns": [{"title": "O ano começa de verdade agora", "tag": "Reativação"}, {"title": "Dia do Publicitário", "tag": "Marca"}]}, {"name": "Março", "short": "Mar", "season": "Início do outono", "icon": "🍂", "focus": "Dia do Consumidor (15/03) é a 'Black Friday do 1º semestre' — clientes de varejo/serviço precisam de campanha pronta e testada.", "events": [{"d": 8, "label": "Dia Internacional da Mulher", "cat": "comercial", "emoji": "♀️"}, {"d": 15, "label": "Dia do Consumidor", "cat": "comercial", "emoji": "🛒"}, {"d": 20, "label": "Início do outono", "cat": "especial", "emoji": "🍂"}], "campaigns": [{"title": "Semana do Consumidor", "tag": "Multicliente"}, {"title": "Mulheres que constroem marcas", "tag": "Marca"}]}, {"name": "Abril", "short": "Abr", "season": "Outono", "icon": "🍂", "focus": "Páscoa (05/04) abre o mês: chocolate, varejo e alimentação. Sexta-feira Santa (03/04) e Tiradentes (21/04) criam emendas — calendário de posts precisa adiantar.", "events": [{"d": 3, "label": "Sexta-feira Santa", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Páscoa", "cat": "comercial", "emoji": "🐣"}, {"d": 21, "label": "Tiradentes", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 21, "label": "Dia Mundial da Criatividade", "cat": "nicho", "emoji": "💡"}, {"d": 27, "label": "Dia do Design Gráfico", "cat": "nicho", "emoji": "🎨"}, {"d": 28, "label": "Dia do Frete Grátis", "cat": "comercial", "emoji": "🚚"}], "campaigns": [{"title": "Campanha de Páscoa", "tag": "Multicliente"}, {"title": "Bastidores do design", "tag": "Marca"}]}, {"name": "Maio", "short": "Mai", "season": "Outono", "icon": "🍂", "focus": "Dia das Mães (10/05) é a 2ª maior data comercial do ano no Brasil. TODO cliente de varejo/serviço precisa de campanha. Pico de demanda criativa.", "events": [{"d": 1, "label": "Dia do Trabalho", "cat": "nacional", "emoji": "🛠️"}, {"d": 8, "label": "Dia do Profissional de Marketing", "cat": "nicho", "emoji": "🎯"}, {"d": 10, "label": "Dia das Mães", "cat": "comercial", "emoji": "💐"}, {"d": 17, "label": "Dia da Internet", "cat": "nicho", "emoji": "🌐"}], "campaigns": [{"title": "Campanha Dia das Mães", "tag": "Multicliente"}, {"title": "Dia do Profissional de Marketing", "tag": "Marca"}]}, {"name": "Junho", "short": "Jun", "season": "Inverno", "icon": "❄️", "focus": "Junho é mês de campanha emocional (Namorados, 12/06) e de oportunismo cultural (Copa do Mundo começa 11/06). Festas juninas dão pauta regional.", "events": [{"d": 4, "label": "Corpus Christi", "cat": "nacional", "emoji": "✝️"}, {"d": 11, "label": "Copa do Mundo começa", "cat": "especial", "emoji": "⚽"}, {"d": 12, "label": "Dia dos Namorados", "cat": "comercial", "emoji": "❤️"}, {"d": 21, "label": "Início do inverno", "cat": "especial", "emoji": "❄️"}, {"d": 24, "label": "São João", "cat": "comercial", "emoji": "🔥"}, {"d": 30, "label": "Social Media Day", "cat": "nicho", "emoji": "📱"}], "campaigns": [{"title": "Campanha Dia dos Namorados", "tag": "Multicliente"}, {"title": "Marketing de Copa do Mundo", "tag": "Oportunismo"}, {"title": "Arraiá da marca", "tag": "Regional"}]}, {"name": "Julho", "short": "Jul", "season": "Inverno", "icon": "❄️", "focus": "Férias de julho: turismo/lazer/food aquecem; B2B desacelera. Bom mês pra conteúdo institucional e planejamento do 2º semestre.", "events": [{"d": 19, "label": "Final da Copa do Mundo", "cat": "especial", "emoji": "🏆"}, {"d": 20, "label": "Dia do Amigo", "cat": "comercial", "emoji": "🤝"}, {"d": 26, "label": "Dia dos Avós", "cat": "comercial", "emoji": "👵"}], "campaigns": [{"title": "Planejamento de 2º semestre", "tag": "Estratégia"}, {"title": "Conteúdo de férias", "tag": "Sazonal"}]}, {"name": "Agosto", "short": "Ago", "season": "Inverno", "icon": "🌬️", "focus": "Dia dos Pais (09/08) domina agosto (3ª maior data do varejo). Volta às aulas aquece educação.", "events": [{"d": 9, "label": "Dia dos Pais", "cat": "comercial", "emoji": "👔"}, {"d": 11, "label": "Dia do Estudante", "cat": "comercial", "emoji": "🎓"}], "campaigns": [{"title": "Campanha Dia dos Pais", "tag": "Multicliente"}, {"title": "Volta às aulas", "tag": "Educação"}]}, {"name": "Setembro", "short": "Set", "season": "Primavera", "icon": "🌸", "focus": "Dia do Cliente (15/09) é a deixa pra ações de relacionamento e reativação em TODO cliente da carteira.", "events": [{"d": 7, "label": "Independência do Brasil", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 15, "label": "Dia do Cliente", "cat": "comercial", "emoji": "🤝"}, {"d": 21, "label": "Início da primavera", "cat": "especial", "emoji": "🌸"}], "campaigns": [{"title": "Ações de Dia do Cliente", "tag": "Relacionamento"}, {"title": "Esquenta de Black Friday", "tag": "Estratégia"}]}, {"name": "Outubro", "short": "Out", "season": "Primavera", "icon": "🌷", "focus": "Dia das Crianças (12/10) move varejo/brinquedo/food. Eleições (1º turno 04/10, 2º turno 25/10) elevam custo de mídia e ruído político — ajustar timing e tom.", "events": [{"d": 1, "label": "Dia do Vendedor", "cat": "comercial", "emoji": "💼"}, {"d": 4, "label": "Eleições · 1º turno", "cat": "especial", "emoji": "🗳️"}, {"d": 5, "label": "Dia do Empreendedor", "cat": "especial", "emoji": "🚀"}, {"d": 12, "label": "N. Sra Aparecida + Dia das Crianças", "cat": "nacional", "emoji": "🧸"}, {"d": 15, "label": "Dia do Professor", "cat": "comercial", "emoji": "🍎"}, {"d": 17, "label": "Dia do Profissional da Propaganda", "cat": "nicho", "emoji": "🎯"}, {"d": 19, "label": "Dia do Empreendedorismo Feminino", "cat": "nicho", "emoji": "♀️"}, {"d": 25, "label": "Eleições · 2º turno", "cat": "especial", "emoji": "🗳️"}], "campaigns": [{"title": "Campanha Dia das Crianças", "tag": "Multicliente"}, {"title": "Black Friday aprovada este mês", "tag": "Estratégia"}]}, {"name": "Novembro", "short": "Nov", "season": "Primavera", "icon": "🌻", "focus": "BLACK FRIDAY (27/11) é o pico absoluto do ano. Tráfego, CRM, criativo e LP precisam estar prontos e TESTADOS antes. Mês decisivo de faturamento dos clientes.", "events": [{"d": 2, "label": "Finados", "cat": "nacional", "emoji": "🕯️"}, {"d": 11, "label": "Singles Day (11.11)", "cat": "comercial", "emoji": "🛍️"}, {"d": 15, "label": "Proclamação da República", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 20, "label": "Consciência Negra", "cat": "nacional", "emoji": "✊🏿"}, {"d": 27, "label": "Black Friday", "cat": "comercial", "emoji": "🛍️"}, {"d": 30, "label": "Cyber Monday", "cat": "comercial", "emoji": "💻"}], "campaigns": [{"title": "Operação Black Friday", "tag": "Operação"}, {"title": "Cyber Monday + recuperação", "tag": "Pós-pico"}]}, {"name": "Dezembro", "short": "Dez", "season": "Verão", "icon": "🎄", "focus": "Natal (25/12) + Réveillon fecham o varejo; 13º aquece o consumo. Última semana esvazia.", "events": [{"d": 21, "label": "Início do verão", "cat": "especial", "emoji": "☀️"}, {"d": 25, "label": "Natal", "cat": "nacional", "emoji": "🎄"}, {"d": 31, "label": "Réveillon", "cat": "comercial", "emoji": "🎆"}], "campaigns": [{"title": "Campanha de Natal", "tag": "Multicliente"}, {"title": "Retrospectiva + renovação 2027", "tag": "Retenção"}]}], NU={"title": "Onde estamos agora", "month": "Este mês", "week": "Esta semana", "next": "Prepare-se · próximos meses", "noweek": "Sem datas marcadas esta semana", "focus": "Foco", "today": "hoje", "plan": "Planejamento 2027", "off": "Abra o calendário em 2026 pra ver o contexto da semana."};
+  var SLUG="mediagrowth", START=1, CAL=[{"name": "Janeiro", "short": "Jan", "season": "Verão", "icon": "☀️", "focus": "Início de ano: empresas refazem metas e orçamento de marketing. Janela quente pra captação de estruturação e fechamento de contrato.", "events": [{"d": 1, "label": "Confraternização Universal", "full": "Confraternização Universal", "cat": "nacional", "emoji": "🎉"}], "campaigns": [{"title": "Planejamento 2026 (estruturação)", "tag": "Captação"}, {"title": "Metas que viram número", "tag": "Autoridade"}]}, {"name": "Fevereiro", "short": "Fev", "season": "Verão", "icon": "🎭", "focus": "Pré-carnaval devagar; pós-carnaval o mercado 'liga a chave'. Momento de reativar clientes e relançar ofertas.", "events": [{"d": 1, "label": "Dia do Publicitário", "full": "Dia do Publicitário", "cat": "nicho", "emoji": "🎯"}, {"d": 16, "label": "Carnaval", "full": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 17, "label": "Carnaval", "full": "Carnaval", "cat": "nacional", "emoji": "🎭"}, {"d": 18, "label": "Quarta-feira de Cinzas", "full": "Quarta-feira de Cinzas", "cat": "nacional", "emoji": "✝️"}], "campaigns": [{"title": "O ano começa de verdade agora", "tag": "Reativação"}, {"title": "Dia do Publicitário", "tag": "Marca"}]}, {"name": "Março", "short": "Mar", "season": "Início do outono", "icon": "🍂", "focus": "Dia do Consumidor (15/03) é a 'Black Friday do 1º semestre' — clientes de varejo/serviço precisam de campanha pronta e testada.", "events": [{"d": 8, "label": "Dia Internacional da Mulher", "full": "Dia Internacional da Mulher", "cat": "comercial", "emoji": "♀️"}, {"d": 15, "label": "Dia do Consumidor", "full": "Dia do Consumidor", "cat": "comercial", "emoji": "🛒"}, {"d": 20, "label": "Início do outono", "full": "Início do outono", "cat": "especial", "emoji": "🍂"}], "campaigns": [{"title": "Semana do Consumidor", "tag": "Multicliente"}, {"title": "Mulheres que constroem marcas", "tag": "Marca"}]}, {"name": "Abril", "short": "Abr", "season": "Outono", "icon": "🍂", "focus": "Páscoa (05/04) abre o mês: chocolate, varejo e alimentação. Sexta-feira Santa (03/04) e Tiradentes (21/04) criam emendas — calendário de posts precisa adiantar.", "events": [{"d": 3, "label": "Sexta-feira Santa", "full": "Sexta-feira Santa", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Páscoa", "full": "Páscoa", "cat": "comercial", "emoji": "🐣"}, {"d": 21, "label": "Tiradentes", "full": "Tiradentes", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 21, "label": "Dia Mundial da Criatividade", "full": "Dia Mundial da Criatividade", "cat": "nicho", "emoji": "💡"}, {"d": 27, "label": "Dia do Design Gráfico", "full": "Dia do Design Gráfico", "cat": "nicho", "emoji": "🎨"}, {"d": 28, "label": "Dia do Frete Grátis", "full": "Dia do Frete Grátis", "cat": "comercial", "emoji": "🚚"}], "campaigns": [{"title": "Campanha de Páscoa", "tag": "Multicliente"}, {"title": "Bastidores do design", "tag": "Marca"}]}, {"name": "Maio", "short": "Mai", "season": "Outono", "icon": "🍂", "focus": "Dia das Mães (10/05) é a 2ª maior data comercial do ano no Brasil. TODO cliente de varejo/serviço precisa de campanha. Pico de demanda criativa.", "events": [{"d": 1, "label": "Dia do Trabalho", "full": "Dia do Trabalho", "cat": "nacional", "emoji": "🛠️"}, {"d": 8, "label": "Dia do Profissional de Marketing", "full": "Dia do Profissional de Marketing", "cat": "nicho", "emoji": "🎯"}, {"d": 10, "label": "Dia das Mães", "full": "Dia das Mães", "cat": "comercial", "emoji": "💐"}, {"d": 17, "label": "Dia da Internet", "full": "Dia da Internet", "cat": "nicho", "emoji": "🌐"}], "campaigns": [{"title": "Campanha Dia das Mães", "tag": "Multicliente"}, {"title": "Dia do Profissional de Marketing", "tag": "Marca"}]}, {"name": "Junho", "short": "Jun", "season": "Inverno", "icon": "❄️", "focus": "Junho é mês de campanha emocional (Namorados, 12/06) e de oportunismo cultural (Copa do Mundo começa 11/06). Festas juninas dão pauta regional.", "events": [{"d": 4, "label": "Corpus Christi", "full": "Corpus Christi", "cat": "nacional", "emoji": "✝️"}, {"d": 11, "label": "Copa do Mundo começa", "full": "Copa do Mundo começa", "cat": "especial", "emoji": "⚽"}, {"d": 12, "label": "Dia dos Namorados", "full": "Dia dos Namorados", "cat": "comercial", "emoji": "❤️"}, {"d": 21, "label": "Início do inverno", "full": "Início do inverno", "cat": "especial", "emoji": "❄️"}, {"d": 24, "label": "São João", "full": "São João", "cat": "comercial", "emoji": "🔥"}, {"d": 30, "label": "Social Media Day", "full": "Social Media Day", "cat": "nicho", "emoji": "📱"}], "campaigns": [{"title": "Campanha Dia dos Namorados", "tag": "Multicliente"}, {"title": "Marketing de Copa do Mundo", "tag": "Oportunismo"}, {"title": "Arraiá da marca", "tag": "Regional"}]}, {"name": "Julho", "short": "Jul", "season": "Inverno", "icon": "❄️", "focus": "Férias de julho: turismo/lazer/food aquecem; B2B desacelera. Bom mês pra conteúdo institucional e planejamento do 2º semestre.", "events": [{"d": 19, "label": "Final da Copa do Mundo", "full": "Final da Copa do Mundo", "cat": "especial", "emoji": "🏆"}, {"d": 20, "label": "Dia do Amigo", "full": "Dia do Amigo", "cat": "comercial", "emoji": "🤝"}, {"d": 26, "label": "Dia dos Avós", "full": "Dia dos Avós", "cat": "comercial", "emoji": "👵"}], "campaigns": [{"title": "Planejamento de 2º semestre", "tag": "Estratégia"}, {"title": "Conteúdo de férias", "tag": "Sazonal"}]}, {"name": "Agosto", "short": "Ago", "season": "Inverno", "icon": "🌬️", "focus": "Dia dos Pais (09/08) domina agosto (3ª maior data do varejo). Volta às aulas aquece educação.", "events": [{"d": 9, "label": "Dia dos Pais", "full": "Dia dos Pais", "cat": "comercial", "emoji": "👔"}, {"d": 11, "label": "Dia do Estudante", "full": "Dia do Estudante", "cat": "comercial", "emoji": "🎓"}], "campaigns": [{"title": "Campanha Dia dos Pais", "tag": "Multicliente"}, {"title": "Volta às aulas", "tag": "Educação"}]}, {"name": "Setembro", "short": "Set", "season": "Primavera", "icon": "🌸", "focus": "Dia do Cliente (15/09) é a deixa pra ações de relacionamento e reativação em TODO cliente da carteira.", "events": [{"d": 7, "label": "Independência do Brasil", "full": "Independência do Brasil", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 15, "label": "Dia do Cliente", "full": "Dia do Cliente", "cat": "comercial", "emoji": "🤝"}, {"d": 21, "label": "Início da primavera", "full": "Início da primavera", "cat": "especial", "emoji": "🌸"}], "campaigns": [{"title": "Ações de Dia do Cliente", "tag": "Relacionamento"}, {"title": "Esquenta de Black Friday", "tag": "Estratégia"}]}, {"name": "Outubro", "short": "Out", "season": "Primavera", "icon": "🌷", "focus": "Dia das Crianças (12/10) move varejo/brinquedo/food. Eleições (1º turno 04/10, 2º turno 25/10) elevam custo de mídia e ruído político — ajustar timing e tom.", "events": [{"d": 1, "label": "Dia do Vendedor", "full": "Dia do Vendedor", "cat": "comercial", "emoji": "💼"}, {"d": 4, "label": "Eleições · 1º turno", "full": "Eleições · 1º turno", "cat": "especial", "emoji": "🗳️"}, {"d": 5, "label": "Dia do Empreendedor", "full": "Dia do Empreendedor", "cat": "especial", "emoji": "🚀"}, {"d": 12, "label": "N. Sra Aparecida + Dia das Crianças", "full": "N. Sra Aparecida + Dia das Crianças", "cat": "nacional", "emoji": "🧸"}, {"d": 15, "label": "Dia do Professor", "full": "Dia do Professor", "cat": "comercial", "emoji": "🍎"}, {"d": 17, "label": "Dia do Profissional da Propaganda", "full": "Dia do Profissional da Propaganda", "cat": "nicho", "emoji": "🎯"}, {"d": 19, "label": "Dia do Empreendedorismo Feminino", "full": "Dia do Empreendedorismo Feminino", "cat": "nicho", "emoji": "♀️"}, {"d": 25, "label": "Eleições · 2º turno", "full": "Eleições · 2º turno", "cat": "especial", "emoji": "🗳️"}], "campaigns": [{"title": "Campanha Dia das Crianças", "tag": "Multicliente"}, {"title": "Black Friday aprovada este mês", "tag": "Estratégia"}]}, {"name": "Novembro", "short": "Nov", "season": "Primavera", "icon": "🌻", "focus": "BLACK FRIDAY (27/11) é o pico absoluto do ano. Tráfego, CRM, criativo e LP precisam estar prontos e TESTADOS antes. Mês decisivo de faturamento dos clientes.", "events": [{"d": 2, "label": "Finados", "full": "Finados", "cat": "nacional", "emoji": "🕯️"}, {"d": 11, "label": "Singles Day (11.11)", "full": "Singles Day (11.11)", "cat": "comercial", "emoji": "🛍️"}, {"d": 15, "label": "Proclamação da República", "full": "Proclamação da República", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 20, "label": "Consciência Negra", "full": "Consciência Negra", "cat": "nacional", "emoji": "✊🏿"}, {"d": 27, "label": "Black Friday", "full": "Black Friday", "cat": "comercial", "emoji": "🛍️"}, {"d": 30, "label": "Cyber Monday", "full": "Cyber Monday", "cat": "comercial", "emoji": "💻"}], "campaigns": [{"title": "Operação Black Friday", "tag": "Operação"}, {"title": "Cyber Monday + recuperação", "tag": "Pós-pico"}]}, {"name": "Dezembro", "short": "Dez", "season": "Verão", "icon": "🎄", "focus": "Natal (25/12) + Réveillon fecham o varejo; 13º aquece o consumo. Última semana esvazia.", "events": [{"d": 21, "label": "Início do verão", "full": "Início do verão", "cat": "especial", "emoji": "☀️"}, {"d": 25, "label": "Natal", "full": "Natal", "cat": "nacional", "emoji": "🎄"}, {"d": 31, "label": "Réveillon", "full": "Réveillon", "cat": "comercial", "emoji": "🎆"}], "campaigns": [{"title": "Campanha de Natal", "tag": "Multicliente"}, {"title": "Retrospectiva + renovação 2027", "tag": "Retenção"}]}], NU={"title": "Onde estamos agora", "month": "Este mês", "week": "Esta semana", "next": "Prepare-se · próximos meses", "noweek": "Sem datas marcadas esta semana", "focus": "Foco", "today": "hoje", "plan": "Planejamento 2027", "off": "Abra o calendário em 2026 pra ver o contexto da semana."};
   var KEY='cal2026:'+SLUG;
   var LOGEMPTY="Nenhuma entrega registrada em {m}.";
   var today=new Date();

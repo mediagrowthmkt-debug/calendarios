@@ -98,7 +98,15 @@ body.mode-view .notes:empty:before{content:""}
 .dnum{font-size:14px;font-weight:800;color:#3a3a42;line-height:1}
 .cell.we .dnum{color:var(--brand)}
 .chips{display:flex;flex-direction:column;gap:3px;margin:4px 0 2px}
-.chip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px;line-height:1.25;display:block;word-break:break-word}
+	.chip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px;line-height:1.25;display:block;word-break:break-word}
+	/* tabela estática de posts publicados: título e views ficam fora dos chips do calendário */
+	.pubsheet{margin:0 28px 28px;background:var(--paper);border:1px solid #ededf0;border-radius:14px;overflow:hidden}
+	.pubsheet h3{font-size:14px;font-weight:800;color:var(--ink);padding:14px 16px 10px}
+	.pubsheet table{width:100%;border-collapse:collapse;font-size:12.5px}
+	.pubsheet th{text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#8a8a92;background:var(--soft);padding:10px 12px}
+	.pubsheet td{padding:10px 12px;border-top:1px solid #f0f0f2;vertical-align:top;line-height:1.4}
+	.pubsheet td:first-child,.pubsheet td:last-child{white-space:nowrap;font-weight:800;color:var(--ink)}
+	.pubtag{display:inline-block;font-size:10px;font-weight:800;text-transform:lowercase;letter-spacing:.2px;padding:2px 9px;border-radius:20px;white-space:nowrap}
 /* ---------- anotações por dia: TAGS coloridas (texto + cor), separadas e legíveis ---------- */
 .notes{display:flex;flex-direction:column;align-items:flex-start;gap:3px;margin-top:auto;padding-top:3px;min-height:14px}
 .ntag{font-size:9.5px;font-weight:800;color:#fff;line-height:1.3;padding:2px 9px;border-radius:20px;background:var(--brand);max-width:100%;word-break:break-word;letter-spacing:.2px}
@@ -414,6 +422,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="2" style="--accent:#F2A03D;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -442,6 +451,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="3" style="--accent:#C2702F;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -470,6 +480,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="4" style="--accent:#B4582A;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -498,6 +509,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="5" style="--accent:#8C6B4A;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -526,6 +538,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="6" style="--accent:#E11D2A;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -554,6 +567,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="7" style="--accent:#6985A0;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -582,6 +596,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="8" style="--accent:#7E9B86;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -610,6 +625,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="9" style="--accent:#6BAE6B;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -638,6 +654,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="10" style="--accent:#57A85C;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -666,6 +683,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="11" style="--accent:#8FB04E;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -694,6 +712,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
     <section class="month" data-month="12" style="--accent:#E0A33A;--accent-txt:#ffffff">
       <div class="m-hero">
@@ -722,6 +741,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
           </div>
         </aside>
       </div>
+      
     </section>
 <section class="log" id="log-sec">
   <div class="log-head"><span class="log-ic">📋</span><div><b>Registro de entregas <span id="log-month" class="log-month"></span></b><small>O que a MediaGrowth realizou pra você — data, descrição e arquivos.</small></div></div>
@@ -744,7 +764,7 @@ body.mode-edit .th-act{display:table-cell;width:140px}
 <div class="foot">Calendário Estratégico 2026 · feito pela MediaGrowth</div>
 <script>
 (function(){
-  var SLUG="xenon", START=1, CAL=[{"name": "Janeiro", "short": "Jan", "season": "Verão", "icon": "☀️", "focus": "Alta temporada de verão: turismo (praias perto), férias e calor enchem a estrada. Pico de day-use e pernoite, principalmente nos fins de semana.", "events": [{"d": 1, "label": "Confraternização / Ano Novo", "cat": "nacional", "emoji": "🎉"}], "campaigns": [{"title": "Esquenta de verão (day-use)", "tag": "Sazonal"}, {"title": "Comece o ano a dois", "tag": "Relacionamento"}]}, {"name": "Fevereiro", "short": "Fev", "season": "Verão", "icon": "🎭", "focus": "Carnaval é 'dia de colher ouro': folia, viagens e clima quente lotam o motel (antes, durante e no after).", "events": [{"d": 14, "label": "Valentine's Day", "cat": "comercial", "emoji": "❤️"}, {"d": 16, "label": "Carnaval", "cat": "especial", "emoji": "🎭"}, {"d": 17, "label": "Carnaval", "cat": "especial", "emoji": "🎭"}, {"d": 18, "label": "Quarta-feira de Cinzas", "cat": "nacional", "emoji": "✝️"}], "campaigns": [{"title": "Carnaval a dois", "tag": "Pico"}, {"title": "Esquenta de Valentine's", "tag": "Temático"}]}, {"name": "Março", "short": "Mar", "season": "Início do outono", "icon": "🍂", "focus": "Demanda normaliza pro ritmo de fim de semana + feriado. Dia da Mulher (08/03) é deixa pra mimo romântico ('surpreenda ela').", "events": [{"d": 8, "label": "Dia da Mulher", "cat": "nicho", "emoji": "♀️"}, {"d": 15, "label": "Dia do Consumidor", "cat": "comercial", "emoji": "🛒"}, {"d": 20, "label": "Início do outono", "cat": "especial", "emoji": "🍂"}], "campaigns": [{"title": "Surpreenda ela (Dia da Mulher)", "tag": "Relacionamento"}, {"title": "Sextou no Xenon", "tag": "Rotina"}]}, {"name": "Abril", "short": "Abr", "season": "Outono", "icon": "🍂", "focus": "Feriadões de abril (Páscoa 05/04 + Tiradentes 21/04) puxam escapada romântica — vender o 'feriado a dois'.", "events": [{"d": 3, "label": "Sexta-feira Santa", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Páscoa", "cat": "comercial", "emoji": "🐣"}, {"d": 13, "label": "Dia do Beijo", "cat": "nicho", "emoji": "💋"}, {"d": 21, "label": "Tiradentes", "cat": "nacional", "emoji": "🇧🇷"}], "campaigns": [{"title": "Feriado a dois (Páscoa/Tiradentes)", "tag": "Feriadão"}, {"title": "Dia do Beijo", "tag": "Romance"}]}, {"name": "Maio", "short": "Mai", "season": "Outono", "icon": "🍂", "focus": "Esfria: o gancho 'frio lá fora, aconchego aqui' (hidro, banheira aquecida) começa a vender. Feriado do Trabalho (01/05) puxa escapada.", "events": [{"d": 1, "label": "Dia do Trabalho", "cat": "nacional", "emoji": "🛠️"}, {"d": 10, "label": "Dia das Mães", "cat": "comercial", "emoji": "💐"}], "campaigns": [{"title": "Esquenta Dia dos Namorados", "tag": "Antecipação"}, {"title": "Frio? Aconchego aqui", "tag": "Sazonal"}]}, {"name": "Junho", "short": "Jun", "season": "Inverno", "icon": "❤️", "focus": "DIA DOS NAMORADOS (12/06) é a MAIOR data do ano pro motel — pacote premium, decoração, vinho/espumante e kit casal. Reservar com semanas de antecedência.", "events": [{"d": 4, "label": "Corpus Christi", "cat": "nacional", "emoji": "✝️"}, {"d": 11, "label": "Copa do Mundo começa", "cat": "especial", "emoji": "⚽"}, {"d": 12, "label": "Dia dos Namorados", "cat": "nicho", "emoji": "❤️"}, {"d": 21, "label": "Início do inverno", "cat": "especial", "emoji": "❄️"}, {"d": 28, "label": "Dia do Orgulho LGBTQIA+", "cat": "nicho", "emoji": "🏳️‍🌈"}], "campaigns": [{"title": "Operação Dia dos Namorados", "tag": "PICO do ano"}, {"title": "Frio lá fora, fogo aqui dentro", "tag": "Sazonal"}, {"title": "Corpus Christi a dois", "tag": "Feriadão"}]}, {"name": "Julho", "short": "Jul", "season": "Inverno", "icon": "❄️", "focus": "Férias de julho: viagens aumentam o fluxo na BR-101; casais sem filhos aproveitam day-use de inverno.", "events": [{"d": 19, "label": "Final da Copa do Mundo", "cat": "especial", "emoji": "🏆"}, {"d": 31, "label": "Dia do Orgasmo", "cat": "nicho", "emoji": "🔥"}], "campaigns": [{"title": "Inverno aconchegante (day-use)", "tag": "Sazonal"}, {"title": "Dia do Orgasmo", "tag": "Ousado"}]}, {"name": "Agosto", "short": "Ago", "season": "Inverno", "icon": "🌬️", "focus": "Dia dos Pais (09/08) vende 'presenteie com uma escapada/voucher'. Ainda frio — aconchego segue forte.", "events": [{"d": 9, "label": "Dia dos Pais", "cat": "comercial", "emoji": "👔"}, {"d": 15, "label": "Dia do Solteiro", "cat": "nicho", "emoji": "💃"}], "campaigns": [{"title": "Dia dos Pais: voucher de escapada", "tag": "Presente"}, {"title": "Dia do Solteiro", "tag": "Romance"}]}, {"name": "Setembro", "short": "Set", "season": "Primavera", "icon": "🌸", "focus": "Dia do Sexo (06/09) é data FORTE pra motel — promoção ousada, pacote temático e kit sex shop. Primavera dá clima de romance.", "events": [{"d": 6, "label": "Dia do Sexo", "cat": "nicho", "emoji": "🔥"}, {"d": 7, "label": "Independência do Brasil", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 15, "label": "Dia do Cliente", "cat": "comercial", "emoji": "🤝"}, {"d": 21, "label": "Início da primavera", "cat": "especial", "emoji": "🌸"}], "campaigns": [{"title": "Dia do Sexo", "tag": "PICO de nicho"}, {"title": "7 de Setembro a dois", "tag": "Feriadão"}, {"title": "Dia do Cliente", "tag": "Fidelidade"}]}, {"name": "Outubro", "short": "Out", "season": "Primavera", "icon": "🌷", "focus": "Feriado de 12/10 (Aparecida/Crianças) puxa escapada de feriadão. Clima de primavera favorece o romance.", "events": [{"d": 12, "label": "N. Sra Aparecida / Dia das Crianças", "cat": "nacional", "emoji": "🙏"}, {"d": 15, "label": "Dia do Professor", "cat": "comercial", "emoji": "🍎"}], "campaigns": [{"title": "Feriadão de outubro a dois", "tag": "Feriadão"}, {"title": "Monta a Black Friday", "tag": "Estratégia"}]}, {"name": "Novembro", "short": "Nov", "season": "Primavera", "icon": "🌻", "focus": "BLACK FRIDAY (27/11) é forte pra motel: vender VOUCHER de pernoite/day-use com desconto pra usar depois (antecipa caixa). Tudo pronto e testado antes.", "events": [{"d": 2, "label": "Finados", "cat": "nacional", "emoji": "🕯️"}, {"d": 11, "label": "Singles Day (11.11)", "cat": "comercial", "emoji": "🛍️"}, {"d": 15, "label": "Proclamação da República", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 20, "label": "Consciência Negra", "cat": "nacional", "emoji": "✊🏿"}, {"d": 27, "label": "Black Friday", "cat": "comercial", "emoji": "🛍️"}, {"d": 30, "label": "Cyber Monday", "cat": "comercial", "emoji": "💻"}], "campaigns": [{"title": "Black Friday Xenon", "tag": "Operação"}, {"title": "Feriadões de novembro a dois", "tag": "Feriadão"}]}, {"name": "Dezembro", "short": "Dez", "season": "Verão", "icon": "🥂", "focus": "Réveillon é pico: 'virada a dois' com pacote premium. Natal puxa escapada pós-ceia e voucher de presente (13º aquece o consumo).", "events": [{"d": 21, "label": "Início do verão", "cat": "especial", "emoji": "☀️"}, {"d": 25, "label": "Natal", "cat": "nacional", "emoji": "🎄"}, {"d": 31, "label": "Réveillon (virada a dois)", "cat": "nicho", "emoji": "🥂"}], "campaigns": [{"title": "Réveillon a dois", "tag": "PICO"}, {"title": "Presenteie com uma noite", "tag": "Presente"}]}], NU={"title": "Onde estamos agora", "month": "Este mês", "week": "Esta semana", "next": "Prepare-se · próximos meses", "noweek": "Sem datas marcadas esta semana", "focus": "Foco", "today": "hoje", "plan": "Planejamento 2027", "off": "Abra o calendário em 2026 pra ver o contexto da semana."};
+  var SLUG="xenon", START=1, CAL=[{"name": "Janeiro", "short": "Jan", "season": "Verão", "icon": "☀️", "focus": "Alta temporada de verão: turismo (praias perto), férias e calor enchem a estrada. Pico de day-use e pernoite, principalmente nos fins de semana.", "events": [{"d": 1, "label": "Confraternização / Ano Novo", "full": "Confraternização / Ano Novo", "cat": "nacional", "emoji": "🎉"}], "campaigns": [{"title": "Esquenta de verão (day-use)", "tag": "Sazonal"}, {"title": "Comece o ano a dois", "tag": "Relacionamento"}]}, {"name": "Fevereiro", "short": "Fev", "season": "Verão", "icon": "🎭", "focus": "Carnaval é 'dia de colher ouro': folia, viagens e clima quente lotam o motel (antes, durante e no after).", "events": [{"d": 14, "label": "Valentine's Day", "full": "Valentine's Day", "cat": "comercial", "emoji": "❤️"}, {"d": 16, "label": "Carnaval", "full": "Carnaval", "cat": "especial", "emoji": "🎭"}, {"d": 17, "label": "Carnaval", "full": "Carnaval", "cat": "especial", "emoji": "🎭"}, {"d": 18, "label": "Quarta-feira de Cinzas", "full": "Quarta-feira de Cinzas", "cat": "nacional", "emoji": "✝️"}], "campaigns": [{"title": "Carnaval a dois", "tag": "Pico"}, {"title": "Esquenta de Valentine's", "tag": "Temático"}]}, {"name": "Março", "short": "Mar", "season": "Início do outono", "icon": "🍂", "focus": "Demanda normaliza pro ritmo de fim de semana + feriado. Dia da Mulher (08/03) é deixa pra mimo romântico ('surpreenda ela').", "events": [{"d": 8, "label": "Dia da Mulher", "full": "Dia da Mulher", "cat": "nicho", "emoji": "♀️"}, {"d": 15, "label": "Dia do Consumidor", "full": "Dia do Consumidor", "cat": "comercial", "emoji": "🛒"}, {"d": 20, "label": "Início do outono", "full": "Início do outono", "cat": "especial", "emoji": "🍂"}], "campaigns": [{"title": "Surpreenda ela (Dia da Mulher)", "tag": "Relacionamento"}, {"title": "Sextou no Xenon", "tag": "Rotina"}]}, {"name": "Abril", "short": "Abr", "season": "Outono", "icon": "🍂", "focus": "Feriadões de abril (Páscoa 05/04 + Tiradentes 21/04) puxam escapada romântica — vender o 'feriado a dois'.", "events": [{"d": 3, "label": "Sexta-feira Santa", "full": "Sexta-feira Santa", "cat": "nacional", "emoji": "✝️"}, {"d": 5, "label": "Páscoa", "full": "Páscoa", "cat": "comercial", "emoji": "🐣"}, {"d": 13, "label": "Dia do Beijo", "full": "Dia do Beijo", "cat": "nicho", "emoji": "💋"}, {"d": 21, "label": "Tiradentes", "full": "Tiradentes", "cat": "nacional", "emoji": "🇧🇷"}], "campaigns": [{"title": "Feriado a dois (Páscoa/Tiradentes)", "tag": "Feriadão"}, {"title": "Dia do Beijo", "tag": "Romance"}]}, {"name": "Maio", "short": "Mai", "season": "Outono", "icon": "🍂", "focus": "Esfria: o gancho 'frio lá fora, aconchego aqui' (hidro, banheira aquecida) começa a vender. Feriado do Trabalho (01/05) puxa escapada.", "events": [{"d": 1, "label": "Dia do Trabalho", "full": "Dia do Trabalho", "cat": "nacional", "emoji": "🛠️"}, {"d": 10, "label": "Dia das Mães", "full": "Dia das Mães", "cat": "comercial", "emoji": "💐"}], "campaigns": [{"title": "Esquenta Dia dos Namorados", "tag": "Antecipação"}, {"title": "Frio? Aconchego aqui", "tag": "Sazonal"}]}, {"name": "Junho", "short": "Jun", "season": "Inverno", "icon": "❤️", "focus": "DIA DOS NAMORADOS (12/06) é a MAIOR data do ano pro motel — pacote premium, decoração, vinho/espumante e kit casal. Reservar com semanas de antecedência.", "events": [{"d": 4, "label": "Corpus Christi", "full": "Corpus Christi", "cat": "nacional", "emoji": "✝️"}, {"d": 11, "label": "Copa do Mundo começa", "full": "Copa do Mundo começa", "cat": "especial", "emoji": "⚽"}, {"d": 12, "label": "Dia dos Namorados", "full": "Dia dos Namorados", "cat": "nicho", "emoji": "❤️"}, {"d": 21, "label": "Início do inverno", "full": "Início do inverno", "cat": "especial", "emoji": "❄️"}, {"d": 28, "label": "Dia do Orgulho LGBTQIA+", "full": "Dia do Orgulho LGBTQIA+", "cat": "nicho", "emoji": "🏳️‍🌈"}], "campaigns": [{"title": "Operação Dia dos Namorados", "tag": "PICO do ano"}, {"title": "Frio lá fora, fogo aqui dentro", "tag": "Sazonal"}, {"title": "Corpus Christi a dois", "tag": "Feriadão"}]}, {"name": "Julho", "short": "Jul", "season": "Inverno", "icon": "❄️", "focus": "Férias de julho: viagens aumentam o fluxo na BR-101; casais sem filhos aproveitam day-use de inverno.", "events": [{"d": 19, "label": "Final da Copa do Mundo", "full": "Final da Copa do Mundo", "cat": "especial", "emoji": "🏆"}, {"d": 31, "label": "Dia do Orgasmo", "full": "Dia do Orgasmo", "cat": "nicho", "emoji": "🔥"}], "campaigns": [{"title": "Inverno aconchegante (day-use)", "tag": "Sazonal"}, {"title": "Dia do Orgasmo", "tag": "Ousado"}]}, {"name": "Agosto", "short": "Ago", "season": "Inverno", "icon": "🌬️", "focus": "Dia dos Pais (09/08) vende 'presenteie com uma escapada/voucher'. Ainda frio — aconchego segue forte.", "events": [{"d": 9, "label": "Dia dos Pais", "full": "Dia dos Pais", "cat": "comercial", "emoji": "👔"}, {"d": 15, "label": "Dia do Solteiro", "full": "Dia do Solteiro", "cat": "nicho", "emoji": "💃"}], "campaigns": [{"title": "Dia dos Pais: voucher de escapada", "tag": "Presente"}, {"title": "Dia do Solteiro", "tag": "Romance"}]}, {"name": "Setembro", "short": "Set", "season": "Primavera", "icon": "🌸", "focus": "Dia do Sexo (06/09) é data FORTE pra motel — promoção ousada, pacote temático e kit sex shop. Primavera dá clima de romance.", "events": [{"d": 6, "label": "Dia do Sexo", "full": "Dia do Sexo", "cat": "nicho", "emoji": "🔥"}, {"d": 7, "label": "Independência do Brasil", "full": "Independência do Brasil", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 15, "label": "Dia do Cliente", "full": "Dia do Cliente", "cat": "comercial", "emoji": "🤝"}, {"d": 21, "label": "Início da primavera", "full": "Início da primavera", "cat": "especial", "emoji": "🌸"}], "campaigns": [{"title": "Dia do Sexo", "tag": "PICO de nicho"}, {"title": "7 de Setembro a dois", "tag": "Feriadão"}, {"title": "Dia do Cliente", "tag": "Fidelidade"}]}, {"name": "Outubro", "short": "Out", "season": "Primavera", "icon": "🌷", "focus": "Feriado de 12/10 (Aparecida/Crianças) puxa escapada de feriadão. Clima de primavera favorece o romance.", "events": [{"d": 12, "label": "N. Sra Aparecida / Dia das Crianças", "full": "N. Sra Aparecida / Dia das Crianças", "cat": "nacional", "emoji": "🙏"}, {"d": 15, "label": "Dia do Professor", "full": "Dia do Professor", "cat": "comercial", "emoji": "🍎"}], "campaigns": [{"title": "Feriadão de outubro a dois", "tag": "Feriadão"}, {"title": "Monta a Black Friday", "tag": "Estratégia"}]}, {"name": "Novembro", "short": "Nov", "season": "Primavera", "icon": "🌻", "focus": "BLACK FRIDAY (27/11) é forte pra motel: vender VOUCHER de pernoite/day-use com desconto pra usar depois (antecipa caixa). Tudo pronto e testado antes.", "events": [{"d": 2, "label": "Finados", "full": "Finados", "cat": "nacional", "emoji": "🕯️"}, {"d": 11, "label": "Singles Day (11.11)", "full": "Singles Day (11.11)", "cat": "comercial", "emoji": "🛍️"}, {"d": 15, "label": "Proclamação da República", "full": "Proclamação da República", "cat": "nacional", "emoji": "🇧🇷"}, {"d": 20, "label": "Consciência Negra", "full": "Consciência Negra", "cat": "nacional", "emoji": "✊🏿"}, {"d": 27, "label": "Black Friday", "full": "Black Friday", "cat": "comercial", "emoji": "🛍️"}, {"d": 30, "label": "Cyber Monday", "full": "Cyber Monday", "cat": "comercial", "emoji": "💻"}], "campaigns": [{"title": "Black Friday Xenon", "tag": "Operação"}, {"title": "Feriadões de novembro a dois", "tag": "Feriadão"}]}, {"name": "Dezembro", "short": "Dez", "season": "Verão", "icon": "🥂", "focus": "Réveillon é pico: 'virada a dois' com pacote premium. Natal puxa escapada pós-ceia e voucher de presente (13º aquece o consumo).", "events": [{"d": 21, "label": "Início do verão", "full": "Início do verão", "cat": "especial", "emoji": "☀️"}, {"d": 25, "label": "Natal", "full": "Natal", "cat": "nacional", "emoji": "🎄"}, {"d": 31, "label": "Réveillon (virada a dois)", "full": "Réveillon (virada a dois)", "cat": "nicho", "emoji": "🥂"}], "campaigns": [{"title": "Réveillon a dois", "tag": "PICO"}, {"title": "Presenteie com uma noite", "tag": "Presente"}]}], NU={"title": "Onde estamos agora", "month": "Este mês", "week": "Esta semana", "next": "Prepare-se · próximos meses", "noweek": "Sem datas marcadas esta semana", "focus": "Foco", "today": "hoje", "plan": "Planejamento 2027", "off": "Abra o calendário em 2026 pra ver o contexto da semana."};
   var KEY='cal2026:'+SLUG;
   var LOGEMPTY="Nenhuma entrega registrada em {m}.";
   var today=new Date();
