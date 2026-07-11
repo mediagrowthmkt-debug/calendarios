@@ -1526,8 +1526,15 @@ body.apr-team .apr-add{display:inline-flex}
   if(!CFG.enabled || !CFG.api){ return; }
   var API = (''+CFG.api).replace(/\/+$/,'');
   var SLUG = CFG.slug || '';
-  var TKEY = 'mgAprTk:'+SLUG;
-  var TOKEN = null; try{ TOKEN = localStorage.getItem(TKEY)||null; }catch(e){}
+  var TKEY = 'mgAprTk';   // token do time — vale pro DOMÍNIO inteiro (1 login cobre TODOS os calendários dos clientes)
+  var TOKEN = null;
+  try{
+    TOKEN = localStorage.getItem(TKEY)||null;
+    if(!TOKEN){ // migra token antigo salvo por-cliente (mgAprTk:<slug>) pra chave global
+      for(var _i=0;_i<localStorage.length;_i++){ var _k=localStorage.key(_i);
+        if(_k && _k.indexOf('mgAprTk:')===0){ var _v=localStorage.getItem(_k); if(_v){ TOKEN=_v; localStorage.setItem(TKEY,_v); break; } } }
+    }
+  }catch(e){}
   var POSTS = [], TEAM = false, cur = null, mediaIdx = 0, editState = null, POLL = null;
 
   function esc(s){ s=(s==null?'':''+s); return s.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;'); }
@@ -1567,7 +1574,7 @@ body.apr-team .apr-add{display:inline-flex}
       return r;
     }).catch(function(){});
   };
-  window.__apprLogout = function(){ TOKEN=null; try{localStorage.removeItem(TKEY);}catch(e){} setTeam(false); };
+  window.__apprLogout = function(){ TOKEN=null; try{ localStorage.removeItem(TKEY); for(var _i=localStorage.length-1;_i>=0;_i--){ var _k=localStorage.key(_i); if(_k && _k.indexOf('mgAprTk:')===0)localStorage.removeItem(_k); } }catch(e){} setTeam(false); };
   // abrir um post pela linha do Registro de entregas (chamado pelo módulo do log)
   window.__aprOpen = function(id){ try{ openPost(id); }catch(e){} };
 
