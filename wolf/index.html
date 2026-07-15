@@ -1074,6 +1074,8 @@ body.apr-team .apr-add{display:inline-flex}
     document.body.classList.toggle('mode-edit', EDIT);
     document.body.classList.toggle('mode-view', !EDIT);
     if(!EDIT)closeDayEd();
+    // em modo edição, garante o login de time (renova o token do PHP no reload) pra o "+ Post" aparecer sempre
+    if(EDIT){ try{ window.__apprEnsureTeam && window.__apprEnsureTeam(); }catch(_e){} }
     renderLog();
   }
   function cloudInit(){
@@ -1537,6 +1539,7 @@ body.apr-team .apr-add{display:inline-flex}
   window.__aprMediaUrl = mediaUrl;
   var SLUG = CFG.slug || '';
   var TKEY = 'mgAprTk';   // token do time — vale pro DOMÍNIO inteiro (1 login cobre TODOS os calendários dos clientes)
+  var PKEY = 'mgAprPw';   // senha do time (base64 leve) — mesma confiança da sessão Supabase já salva; permite re-logar sozinho no reload pra o "+ Post" não sumir
   var TOKEN = null;
   try{
     TOKEN = localStorage.getItem(TKEY)||null;
@@ -1580,11 +1583,19 @@ body.apr-team .apr-add{display:inline-flex}
   // ---- login/logout do time (ganchos chamados pelo login do calendario) ----
   window.__apprLogin = function(pass){
     return apiJson('/login.php',{password:pass},false).then(function(r){
-      if(r&&r.ok&&r.token){ TOKEN=r.token; try{localStorage.setItem(TKEY,TOKEN);}catch(e){} setTeam(true); }
+      if(r&&r.ok&&r.token){ TOKEN=r.token; try{localStorage.setItem(TKEY,TOKEN); if(pass)localStorage.setItem(PKEY,btoa(unescape(encodeURIComponent(pass))));}catch(e){} setTeam(true); }
       return r;
     }).catch(function(){});
   };
-  window.__apprLogout = function(){ TOKEN=null; try{ localStorage.removeItem(TKEY); for(var _i=localStorage.length-1;_i>=0;_i--){ var _k=localStorage.key(_i); if(_k && _k.indexOf('mgAprTk:')===0)localStorage.removeItem(_k); } }catch(e){} setTeam(false); };
+  window.__apprLogout = function(){ TOKEN=null; try{ localStorage.removeItem(TKEY); localStorage.removeItem(PKEY); for(var _i=localStorage.length-1;_i>=0;_i--){ var _k=localStorage.key(_i); if(_k && _k.indexOf('mgAprTk:')===0)localStorage.removeItem(_k); } }catch(e){} setTeam(false); };
+  // Garante o login de time quando o calendário entra em modo edição (a sessão Supabase é
+  // restaurada sozinha no reload, mas o token do time pode ter expirado). Token válido → só liga
+  // o apr-team; token vencido mas senha salva → re-loga sozinho pra o "+ Post" não sumir.
+  window.__apprEnsureTeam = function(){
+    if(TOKEN && tokenExp(TOKEN) > Math.floor(Date.now()/1000)){ if(!TEAM) setTeam(true); return; }
+    var pw=null; try{ var raw=localStorage.getItem(PKEY); if(raw) pw=decodeURIComponent(escape(atob(raw))); }catch(e){}
+    if(pw){ window.__apprLogin(pw); }
+  };
   // abrir um post pela linha do Registro de entregas (chamado pelo módulo do log)
   window.__aprOpen = function(id){ try{ openPost(id); }catch(e){} };
 
