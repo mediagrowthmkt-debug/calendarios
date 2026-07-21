@@ -159,6 +159,9 @@ body.mode-edit .notes:empty:before{content:'＋ ' attr(data-ph);color:#c2c2c8;fo
 /* drag-and-drop de tags entre dias */
 body.mode-edit .ntag{cursor:grab}
 .ntag.dragging{opacity:.4}
+/* drag-and-drop de posts (para aprovar) entre dias — só o time (apr-team) */
+body.apr-team .apr-chip{cursor:grab}
+.apr-chip.dragging{opacity:.4}
 .cell.drop-hot{outline:2px dashed var(--brand);outline-offset:-2px;background:color-mix(in srgb,var(--brand) 10%,#fff)!important}
 /* planilha: data editável + bolinha de cor do item */
 .led-day{font-family:inherit;font-size:12px;border:1px solid #dcdce0;border-radius:7px;padding:5px 6px;color:#222;background:#fff}
@@ -1254,33 +1257,37 @@ body.apr-team .apr-add{display:inline-flex}
     }
     document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&DAYED_OPEN)closeDayEd(); });
   }
-  // ---- arrastar tag entre os dias (drag-and-drop) ----
-  var DRAG_ID=null;
+  // ---- arrastar tag OU post (para aprovar) entre os dias (drag-and-drop) ----
+  var DRAG_ID=null, DRAG_KIND=null;   // kind: 'tag' (nota, precisa EDIT) | 'post' (aprovação, precisa time)
   document.addEventListener('dragstart',function(e){
-    var t=e.target.closest&&e.target.closest('.ntag'); if(!t||!EDIT)return;
-    DRAG_ID=+t.dataset.id; t.classList.add('dragging');
-    try{ e.dataTransfer.setData('text/plain',''+DRAG_ID); e.dataTransfer.effectAllowed='move'; }catch(_e){}
+    var tag=e.target.closest&&e.target.closest('.ntag');
+    if(tag&&EDIT){ DRAG_KIND='tag'; DRAG_ID=+tag.dataset.id; tag.classList.add('dragging');
+      try{ e.dataTransfer.setData('text/plain',''+DRAG_ID); e.dataTransfer.effectAllowed='move'; }catch(_e){} return; }
+    var chip=e.target.closest&&e.target.closest('.apr-chip');
+    if(chip&&chip.dataset.pid&&typeof window.__aprMovePost==='function'){ DRAG_KIND='post'; DRAG_ID=+chip.dataset.pid; chip.classList.add('dragging');
+      try{ e.dataTransfer.setData('text/plain',''+DRAG_ID); e.dataTransfer.effectAllowed='move'; }catch(_e){} return; }
   });
   document.addEventListener('dragend',function(e){
-    var t=e.target.closest&&e.target.closest('.ntag'); if(t)t.classList.remove('dragging');
-    document.querySelectorAll('.cell.drop-hot').forEach(function(c){c.classList.remove('drop-hot');}); DRAG_ID=null;
+    var t=e.target.closest&&e.target.closest('.ntag,.apr-chip'); if(t)t.classList.remove('dragging');
+    document.querySelectorAll('.cell.drop-hot').forEach(function(c){c.classList.remove('drop-hot');}); DRAG_ID=null; DRAG_KIND=null;
   });
   document.addEventListener('dragover',function(e){
-    if(DRAG_ID==null||!EDIT)return;
+    if(DRAG_ID==null)return;
     var cell=e.target.closest&&e.target.closest('.cell'); if(!cell||cell.classList.contains('empty')||!cell.querySelector('.notes'))return;
     e.preventDefault();
   });
   document.addEventListener('dragenter',function(e){
-    if(DRAG_ID==null||!EDIT)return;
+    if(DRAG_ID==null)return;
     var cell=e.target.closest&&e.target.closest('.cell'); if(!cell||cell.classList.contains('empty')||!cell.querySelector('.notes'))return;
     document.querySelectorAll('.cell.drop-hot').forEach(function(c){c.classList.remove('drop-hot');}); cell.classList.add('drop-hot');
   });
   document.addEventListener('drop',function(e){
-    if(DRAG_ID==null||!EDIT)return;
+    if(DRAG_ID==null)return;
     var cell=e.target.closest&&e.target.closest('.cell'); if(!cell)return;
     var box=cell.querySelector('.notes'); if(!box)return;
     e.preventDefault();
-    var nd=box.dataset.key, id=DRAG_ID; DRAG_ID=null; cell.classList.remove('drop-hot');
+    var nd=box.dataset.key, id=DRAG_ID, kind=DRAG_KIND; DRAG_ID=null; DRAG_KIND=null; cell.classList.remove('drop-hot');
+    if(kind==='post'){ if(typeof window.__aprMovePost==='function') window.__aprMovePost(id,nd); return; }
     var r=rowById(id); if(r&&r.day!==nd) logUpdate(id,{day:nd});
   });
   load();
@@ -1599,6 +1606,17 @@ body.apr-team .apr-add{display:inline-flex}
   };
   // abrir um post pela linha do Registro de entregas (chamado pelo módulo do log)
   window.__aprOpen = function(id){ try{ openPost(id); }catch(e){} };
+  // mover um post (para aprovar) de dia via drag-and-drop no calendário —
+  // persiste no backend (post-save.php) e repinta o calendário E a planilha de baixo.
+  window.__aprMovePost = function(id, newDay){
+    if(!TEAM) return; var p=findById(+id); if(!p) return;
+    if(!newDay || p.day===newDay) return; var prev=p.day;
+    p.day=newDay; render();   // move já na tela (otimista) — render() repinta a planilha via __logRepaintPosts
+    apiJson('/post-save.php',{slug:SLUG,id:p.id,day:newDay,target:p.target,descricao:p.descricao,midias:p.midias||[]},true).then(function(r){
+      if(r&&r.ok){ var ex=findById(r.post.id); if(ex){ POSTS[POSTS.indexOf(ex)]=r.post; } toast('Post movido para '+dfmt(newDay)); render(); }
+      else { p.day=prev; render(); toast((r&&r.error)||'Não foi possível mover o post.'); }
+    }).catch(function(){ p.day=prev; render(); toast('Falha de conexão ao mover o post.'); });
+  };
 
   // ---- carregar + render dos chips no calendario ----
   function load(){ return api('/posts-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){ if(r&&r.ok){ POSTS=r.posts||[]; render(); } }).catch(function(){}); }
@@ -1615,10 +1633,11 @@ body.apr-team .apr-add{display:inline-flex}
       list.forEach(function(p){
         var st=p.status||'pendente';
         var chip=document.createElement('button'); chip.className='apr-chip s-'+st; chip.title=(p.descricao||'Post');
+        chip.dataset.pid=p.id; chip.draggable=!!TEAM;   // arrastar entre dias (só o time)
         var m=(p.midias&&p.midias[0])||null;
         var thumb;
         if(m && isVideo(m.url)){ thumb = '<span class="apr-thumb apr-vthumb"><video src="'+esc(mediaUrl(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; }
-        else if(m){ thumb = '<img class="apr-thumb" src="'+esc(mediaUrl(m.url))+'" alt="">'; }
+        else if(m){ thumb = '<img class="apr-thumb" src="'+esc(mediaUrl(m.url))+'" alt="" draggable="false">'; }
         else { thumb = '<span class="apr-noimg">📝</span>'; }
         var lbl = p.target==='stories'?'Stories':(p.descricao? p.descricao.slice(0,22) : 'Post');
         chip.innerHTML = thumb + '<span class="apr-dot s-'+st+'"></span><span class="apr-tt">'+esc(lbl)+'</span>';
