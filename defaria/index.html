@@ -12,6 +12,18 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Montserrat','Segoe UI',-apple-system,system-ui,sans-serif;background:var(--ink);color:#1c1c20;-webkit-font-smoothing:antialiased}
+.plano{max-width:1180px;margin:16px auto 0;padding:0 16px}
+.plano-card{background:#fff;border:1px solid #e6e6ea;border-radius:14px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.06);overflow:hidden}
+.plano-hd{font-size:16px;font-weight:800;padding:14px 18px;cursor:pointer;list-style:none;color:#20242c}
+.plano-hd::-webkit-details-marker{display:none}
+.plano-body{padding:6px 20px 18px;color:#333;line-height:1.6;font-size:14px}
+.plano-body h1{font-size:20px;margin:8px 0}
+.plano-body h2{font-size:16px;margin:14px 0 6px;color:#EB7A3D}
+.plano-body h3{font-size:14px;margin:10px 0 4px}
+.plano-body ul,.plano-body ol{margin:6px 0 10px;padding-left:22px}
+.plano-body li{margin:3px 0}
+.plano-body strong{color:#111}
+.plano-body p{margin:6px 0}
 a{color:inherit;text-decoration:none}
 /* ---------- top bar ---------- */
 .topbar{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff;border-bottom:3px solid var(--brand)}
@@ -858,6 +870,7 @@ body.apr-team .apr-add{display:inline-flex}
       </div>
       
     </section>
+<section class="plano" id="plano-sec" style="display:none"></section>
 <section class="log" id="log-sec">
   <div class="log-head"><span class="log-ic">📋</span><div><b>Registro de entregas <span id="log-month" class="log-month"></span></b><small>O que a MediaGrowth realizou pra você — data, descrição e arquivos.</small></div></div>
   <div class="log-add">
@@ -1047,9 +1060,13 @@ body.apr-team .apr-add{display:inline-flex}
     logBody.innerHTML=ent.map(function(e){ return e.html; }).join('');
   }
   function renderLog(){ renderLogTable(); renderBlocks(); }
+  function _planoInline(t){ return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>'); }
+  function _planoMd(src){ var s=(''+(src||'')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); var L=s.split('\n'),o=[],inL=false; function cl(){ if(inL){o.push('</ul>');inL=false;} } for(var i=0;i<L.length;i++){ var ln=L[i]; var h=ln.match(/^(#{1,3})\s+(.*)$/); if(h){ cl(); var lv=h[1].length; o.push('<h'+lv+'>'+_planoInline(h[2])+'</h'+lv+'>'); continue; } var li=ln.match(/^\s*[-*]\s+(.*)$/); var ol=ln.match(/^\s*\d+[.)]\s+(.*)$/); if(li||ol){ if(!inL){o.push('<ul>');inL=true;} o.push('<li>'+_planoInline((li||ol)[1])+'</li>'); continue; } cl(); if(ln.trim()==='')continue; o.push('<p>'+_planoInline(ln)+'</p>'); } cl(); return o.join(''); }
+  function renderPlano(){ var sec=document.getElementById('plano-sec'); if(!sec)return; var ps=(window.__PLANOS__||[]).slice().sort(function(a,b){return (''+a.day).localeCompare(''+b.day);}); if(!ps.length){ sec.innerHTML=''; sec.style.display='none'; return; } var MES=['','janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; var h=''; ps.forEach(function(p){ var mm=parseInt((''+(p.day||'')).slice(5,7),10)||0; var nm=MES[mm]||''; var lbl=nm?('Plano de '+nm.charAt(0).toUpperCase()+nm.slice(1)):'Plano do mês'; h+='<details class="plano-card"'+(ps.length===1?' open':'')+'><summary class="plano-hd">📋 '+lbl+'</summary><div class="plano-body">'+_planoMd(p.titulo||'')+'</div></details>'; }); sec.innerHTML=h; sec.style.display=''; }
   window.__logRepaintPosts = function(){ try{ renderLogTable(); }catch(e){} };
-  function logPull(){ if(!SB)return; SB.from(LOGTABLE).select('*').eq('slug',SLUG).then(function(r){ if(r&&!r.error){ LOG=r.data||[]; renderLog(); } }); }
+  function logPull(){ if(!SB)return; SB.from(LOGTABLE).select('*').eq('slug',SLUG).then(function(r){ if(r&&!r.error){ var _all=r.data||[]; window.__PLANOS__=_all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=_all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); } }); }
   function logApply(p){
+    if((p.new&&(''+(p.new.categoria||''))==='__plano__')||(p.old&&(''+(p.old.categoria||''))==='__plano__')){ logPull(); return; }
     if(p.eventType==='DELETE'){ var oid=p.old&&p.old.id; LOG=LOG.filter(function(x){return x.id!==oid;}); }
     else if(p.new){ var i=-1; for(var k=0;k<LOG.length;k++){ if(LOG[k].id===p.new.id){i=k;break;} } if(i>=0)LOG[i]=p.new; else LOG.push(p.new); }
     renderLog(); if(typeof refreshEditorLive==='function')refreshEditorLive();
