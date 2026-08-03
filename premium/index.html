@@ -140,6 +140,8 @@ body.mode-edit .notes:empty:before{content:'＋ ' attr(data-ph);color:#c2c2c8;fo
 .dayed-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
 .de-empty{font-size:12.5px;color:#a0a0a8;text-align:center;padding:14px;background:#fafafa;border-radius:10px}
 .de-row{position:relative;display:flex;align-items:center;gap:8px}
+.de-done{accent-color:#10b981;width:16px;height:16px;flex:0 0 auto;cursor:pointer}
+.de-row--done .de-inp{text-decoration:line-through;opacity:.55}
 .de-dot{flex:0 0 auto;width:22px;height:22px;border-radius:7px;border:2px solid #fff;box-shadow:0 0 0 1px #ddd;cursor:pointer;padding:0}
 .de-dot:hover{box-shadow:0 0 0 2px var(--brand)}
 .de-inp{flex:1;min-width:0;font-family:inherit;font-size:13.5px;color:#222;border:1px solid #dcdce0;border-radius:9px;padding:8px 11px}
@@ -1141,7 +1143,8 @@ body.apr-team .apr-add{display:inline-flex}
   }
   function deRow(r){
     var c=itemColor(r);
-    var html='<div class="de-row" data-id="'+r.id+'">'
+    var html='<div class="de-row'+(r.concluido?' de-row--done':'')+'" data-id="'+r.id+'">'
+      +'<input type="checkbox" class="de-done" data-concluir="'+r.id+'"'+(r.concluido?' checked':'')+' title="Marcar como concluído">'
       +'<button class="de-dot" data-act="pal" title="cor" style="background:'+c+'"></button>'
       +'<input class="de-inp" type="text" value="'+esc(r.titulo).replace(/"/g,'&quot;')+'" placeholder="o que é esse item...">'
       +'<input class="de-date" type="date" value="'+r.day+'" title="mover de data">'
@@ -1248,6 +1251,11 @@ body.apr-team .apr-add{display:inline-flex}
         if(tgt.classList.contains('de-date')){
           var row=tgt.closest('.de-row'); if(!row)return; var id=+row.dataset.id;
           if(/^\d{4}-\d{2}-\d{2}$/.test(tgt.value)){ logUpdate(id,{day:tgt.value}); renderDayed(); }
+        } else if(tgt.classList.contains('de-done')){
+          var rowd=tgt.closest('.de-row'); if(!rowd)return; var idd=+rowd.dataset.id; var on=!!tgt.checked;
+          var rr=rowById(idd); if(rr)rr.concluido=on;
+          logUpdate(idd,{concluido:on,concluido_em:on?new Date().toISOString():null});
+          rowd.classList.toggle('de-row--done',on);
         } else if(tgt.classList.contains('de-morechk')){
           var mb=dayedList.querySelector('.de-morebox'); if(mb)mb.style.display=tgt.checked?'block':'none';
         }
