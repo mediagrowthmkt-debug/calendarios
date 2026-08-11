@@ -1080,7 +1080,15 @@ body.apr-team .apr-add{display:inline-flex}
   function _planoMd(src){ var s=(''+(src||'')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); var L=s.split('\n'),o=[],inL=false; function cl(){ if(inL){o.push('</ul>');inL=false;} } for(var i=0;i<L.length;i++){ var ln=L[i]; var h=ln.match(/^(#{1,3})\s+(.*)$/); if(h){ cl(); var lv=h[1].length; o.push('<h'+lv+'>'+_planoInline(h[2])+'</h'+lv+'>'); continue; } var li=ln.match(/^\s*[-*]\s+(.*)$/); var ol=ln.match(/^\s*\d+[.)]\s+(.*)$/); if(li||ol){ if(!inL){o.push('<ul>');inL=true;} o.push('<li>'+_planoInline((li||ol)[1])+'</li>'); continue; } cl(); if(ln.trim()==='')continue; o.push('<p>'+_planoInline(ln)+'</p>'); } cl(); return o.join(''); }
   function renderPlano(){ var sec=document.getElementById('plano-sec'); if(!sec)return; var ps=(window.__PLANOS__||[]).slice().sort(function(a,b){return (''+a.day).localeCompare(''+b.day);}); if(!ps.length){ sec.innerHTML=''; sec.style.display='none'; return; } var MES=['','janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; var h=''; ps.forEach(function(p){ var mm=parseInt((''+(p.day||'')).slice(5,7),10)||0; var nm=MES[mm]||''; var lbl=nm?('Plano de '+nm.charAt(0).toUpperCase()+nm.slice(1)):'Plano do mês'; h+='<details class="plano-card"'+(ps.length===1?' open':'')+'><summary class="plano-hd">📋 '+lbl+'</summary><div class="plano-body">'+_planoMd(p.titulo||'')+'</div></details>'; }); sec.innerHTML=h; sec.style.display=''; }
   window.__logRepaintPosts = function(){ try{ renderLogTable(); }catch(e){} };
-  function logPull(){ if(!SB)return; SB.from(LOGTABLE).select('*').eq('slug',SLUG).then(function(r){ if(r&&!r.error){ var _all=r.data||[]; window.__PLANOS__=_all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=_all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); } }); }
+  // ===== Migracao calendar_log: Supabase (padrao) x Hostinger PHP (CALSTORE) =====
+  function _hlApi(){ var a=CALAPI||(window.__APPROVAL__&&window.__APPROVAL__.api)||''; return (''+a).replace(/\/+$/,''); }
+  function _hlTok(){ try{ return (window.__apprToken&&window.__apprToken())||null; }catch(e){ return null; } }
+  function _hlSplit(all){ window.__PLANOS__=all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); }
+  function _hlPull(){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ _hlSplit(d.rows); } }).catch(function(){}); }
+  function _hlPayload(r){ var o={slug:SLUG,day:r.day,categoria:r.categoria||'',titulo:r.titulo||'',arquivos:r.arquivos||[],color:r.color||'',concluido:!!r.concluido}; if(r.id&&r.id>0)o.id=r.id; return o; }
+  function _hlSave(r){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-save.php',{method:'POST',headers:h,body:JSON.stringify(_hlPayload(r))}).then(function(x){return x.json();}); }
+  function _hlDel(id){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-delete.php',{method:'POST',headers:h,body:JSON.stringify({slug:SLUG,id:id})}).then(function(x){return x.json();}); }
+  function logPull(){ if(CALSTORE==='hostinger'){ return _hlPull(); } if(!SB)return; SB.from(LOGTABLE).select('*').eq('slug',SLUG).then(function(r){ if(r&&!r.error){ var _all=r.data||[]; window.__PLANOS__=_all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=_all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); } }); }
   function logApply(p){
     if((p.new&&(''+(p.new.categoria||''))==='__plano__')||(p.old&&(''+(p.old.categoria||''))==='__plano__')){ logPull(); return; }
     if(p.eventType==='DELETE'){ var oid=p.old&&p.old.id; LOG=LOG.filter(function(x){return x.id!==oid;}); }
@@ -1089,6 +1097,7 @@ body.apr-team .apr-add{display:inline-flex}
   }
   var TMPID=-1;
   function logInsert(o){
+    if(CALSTORE==='hostinger'){ _hlSave(o).then(function(r){ if(r&&r.ok&&r.row){ LOG.push(r.row); renderLog(); } }); return; }
     if(SB){ SB.from(LOGTABLE).insert([o]).then(function(){},function(){}); return; }   // online: realtime traz com id real
     var row={}; for(var k in o)row[k]=o[k]; row.id=TMPID--; row.arquivos=row.arquivos||[]; LOG.push(row); renderLog();   // offline/preview
   }
@@ -1096,14 +1105,16 @@ body.apr-team .apr-add{display:inline-flex}
     o.updated_at=new Date().toISOString();
     var r=rowById(id); if(r){ for(var k in o)r[k]=o[k]; }                                // otimista (instantâneo)
     renderLog();
+    if(CALSTORE==='hostinger'){ if(r)_hlSave(r); return; }
     if(SB) SB.from(LOGTABLE).update(o).eq('id',id).then(function(){},function(){});
   }
   function logDelete(id){
     LOG=LOG.filter(function(x){return x.id!==id;}); renderLog();                          // otimista
+    if(CALSTORE==='hostinger'){ _hlDel(id); return; }
     if(SB) SB.from(LOGTABLE).delete().eq('id',id).then(function(){},function(){});
   }
   // sync em nuvem (config.sync): time MG loga e edita; cliente só vê (read-only, tempo real)
-  var SYNC={"provider": "supabase", "url": "https://qyqhtihlctkassnevzbu.supabase.co", "key": "sb_publishable_xPNnMuUkCGJLFNfGpKoN5w_aSTE8WJG", "table": "calendar_notes", "team_email": "calendario@mediagrowth.com.br"}, SB=null, EDIT=false, DAYED_OPEN=null;
+  var SYNC={"provider": "supabase", "url": "https://qyqhtihlctkassnevzbu.supabase.co", "key": "sb_publishable_xPNnMuUkCGJLFNfGpKoN5w_aSTE8WJG", "table": "calendar_notes", "team_email": "calendario@mediagrowth.com.br"}, CALSTORE="hostinger", CALAPI="https://mediagrowth.com.br/calendario-api", SB=null, EDIT=false, DAYED_OPEN=null;
   function setMode(edit){
     EDIT=!!edit;
     document.body.classList.toggle('mode-edit', EDIT);
@@ -1120,7 +1131,15 @@ body.apr-team .apr-add{display:inline-flex}
         {event:'*',schema:'public',table:LOGTABLE,filter:'slug=eq.'+SLUG},
         function(p){ logApply(p); }).subscribe(); }catch(e){} }
   function _rtUnsubscribe(){ try{ if(SB&&SB.__rt){ SB.removeChannel(SB.__rt); SB.__rt=null; } }catch(e){} }
+  function _hlInit(){
+    var sp=document.getElementById('syncpill'); if(sp)sp.classList.add('on');
+    _hlPull();
+    setMode(!!_hlTok());
+    // sem websocket: polling leve — 15s em edicao, ~10min so-leitura (aba visivel)
+    var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(); } else { _hlT++; if(_hlT%40===0)_hlPull(); } }, 15000);
+  }
   function cloudInit(){
+    if(CALSTORE==='hostinger'){ return _hlInit(); }
     if(!SYNC||!window.supabase){ if(window.__CAL_SEEDLOG__){ LOG=window.__CAL_SEEDLOG__; renderLog(); } return; }
     try{
       SB=window.supabase.createClient(SYNC.url,SYNC.key,{realtime:{params:{eventsPerSecond:5}}});
@@ -1133,13 +1152,19 @@ body.apr-team .apr-add{display:inline-flex}
     }catch(e){}
   }
   function doLogin(email,pass,cb){
+    if(CALSTORE==='hostinger'){
+      var pr=(window.__apprLogin?window.__apprLogin(pass):null);
+      if(!pr){ cb('Login indisponível.'); return; }
+      pr.then(function(r){ if(r&&r.ok){ setMode(true); _hlPull(); cb(null); } else { cb((r&&r.error)||'Senha incorreta.'); } });
+      return;
+    }
     if(!SB){cb('Sem conexão com o servidor.');return;}
     SB.auth.signInWithPassword({email:email,password:pass}).then(function(r){
       if(r.error){cb(r.error.message||'Não foi possível entrar.');}
       else{ setMode(true); logPull(); try{window.__apprLogin&&window.__apprLogin(pass);}catch(_e){} cb(null); }
     },function(){cb('Não foi possível entrar.');});
   }
-  function doLogout(){ try{window.__apprLogout&&window.__apprLogout();}catch(_e){} if(SB) SB.auth.signOut().then(function(){ setMode(false); }); }
+  function doLogout(){ try{window.__apprLogout&&window.__apprLogout();}catch(_e){} if(CALSTORE==='hostinger'){ setMode(false); return; } if(SB) SB.auth.signOut().then(function(){ setMode(false); }); }
   // ---- editor do dia: itens = linhas da planilha (texto + cor + data + multi-dia) ----
   var dayed=document.getElementById('dayed'),
       dayedList=document.getElementById('dayed-list'),
@@ -1387,6 +1412,19 @@ body.apr-team .apr-add{display:inline-flex}
     clearTimeout(t._h); if(ms!==0){ t._h=setTimeout(function(){ t.classList.remove('on'); }, ms||1800); }
   }
   function attachToRow(id,file,cb){
+    if(CALSTORE==='hostinger'){
+      if(!_hlTok()){ alert('Faça login (botão Entrar) para anexar arquivos.'); if(cb)cb(); return; }
+      calToast('📤 Enviando imagem…',0);
+      var fd=new FormData(); fd.append('slug',SLUG); fd.append('file',file);
+      (window.__apprUpload?window.__apprUpload(fd):Promise.reject()).then(function(res){
+        if(!res||!res.ok||!res.url){ calToast('⚠️ Falha no upload',2400); if(cb)cb(); return; }
+        var r=rowById(id); if(!r){ calToast('⚠️ Item não encontrado',2000); if(cb)cb(); return; }
+        var arr=(r.arquivos||[]).slice(); arr.push({name:(file.name||'imagem colada').slice(0,80),url:res.url}); logUpdate(id,{arquivos:arr});
+        if(DAYED_OPEN)renderDayed();
+        calToast('✅ Imagem anexada',1500); if(cb)cb(res.url);
+      },function(){ calToast('⚠️ Falha no upload',2400); if(cb)cb(); });
+      return;
+    }
     if(!SB){ alert('Faça login (botão Entrar) para anexar arquivos.'); if(cb)cb(); return; }
     calToast('📤 Enviando imagem…',0);
     var safe=(file.name||'colado.png').replace(/[^\w.\-]+/g,'_');
@@ -1401,6 +1439,18 @@ body.apr-team .apr-add{display:inline-flex}
     },function(){ calToast('⚠️ Falha no upload',2400); if(cb)cb(); });
   }
   function insertItemWithImage(o,file){
+    if(CALSTORE==='hostinger'){
+      if(!_hlTok()){ alert('Faça login (botão Entrar) para colar imagens.'); return; }
+      calToast('📤 Enviando imagem…',0);
+      var fd=new FormData(); fd.append('slug',SLUG); fd.append('file',file);
+      (window.__apprUpload?window.__apprUpload(fd):Promise.reject()).then(function(res){
+        if(!res||!res.ok||!res.url){ calToast('⚠️ Falha no upload',2400); return; }
+        o.arquivos=[{name:(file.name||'imagem colada').slice(0,80),url:res.url}];
+        logInsert(o);
+        calToast('✅ Imagem anexada',1500);
+      },function(){ calToast('⚠️ Falha no upload',2400); });
+      return;
+    }
     if(!SB){ alert('Faça login (botão Entrar) para colar imagens.'); return; }
     calToast('📤 Enviando imagem…',0);
     var safe=(file.name||'colado.png').replace(/[^\w.\-]+/g,'_');
@@ -1651,6 +1701,9 @@ body.apr-team .apr-add{display:inline-flex}
     var pw=null; try{ var raw=localStorage.getItem(PKEY); if(raw) pw=decodeURIComponent(escape(atob(raw))); }catch(e){}
     if(pw){ window.__apprLogin(pw); }
   };
+  // reuso pelo modulo do calendario (migracao calendar_log -> Hostinger): token + upload de midia
+  window.__apprToken = function(){ return (TOKEN && tokenExp(TOKEN) > Math.floor(Date.now()/1000)) ? TOKEN : null; };
+  window.__apprUpload = function(fd){ return apiForm('/media-upload.php', fd); };
   // abrir um post pela linha do Registro de entregas (chamado pelo módulo do log)
   window.__aprOpen = function(id){ try{ openPost(id); }catch(e){} };
   // mover um post (para aprovar) de dia via drag-and-drop no calendário —
