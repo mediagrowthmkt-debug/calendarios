@@ -1077,7 +1077,7 @@ body.apr-team .apr-add{display:inline-flex}
   function renderPlano(){ var sec=document.getElementById('plano-sec'); if(!sec)return; var ps=(window.__PLANOS__||[]).slice().sort(function(a,b){return (''+a.day).localeCompare(''+b.day);}); if(!ps.length){ sec.innerHTML=''; sec.style.display='none'; return; } var MES=['','janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; var h=''; ps.forEach(function(p){ var mm=parseInt((''+(p.day||'')).slice(5,7),10)||0; var nm=MES[mm]||''; var lbl=nm?('Plano de '+nm.charAt(0).toUpperCase()+nm.slice(1)):'Plano do mês'; h+='<details class="plano-card"'+(ps.length===1?' open':'')+'><summary class="plano-hd">📋 '+lbl+'</summary><div class="plano-body">'+_planoMd(p.titulo||'')+'</div></details>'; }); sec.innerHTML=h; sec.style.display=''; }
   window.__logRepaintPosts = function(){ try{ renderLogTable(); }catch(e){} };
   // ===== Migracao calendar_log: Supabase (padrao) x Hostinger PHP (CALSTORE) =====
-  function _hlApi(){ var a=(window.__APPROVAL__&&window.__APPROVAL__.api)||''; return (''+a).replace(/\/+$/,''); }
+  function _hlApi(){ var a=CALAPI||(window.__APPROVAL__&&window.__APPROVAL__.api)||''; return (''+a).replace(/\/+$/,''); }
   function _hlTok(){ try{ return (window.__apprToken&&window.__apprToken())||null; }catch(e){ return null; } }
   function _hlSplit(all){ window.__PLANOS__=all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); }
   function _hlPull(){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ _hlSplit(d.rows); } }).catch(function(){}); }
@@ -1110,7 +1110,7 @@ body.apr-team .apr-add{display:inline-flex}
     if(SB) SB.from(LOGTABLE).delete().eq('id',id).then(function(){},function(){});
   }
   // sync em nuvem (config.sync): time MG loga e edita; cliente só vê (read-only, tempo real)
-  var SYNC={"provider": "supabase", "url": "https://qyqhtihlctkassnevzbu.supabase.co", "key": "sb_publishable_xPNnMuUkCGJLFNfGpKoN5w_aSTE8WJG", "table": "calendar_notes", "team_email": "calendario@mediagrowth.com.br"}, CALSTORE="hostinger", SB=null, EDIT=false, DAYED_OPEN=null;
+  var SYNC={"provider": "supabase", "url": "https://qyqhtihlctkassnevzbu.supabase.co", "key": "sb_publishable_xPNnMuUkCGJLFNfGpKoN5w_aSTE8WJG", "table": "calendar_notes", "team_email": "calendario@mediagrowth.com.br"}, CALSTORE="hostinger", CALAPI="https://mediagrowth.com.br/calendario-api", SB=null, EDIT=false, DAYED_OPEN=null;
   function setMode(edit){
     EDIT=!!edit;
     document.body.classList.toggle('mode-edit', EDIT);
