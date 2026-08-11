@@ -1109,17 +1109,23 @@ body.apr-team .apr-add{display:inline-flex}
     if(EDIT){ try{ window.__apprEnsureTeam && window.__apprEnsureTeam(); }catch(_e){} }
     renderLog();
   }
+  // egress-guard: o realtime (websocket persistente) SÓ liga no modo edição (time MG logado).
+  // O cliente que só visualiza faz 1 leitura na carga + refresh lento (aba visível) — nunca segura
+  // socket aberto. Era o socket read-only de todo visitante que sangrava o egress do Supabase.
+  function _rtSubscribe(){ if(!SB||SB.__rt)return; try{ SB.__rt=SB.channel('log-'+SLUG).on('postgres_changes',
+        {event:'*',schema:'public',table:LOGTABLE,filter:'slug=eq.'+SLUG},
+        function(p){ logApply(p); }).subscribe(); }catch(e){} }
+  function _rtUnsubscribe(){ try{ if(SB&&SB.__rt){ SB.removeChannel(SB.__rt); SB.__rt=null; } }catch(e){} }
   function cloudInit(){
     if(!SYNC||!window.supabase){ if(window.__CAL_SEEDLOG__){ LOG=window.__CAL_SEEDLOG__; renderLog(); } return; }
     try{
       SB=window.supabase.createClient(SYNC.url,SYNC.key,{realtime:{params:{eventsPerSecond:5}}});
       var sp=document.getElementById('syncpill'); if(sp)sp.classList.add('on');
       logPull();
-      SB.channel('log-'+SLUG).on('postgres_changes',
-        {event:'*',schema:'public',table:LOGTABLE,filter:'slug=eq.'+SLUG},
-        function(p){ logApply(p); }).subscribe();
-      SB.auth.getSession().then(function(s){ setMode(s && s.data && s.data.session); });
-      SB.auth.onAuthStateChange(function(_e,session){ setMode(!!session); });
+      SB.auth.getSession().then(function(s){ var on=!!(s&&s.data&&s.data.session); setMode(on); if(on)_rtSubscribe(); });
+      SB.auth.onAuthStateChange(function(_e,session){ var on=!!session; setMode(on); if(on)_rtSubscribe(); else _rtUnsubscribe(); });
+      // leitor read-only: reflete atualizações do time sem websocket — leitura leve a cada 10 min, só com a aba à vista
+      setInterval(function(){ if(!EDIT && !document.hidden)logPull(); }, 600000);
     }catch(e){}
   }
   function doLogin(email,pass,cb){
