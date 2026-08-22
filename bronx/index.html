@@ -469,6 +469,7 @@ body.apr-team .apr-add{display:inline-flex}
 @media(max-width:560px){.apr-btn{flex-basis:100%}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>window.__CAL_SEEDLOG__=[{"id": 438, "slug": "bronx", "day": "2026-08-03", "categoria": "contato", "titulo": "retornar contato.", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-08-03T17:17:25.795245+00:00", "created_at": "2026-08-01T21:09:12.283469+00:00", "updated_at": "2026-08-01T21:10:15.166+00:00"}];window.__CAL_SEEDPOSTS__=[];</script>
 </head>
 <body class="mode-view">
 <header class="topbar">
@@ -1129,6 +1130,10 @@ body.apr-team .apr-add{display:inline-flex}
   function _rtUnsubscribe(){ try{ if(SB&&SB.__rt){ SB.removeChannel(SB.__rt); SB.__rt=null; } }catch(e){} }
   function _hlInit(){
     var sp=document.getElementById('syncpill'); if(sp)sp.classList.add('on');
+    // 🌱 mostra o SEED baked na hora (server-side) — não depende do fetch (Safari
+    // falha o fetch cross-origin em hard-reload e deixava vazio). O _hlPull() por
+    // baixo atualiza ao vivo onde o fetch funciona.
+    if(window.__CAL_SEEDLOG__ && window.__CAL_SEEDLOG__.length){ try{ _hlSplit(window.__CAL_SEEDLOG__); }catch(e){} }
     _hlPull();
     setMode(!!_hlTok());
     // sem websocket: polling leve — 15s em edicao, ~10min so-leitura (aba visivel)
@@ -1946,6 +1951,11 @@ body.apr-team .apr-add{display:inline-flex}
   function deepLink(){ var tk=new URLSearchParams(location.search).get('post'); if(!tk)return; var p=findByToken(tk); if(p)openPost(p.id); }
 
   renderBar();
+  // 🌱 SEED baked: pinta os posts + os botões "+ Post" NA HORA (server-side), sem
+  // depender do fetch — no Safari o fetch cross-origin falha em hard-reload e some
+  // tudo. O load() por baixo atualiza ao vivo onde funciona.
+  if(window.__CAL_SEEDPOSTS__ && window.__CAL_SEEDPOSTS__.length){ POSTS=window.__CAL_SEEDPOSTS__; }
+  try{ render(); }catch(e){}
   load().then(deepLink);
   POLL=setInterval(function(){ if(!document.getElementById('apr-modal').classList.contains('on') && !document.getElementById('apr-edit').classList.contains('on')) load(); }, 8000);
 })();

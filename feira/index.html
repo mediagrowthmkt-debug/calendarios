@@ -469,6 +469,7 @@ body.apr-team .apr-add{display:inline-flex}
 @media(max-width:560px){.apr-btn{flex-basis:100%}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>window.__CAL_SEEDLOG__=[{"id": 140, "slug": "feira", "day": "2026-05-29", "categoria": "Conteúdo", "titulo": "Passo a passo de fotos enviado às feirantes", "arquivos": [], "color": null, "concluido": false, "concluido_em": null, "created_at": "2026-06-10T15:45:58.939092+00:00", "updated_at": "2026-08-10T23:21:44-03:00"}, {"id": 141, "slug": "feira", "day": "2026-06-04", "categoria": "Conteúdo", "titulo": "Sessão de fotos na feira (presencial)", "arquivos": [], "color": null, "concluido": false, "concluido_em": null, "created_at": "2026-06-10T15:45:59.373354+00:00", "updated_at": "2026-06-10T15:45:59.373354+00:00"}, {"id": 67, "slug": "feira", "day": "2026-06-08", "categoria": "Conteúdo", "titulo": "Calendário oficial 2026 publicado", "arquivos": [], "color": null, "concluido": false, "concluido_em": null, "created_at": "2026-06-10T15:44:04.261421+00:00", "updated_at": "2026-06-10T15:44:04.261421+00:00"}, {"id": 142, "slug": "feira", "day": "2026-06-09", "categoria": "Conteúdo", "titulo": "Coleta de catálogo de produtos para o site", "arquivos": [], "color": null, "concluido": false, "concluido_em": null, "created_at": "2026-06-10T15:45:59.921869+00:00", "updated_at": "2026-06-10T15:45:59.921869+00:00"}, {"id": 154, "slug": "feira", "day": "2026-06-10", "categoria": "", "titulo": "finalizar website.", "arquivos": [], "color": "#64748B", "concluido": false, "concluido_em": null, "created_at": "2026-06-11T01:54:40.752152+00:00", "updated_at": "2026-06-11T01:54:40.752152+00:00"}, {"id": 155, "slug": "feira", "day": "2026-06-11", "categoria": "", "titulo": "finalizar website.", "arquivos": [], "color": "#64748B", "concluido": false, "concluido_em": null, "created_at": "2026-06-11T01:54:40.752152+00:00", "updated_at": "2026-06-11T01:54:40.752152+00:00"}, {"id": 156, "slug": "feira", "day": "2026-06-12", "categoria": "", "titulo": "finalizar website.", "arquivos": [], "color": "#64748B", "concluido": false, "concluido_em": null, "created_at": "2026-06-11T01:54:40.752152+00:00", "updated_at": "2026-06-11T01:54:40.752152+00:00"}, {"id": 158, "slug": "feira", "day": "2026-06-15", "categoria": "", "titulo": "website pronto.", "arquivos": [], "color": "#64748B", "concluido": false, "concluido_em": null, "created_at": "2026-06-11T01:54:40.752152+00:00", "updated_at": "2026-06-11T01:54:40.752152+00:00"}, {"id": 432, "slug": "feira", "day": "2026-07-28", "categoria": "Conteúdo", "titulo": "entrega do site", "arquivos": [], "color": null, "concluido": false, "concluido_em": null, "created_at": "2026-07-29T22:18:47.000793+00:00", "updated_at": "2026-07-29T22:18:47.000793+00:00"}];window.__CAL_SEEDPOSTS__=[];</script>
 </head>
 <body class="mode-view">
 <header class="topbar">
@@ -1129,6 +1130,10 @@ body.apr-team .apr-add{display:inline-flex}
   function _rtUnsubscribe(){ try{ if(SB&&SB.__rt){ SB.removeChannel(SB.__rt); SB.__rt=null; } }catch(e){} }
   function _hlInit(){
     var sp=document.getElementById('syncpill'); if(sp)sp.classList.add('on');
+    // 🌱 mostra o SEED baked na hora (server-side) — não depende do fetch (Safari
+    // falha o fetch cross-origin em hard-reload e deixava vazio). O _hlPull() por
+    // baixo atualiza ao vivo onde o fetch funciona.
+    if(window.__CAL_SEEDLOG__ && window.__CAL_SEEDLOG__.length){ try{ _hlSplit(window.__CAL_SEEDLOG__); }catch(e){} }
     _hlPull();
     setMode(!!_hlTok());
     // sem websocket: polling leve — 15s em edicao, ~10min so-leitura (aba visivel)
@@ -1946,6 +1951,11 @@ body.apr-team .apr-add{display:inline-flex}
   function deepLink(){ var tk=new URLSearchParams(location.search).get('post'); if(!tk)return; var p=findByToken(tk); if(p)openPost(p.id); }
 
   renderBar();
+  // 🌱 SEED baked: pinta os posts + os botões "+ Post" NA HORA (server-side), sem
+  // depender do fetch — no Safari o fetch cross-origin falha em hard-reload e some
+  // tudo. O load() por baixo atualiza ao vivo onde funciona.
+  if(window.__CAL_SEEDPOSTS__ && window.__CAL_SEEDPOSTS__.length){ POSTS=window.__CAL_SEEDPOSTS__; }
+  try{ render(); }catch(e){}
   load().then(deepLink);
   POLL=setInterval(function(){ if(!document.getElementById('apr-modal').classList.contains('on') && !document.getElementById('apr-edit').classList.contains('on')) load(); }, 8000);
 })();
