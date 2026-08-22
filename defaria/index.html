@@ -1079,7 +1079,7 @@ body.apr-team .apr-add{display:inline-flex}
   function _hlApi(){ var a=CALAPI||(window.__APPROVAL__&&window.__APPROVAL__.api)||''; return (''+a).replace(/\/+$/,''); }
   function _hlTok(){ try{ return (window.__apprToken&&window.__apprToken())||null; }catch(e){ return null; } }
   function _hlSplit(all){ window.__PLANOS__=all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); }
-  function _hlPull(){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ _hlSplit(d.rows); } }).catch(function(){}); }
+  function _hlPull(){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ _hlSplit(d.rows); } }).catch(function(){}); }
   function _hlPayload(r){ var o={slug:SLUG,day:r.day,categoria:r.categoria||'',titulo:r.titulo||'',arquivos:r.arquivos||[],color:r.color||'',concluido:!!r.concluido}; if(r.id&&r.id>0)o.id=r.id; return o; }
   function _hlSave(r){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-save.php',{method:'POST',headers:h,body:JSON.stringify(_hlPayload(r))}).then(function(x){return x.json();}); }
   function _hlDel(id){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-delete.php',{method:'POST',headers:h,body:JSON.stringify({slug:SLUG,id:id})}).then(function(x){return x.json();}); }
@@ -1676,7 +1676,7 @@ body.apr-team .apr-add{display:inline-flex}
   }
   (function initTeam(){ if(TOKEN && tokenExp(TOKEN) > Math.floor(Date.now()/1000)){ TEAM=true; document.body.classList.add('apr-team'); } })();
 
-  function api(path){ return fetch(API+path).then(function(r){return r.json();}); }
+  function api(path){ var _u=API+path+(path.indexOf('?')>=0?'&':'?')+'_='+Date.now(); return fetch(_u,{cache:'no-store'}).then(function(r){return r.json();}); }
   function apiJson(path,body,team){ var h={'Content-Type':'application/json'}; if(team&&TOKEN)h['X-Team-Token']=TOKEN; return fetch(API+path,{method:'POST',headers:h,body:JSON.stringify(body)}).then(function(r){return r.json();}); }
   function apiForm(path,fd){ var h={}; if(TOKEN)h['X-Team-Token']=TOKEN; return fetch(API+path,{method:'POST',headers:h,body:fd}).then(function(r){return r.json();}); }
 
