@@ -1136,8 +1136,8 @@ body.apr-team .apr-add{display:inline-flex}
     if(window.__CAL_SEEDLOG__ && window.__CAL_SEEDLOG__.length){ try{ _hlSplit(window.__CAL_SEEDLOG__); }catch(e){} }
     _hlPull();
     setMode(!!_hlTok());
-    // sem websocket: polling leve — 15s em edicao, ~10min so-leitura (aba visivel)
-    var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(); } else { _hlT++; if(_hlT%40===0)_hlPull(); } }, 15000);
+    // sem websocket: polling leve — 15s em edicao, ~60s so-leitura (aba visivel)
+    var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(); } else { _hlT++; if(_hlT%4===0)_hlPull(); } }, 15000);
   }
   function cloudInit(){
     if(CALSTORE==='hostinger'){ return _hlInit(); }
