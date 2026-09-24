@@ -431,6 +431,7 @@ body.apr-team .apr-add{display:inline-flex}
 .apr-stage img,.apr-stage video{width:100%;max-height:52vh;object-fit:contain;display:block}
 .apr-nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:none;background:rgba(0,0,0,.5);color:#fff;font-size:20px;cursor:pointer}
 .apr-nav.pv{left:8px}.apr-nav.nx{right:8px}
+.apr-loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#889;font-size:13px;pointer-events:none}
 .apr-ind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:2px 9px;border-radius:12px}
 .apr-meta{display:flex;gap:18px;flex-wrap:wrap;padding:10px 20px 0;font-size:12px;color:#aab}
 .apr-meta b{color:#eceef2}
@@ -1061,7 +1062,7 @@ body.apr-team .apr-add{display:inline-flex}
   function aprPostsMonth(){ var a=window.__APR_POSTS__||[]; return a.filter(function(p){ return parseInt((''+p.day).split('-')[1],10)===cur; }); }
   function aprTypeLabel(p){ if((p.target||'')==='stories')return 'Stories'; var ms=p.midias||[]; if(ms.some(function(m){return aprIsVid(m.url);}))return 'Vídeo'; if(ms.length>1)return 'Carrossel'; return 'Post'; }
   function aprStatusBadge(p){ var s=p.status||'pendente'; var M={pendente:['Pendente','#9aa0a6'],aprovado:['Aprovado','#22c55e'],revisar:['Em revisão','#eab308'],publicado:['Publicado','#5b8def']}; var x=M[s]||M.pendente; return '<span class="apr-lbadge" style="background:'+x[1]+'">'+x[0]+'</span>'; }
-  function aprFilesHtml(p){ return (p.midias||[]).slice(0,8).map(function(m){ if(aprIsVid(m.url))return '<span class="lf lf-img lf-vid"><video src="'+esc(aprMU(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; return '<span class="lf lf-img"><img src="'+esc(aprMU(m.url))+'" alt="" loading="lazy"></span>'; }).join(' '); }
+  function aprFilesHtml(p){ return (p.midias||[]).slice(0,8).map(function(m){ if(aprIsVid(m.url))return '<span class="lf lf-img lf-vid"><video data-lsrc="'+esc(aprMU(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; return '<span class="lf lf-img"><img src="'+esc(aprMU(m.url))+'" alt="" loading="lazy"></span>'; }).join(' '); }
   function aprRowHtml(p){
     var lbl=aprTypeLabel(p), col=itemColor({categoria:lbl});
     var files=aprFilesHtml(p);
@@ -1116,7 +1117,8 @@ body.apr-team .apr-add{display:inline-flex}
   function _hlApi(){ var a=CALAPI||(window.__APPROVAL__&&window.__APPROVAL__.api)||''; return (''+a).replace(/\/+$/,''); }
   function _hlTok(){ try{ return (window.__apprToken&&window.__apprToken())||null; }catch(e){ return null; } }
   function _hlSplit(all){ window.__PLANOS__=all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); }
-  function _hlPull(){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ _hlSplit(d.rows); } }).catch(function(){}); }
+  var _hlSig = null;   // só repinta se o log mudou (mesmo motivo do POSTS_SIG: não recriar vídeos à toa)
+  function _hlPull(quiet){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ var s=JSON.stringify(d.rows); if(quiet&&s===_hlSig) return; _hlSig=s; _hlSplit(d.rows); } }).catch(function(){}); }
   function _hlPayload(r){ var o={slug:SLUG,day:r.day,categoria:r.categoria||'',titulo:r.titulo||'',arquivos:r.arquivos||[],color:r.color||'',concluido:!!r.concluido}; if(r.id&&r.id>0)o.id=r.id; return o; }
   function _hlSave(r){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-save.php',{method:'POST',headers:h,body:JSON.stringify(_hlPayload(r))}).then(function(x){return x.json();}); }
   function _hlDel(id){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-delete.php',{method:'POST',headers:h,body:JSON.stringify({slug:SLUG,id:id})}).then(function(x){return x.json();}); }
@@ -1172,7 +1174,7 @@ body.apr-team .apr-add{display:inline-flex}
     _hlPull();
     setMode(!!_hlTok());
     // sem websocket: polling leve — 15s em edicao, ~60s so-leitura (aba visivel)
-    var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(); } else { _hlT++; if(_hlT%4===0)_hlPull(); } }, 15000);
+    var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(true); } else { _hlT++; if(_hlT%4===0)_hlPull(true); } }, 15000);
   }
   function cloudInit(){
     if(CALSTORE==='hostinger'){ return _hlInit(); }
@@ -1691,6 +1693,15 @@ body.apr-team .apr-add{display:inline-flex}
   }catch(e){}
   var POSTS = [], TEAM = false, cur = null, mediaIdx = 0, editState = null, POLL = null;
 
+  // Miniaturas de vídeo só baixam quando entram na tela (antes: dezenas de .mp4 de todos os meses
+  // de uma vez, que no Safari seguravam as fotos do carrossel e elas apareciam pretas).
+  if(!window.__mgLazyVid){ window.__mgLazyVid=1; (function(){
+    function hyd(v){ var s=v.getAttribute('data-lsrc'); if(s){ v.removeAttribute('data-lsrc'); v.src=s; } }
+    var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); hyd(e.target); } }); },{rootMargin:'300px'}):null;
+    function scan(){ document.querySelectorAll('video[data-lsrc]').forEach(function(v){ if(v.__lv)return; v.__lv=1; if(io)io.observe(v); else hyd(v); }); }
+    var q=0; new MutationObserver(function(){ if(q)return; q=1; setTimeout(function(){ q=0; scan(); },50); }).observe(document.documentElement,{childList:true,subtree:true});
+    scan();
+  })(); }
   function esc(s){ s=(s==null?'':''+s); return s.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;'); }
   function isVideo(u){ var x=(''+u).split('?')[0].toLowerCase(); var e=x.split('.').pop(); return ['mp4','mov','webm','m4v','ogg','avi'].indexOf(e)>=0; }
   function dfmt(d){ if(!d)return '—'; var p=(''+d).split('-'); return p.length===3?(p[2]+'/'+p[1]+'/'+p[0]):d; }
@@ -1765,7 +1776,10 @@ body.apr-team .apr-add{display:inline-flex}
   };
 
   // ---- carregar + render dos chips no calendario ----
-  function load(){ return api('/posts-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){ if(r&&r.ok){ POSTS=r.posts||[]; render(); } }).catch(function(){}); }
+  // Só redesenha se os posts mudaram: recriar as miniaturas de vídeo a cada 8s fazia o Safari
+  // reabrir dezenas de downloads de .mp4 sem parar e as fotos do carrossel ficavam pretas na fila.
+  var POSTS_SIG = null;
+  function load(){ return api('/posts-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){ if(r&&r.ok){ var ps=r.posts||[], sig=JSON.stringify(ps); if(sig===POSTS_SIG) return; POSTS_SIG=sig; POSTS=ps; render(); } }).catch(function(){}); }
 
   function render(){
     window.__APR_POSTS__ = POSTS;
@@ -1782,7 +1796,7 @@ body.apr-team .apr-add{display:inline-flex}
         chip.dataset.pid=p.id; chip.draggable=!!TEAM;   // arrastar entre dias (só o time)
         var m=(p.midias&&p.midias[0])||null;
         var thumb;
-        if(m && isVideo(m.url)){ thumb = '<span class="apr-thumb apr-vthumb"><video src="'+esc(mediaUrl(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; }
+        if(m && isVideo(m.url)){ thumb = '<span class="apr-thumb apr-vthumb"><video data-lsrc="'+esc(mediaUrl(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; }
         else if(m){ thumb = '<img class="apr-thumb" src="'+esc(mediaUrl(m.url))+'" alt="" draggable="false">'; }
         else { thumb = '<span class="apr-noimg">📝</span>'; }
         var lbl = p.target==='stories'?'Stories':(p.descricao? p.descricao.slice(0,22) : 'Post');
@@ -1803,13 +1817,17 @@ body.apr-team .apr-add{display:inline-flex}
   function findByToken(tk){ for(var i=0;i<POSTS.length;i++) if(POSTS[i].token===tk) return POSTS[i]; return null; }
 
   // ---- modal de aprovacao (cliente) + acoes do time ----
-  function openPost(id){ cur=findById(id); if(!cur)return; mediaIdx=0; drawModal(); document.getElementById('apr-modal').classList.add('on'); }
+  // Pré-carrega todas as fotos do carrossel ao abrir o post (evita tela preta ao avançar)
+  var PRELOADED = {};
+  function preloadMedia(p){ (p&&p.midias||[]).forEach(function(m){ if(!m||isVideo(m.url))return; var u=mediaUrl(m.url); if(PRELOADED[u])return; var im=new Image(); im.decoding='async'; im.src=u; PRELOADED[u]=im; }); }
+  function openPost(id){ cur=findById(id); if(!cur)return; mediaIdx=0; preloadMedia(cur); drawModal(); document.getElementById('apr-modal').classList.add('on'); }
   function closeModal(){ document.getElementById('apr-modal').classList.remove('on'); cur=null; }
 
   function mediaHtml(){
     var ms=(cur.midias||[]); if(!ms.length) return '<div class="apr-stage"><span style="color:#889">Sem mídia</span></div>';
     if(mediaIdx>=ms.length)mediaIdx=0; var m=ms[mediaIdx];
-    var el = isVideo(m.url) ? '<video src="'+esc(mediaUrl(m.url))+'" controls playsinline></video>' : '<img src="'+esc(mediaUrl(m.url))+'" alt="">';
+    var el = isVideo(m.url) ? '<video src="'+esc(mediaUrl(m.url))+'" controls playsinline></video>'
+      : '<span class="apr-loading">Carregando…</span><img src="'+esc(mediaUrl(m.url))+'" alt="" onload="this.previousSibling&&this.previousSibling.remove()" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split(&quot;?&quot;)[0]+&quot;?r=&quot;+Date.now();}">';
     var nav = ms.length>1 ? '<button class="apr-nav pv" data-mv="-1">‹</button><button class="apr-nav nx" data-mv="1">›</button><span class="apr-ind">'+(mediaIdx+1)+' / '+ms.length+'</span>' : '';
     return '<div class="apr-stage">'+el+nav+'</div>';
   }
