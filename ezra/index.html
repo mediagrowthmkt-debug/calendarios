@@ -431,6 +431,7 @@ body.apr-team .apr-add{display:inline-flex}
 .apr-stage img,.apr-stage video{width:100%;max-height:52vh;object-fit:contain;display:block}
 .apr-nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:none;background:rgba(0,0,0,.5);color:#fff;font-size:20px;cursor:pointer}
 .apr-nav.pv{left:8px}.apr-nav.nx{right:8px}
+.apr-loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#889;font-size:13px;pointer-events:none}
 .apr-ind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:2px 9px;border-radius:12px}
 .apr-meta{display:flex;gap:18px;flex-wrap:wrap;padding:10px 20px 0;font-size:12px;color:#aab}
 .apr-meta b{color:#eceef2}
@@ -466,9 +467,45 @@ body.apr-team .apr-add{display:inline-flex}
 .apr-msg.err{color:#f87171}.apr-msg.ok{color:#7ff0ab}
 .apr-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#14171d;border:1px solid rgba(255,255,255,.18);color:#eceef2;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:600;z-index:9600;opacity:0;transition:opacity .25s;pointer-events:none}
 .apr-toast.on{opacity:1}
+/* agendamento nas redes (GHL) */
+.apr-ghl{border-top:1px dashed rgba(255,255,255,.12);margin-top:6px;padding-top:12px}
+.apr-ghl .apr-sw{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:#eceef2;cursor:pointer}
+.apr-ghl .apr-sw input{width:18px;height:18px;margin:0;accent-color:#22c55e}
+.apr-ghl-body{margin-top:10px}
+.apr-ghl-body.off{display:none}
+.apr-ghl-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.apr-ghl-row input[type=time]{width:130px}
+.apr-ghl-row label{display:block}
+.apr-ghl-tz{font-size:11px;color:#8a90a0;padding-bottom:10px}
+.apr-chs{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.apr-chs label{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:9px;background:#181b21;border:1px solid rgba(255,255,255,.14);font-size:12px;font-weight:600;color:#dfe2e8;cursor:pointer}
+.apr-chs input{width:auto;margin:0;accent-color:#22c55e}
+.apr-ghl-hint{font-size:11px;color:#8a90a0;margin-top:8px;line-height:1.45}
+.apr-ghl-st{display:flex;flex-wrap:wrap;gap:6px;padding:8px 20px 0}
+.apr-ghl-st span{font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;background:#20242c;color:#cfd3da}
+.apr-ghl-st .g-scheduled{background:rgba(55,214,122,.16);color:#7ff0ab}
+.apr-ghl-st .g-erro{background:rgba(248,113,113,.16);color:#fca5a5}
+.apr-ghl-st .g-ignorado{background:#20242c;color:#8a90a0}
+.apr-ghl-err{padding:6px 20px 0;font-size:12px;color:#fca5a5}
+.apr-ghl-ic{font-size:10px;flex:0 0 auto}
+.apr-rules{margin-top:10px;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 12px;background:#12151a;font-size:12px;line-height:1.5}
+.apr-rules h5{margin:0 0 6px;font-size:12px;color:#eceef2}
+.apr-rules .r-ok{color:#7ff0ab}.apr-rules .r-no{color:#fca5a5}.apr-rules .r-info{color:#9aa0a6}
+.apr-rules ul{margin:4px 0 0;padding-left:16px}
+.apr-rules.block{border-color:rgba(248,113,113,.55);background:rgba(248,113,113,.06)}
+.apr-mode{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.apr-mode label{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:10px;background:#181b21;border:1px solid rgba(255,255,255,.16);font-size:13px;font-weight:700;color:#dfe2e8;cursor:pointer}
+.apr-mode label.on{border-color:#22c55e;background:rgba(34,197,94,.1);color:#fff}
+.apr-mode input{width:auto;margin:0;accent-color:#22c55e}
+.apr-now-warn{margin:0 0 10px;padding:9px 12px;border-radius:10px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.4);color:#ffcf76;font-size:12px;line-height:1.5}
+.apr-locked{margin-top:6px;padding:10px 12px;border-radius:10px;background:rgba(55,214,122,.08);border:1px solid rgba(55,214,122,.35);color:#bff5d3;font-size:12px;line-height:1.5}
+.apr-btn.apr-confirm{background:linear-gradient(135deg,#eab308,#f97316);color:#1f1300}
+.apr-chs label.skip{opacity:.55;text-decoration:line-through}
+.apr-chs label .why{font-size:10px;color:#fca5a5;text-decoration:none;display:inline-block;margin-left:2px}
 @media(max-width:560px){.apr-btn{flex-basis:100%}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>window.__CAL_SEEDLOG__=[{"id": 733, "slug": "ezra", "day": "2026-08-21", "categoria": "Documento", "titulo": "Planejamento de estruturação da próxima semana e do próximo mês", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-08-24T13:33:02.464109Z", "created_at": "2026-08-21T17:05:52-03:00", "updated_at": "2026-08-24T10:33:03-03:00"}, {"id": 734, "slug": "ezra", "day": "2026-08-24", "categoria": "Estruturação", "titulo": "Plano de estruturação: organizar Drive, portfólio e antes/depois", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-15T02:05:04.085164Z", "created_at": "2026-08-21T17:10:52-03:00", "updated_at": "2026-09-14T23:07:53-03:00"}, {"id": 735, "slug": "ezra", "day": "2026-08-25", "categoria": "Estruturação", "titulo": "Plano de estruturação: serviços e top 3 prioridades comerciais", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-15T02:05:04.085164Z", "created_at": "2026-08-21T17:10:58-03:00", "updated_at": "2026-09-14T23:07:57-03:00"}, {"id": 736, "slug": "ezra", "day": "2026-08-26", "categoria": "Estruturação", "titulo": "Plano de estruturação: regiões, ZIP codes e público ideal", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-15T02:05:04.085164Z", "created_at": "2026-08-21T17:11:03-03:00", "updated_at": "2026-09-14T23:08:04-03:00"}, {"id": 737, "slug": "ezra", "day": "2026-08-27", "categoria": "Estruturação", "titulo": "Plano de estruturação: domínio, e-mail e reviews", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-15T02:05:04.085164Z", "created_at": "2026-08-21T17:11:07-03:00", "updated_at": "2026-09-14T23:08:09-03:00"}, {"id": 738, "slug": "ezra", "day": "2026-08-28", "categoria": "Estruturação", "titulo": "Plano de estruturação: síntese e pauta da próxima reunião", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-15T02:05:04.085164Z", "created_at": "2026-08-21T17:11:13-03:00", "updated_at": "2026-09-14T23:08:15-03:00"}, {"id": 833, "slug": "ezra", "day": "2026-09-14", "categoria": "Conteúdo", "titulo": "agenda reunião", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-15T13:42:22.317740Z", "created_at": "2026-09-14T17:35:47-03:00", "updated_at": "2026-09-15T10:42:23-03:00"}, {"id": 850, "slug": "ezra", "day": "2026-09-16", "categoria": "Website", "titulo": "Site institucional criado com portfólio real e captação", "arquivos": [{"name": "site-desktop.png", "url": "https://mediagrowth.com.br/calendario-api/uploads/ezra/202609/baaf6808-862c-47dc-8b3d-fcfb1d81c2af-site-desktop.png"}, {"name": "site-mobile.png", "url": "https://mediagrowth.com.br/calendario-api/uploads/ezra/202609/c964a9a0-7291-448e-a4e9-7ee32a48b0e3-site-mobile.png"}], "color": null, "concluido": true, "concluido_em": "2026-09-17T01:01:22.642061Z", "created_at": "2026-09-16T13:53:17-03:00", "updated_at": "2026-09-16T22:01:24-03:00"}, {"id": 851, "slug": "ezra", "day": "2026-09-16", "categoria": "Website", "titulo": "Site refeito no padrão Frank", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-17T01:01:30.044177Z", "created_at": "2026-09-16T14:01:39-03:00", "updated_at": "2026-09-16T22:01:31-03:00"}, {"id": 832, "slug": "ezra", "day": "2026-09-18", "categoria": "Conteúdo", "titulo": "Criar wbsite", "arquivos": [], "color": null, "concluido": true, "concluido_em": "2026-09-17T01:01:25.508344Z", "created_at": "2026-09-14T17:30:03-03:00", "updated_at": "2026-09-16T22:01:26-03:00"}];window.__CAL_SEEDPOSTS__=[];</script>
 </head>
 <body class="mode-view">
 <header class="topbar">
@@ -1025,7 +1062,7 @@ body.apr-team .apr-add{display:inline-flex}
   function aprPostsMonth(){ var a=window.__APR_POSTS__||[]; return a.filter(function(p){ return parseInt((''+p.day).split('-')[1],10)===cur; }); }
   function aprTypeLabel(p){ if((p.target||'')==='stories')return 'Stories'; var ms=p.midias||[]; if(ms.some(function(m){return aprIsVid(m.url);}))return 'Vídeo'; if(ms.length>1)return 'Carrossel'; return 'Post'; }
   function aprStatusBadge(p){ var s=p.status||'pendente'; var M={pendente:['Pendente','#9aa0a6'],aprovado:['Aprovado','#22c55e'],revisar:['Em revisão','#eab308'],publicado:['Publicado','#5b8def']}; var x=M[s]||M.pendente; return '<span class="apr-lbadge" style="background:'+x[1]+'">'+x[0]+'</span>'; }
-  function aprFilesHtml(p){ return (p.midias||[]).slice(0,8).map(function(m){ if(aprIsVid(m.url))return '<span class="lf lf-img lf-vid"><video src="'+esc(aprMU(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; return '<span class="lf lf-img"><img src="'+esc(aprMU(m.url))+'" alt="" loading="lazy"></span>'; }).join(' '); }
+  function aprFilesHtml(p){ return (p.midias||[]).slice(0,8).map(function(m){ if(aprIsVid(m.url))return '<span class="lf lf-img lf-vid"><video data-lsrc="'+esc(aprMU(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; return '<span class="lf lf-img"><img src="'+esc(aprMU(m.url))+'" alt="" loading="lazy"></span>'; }).join(' '); }
   function aprRowHtml(p){
     var lbl=aprTypeLabel(p), col=itemColor({categoria:lbl});
     var files=aprFilesHtml(p);
@@ -1080,7 +1117,8 @@ body.apr-team .apr-add{display:inline-flex}
   function _hlApi(){ var a=CALAPI||(window.__APPROVAL__&&window.__APPROVAL__.api)||''; return (''+a).replace(/\/+$/,''); }
   function _hlTok(){ try{ return (window.__apprToken&&window.__apprToken())||null; }catch(e){ return null; } }
   function _hlSplit(all){ window.__PLANOS__=all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); }
-  function _hlPull(){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ _hlSplit(d.rows); } }).catch(function(){}); }
+  var _hlSig = null;   // só repinta se o log mudou (mesmo motivo do POSTS_SIG: não recriar vídeos à toa)
+  function _hlPull(quiet){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ var s=JSON.stringify(d.rows); if(quiet&&s===_hlSig) return; _hlSig=s; _hlSplit(d.rows); } }).catch(function(){}); }
   function _hlPayload(r){ var o={slug:SLUG,day:r.day,categoria:r.categoria||'',titulo:r.titulo||'',arquivos:r.arquivos||[],color:r.color||'',concluido:!!r.concluido}; if(r.id&&r.id>0)o.id=r.id; return o; }
   function _hlSave(r){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-save.php',{method:'POST',headers:h,body:JSON.stringify(_hlPayload(r))}).then(function(x){return x.json();}); }
   function _hlDel(id){ var t=_hlTok(),h={'Content-Type':'application/json'}; if(t)h['X-Team-Token']=t; return fetch(_hlApi()+'/log-delete.php',{method:'POST',headers:h,body:JSON.stringify({slug:SLUG,id:id})}).then(function(x){return x.json();}); }
@@ -1110,7 +1148,7 @@ body.apr-team .apr-add{display:inline-flex}
     if(SB) SB.from(LOGTABLE).delete().eq('id',id).then(function(){},function(){});
   }
   // sync em nuvem (config.sync): time MG loga e edita; cliente só vê (read-only, tempo real)
-  var SYNC={"provider": "supabase", "url": "https://qyqhtihlctkassnevzbu.supabase.co", "key": "sb_publishable_xPNnMuUkCGJLFNfGpKoN5w_aSTE8WJG", "table": "calendar_notes", "team_email": "calendario@mediagrowth.com.br"}, CALSTORE="", CALAPI="https://mediagrowth.com.br/calendario-api", SB=null, EDIT=false, DAYED_OPEN=null;
+  var SYNC={"team_email": "calendario@mediagrowth.com.br"}, CALSTORE="hostinger", CALAPI="https://mediagrowth.com.br/calendario-api", SB=null, EDIT=false, DAYED_OPEN=null;
   function setMode(edit){
     EDIT=!!edit;
     document.body.classList.toggle('mode-edit', EDIT);
@@ -1129,10 +1167,14 @@ body.apr-team .apr-add{display:inline-flex}
   function _rtUnsubscribe(){ try{ if(SB&&SB.__rt){ SB.removeChannel(SB.__rt); SB.__rt=null; } }catch(e){} }
   function _hlInit(){
     var sp=document.getElementById('syncpill'); if(sp)sp.classList.add('on');
+    // 🌱 mostra o SEED baked na hora (server-side) — não depende do fetch (Safari
+    // falha o fetch cross-origin em hard-reload e deixava vazio). O _hlPull() por
+    // baixo atualiza ao vivo onde o fetch funciona.
+    if(window.__CAL_SEEDLOG__ && window.__CAL_SEEDLOG__.length){ try{ _hlSplit(window.__CAL_SEEDLOG__); }catch(e){} }
     _hlPull();
     setMode(!!_hlTok());
-    // sem websocket: polling leve — 15s em edicao, ~10min so-leitura (aba visivel)
-    var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(); } else { _hlT++; if(_hlT%40===0)_hlPull(); } }, 15000);
+    // sem websocket: polling leve — 15s em edicao, ~60s so-leitura (aba visivel)
+    var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(true); } else { _hlT++; if(_hlT%4===0)_hlPull(true); } }, 15000);
   }
   function cloudInit(){
     if(CALSTORE==='hostinger'){ return _hlInit(); }
@@ -1474,7 +1516,7 @@ body.apr-team .apr-add{display:inline-flex}
     if(!EDIT)return;
     var file=imageFromClipboard(e); if(!file)return;   // sem imagem no clipboard → deixa o colar de texto normal
     e.preventDefault();
-    if(!SB){ alert('Faça login (botão Entrar) para colar imagens no calendário.'); return; }
+    if(!SB&&CALSTORE!=='hostinger'){ alert('Faça login (botão Entrar) para colar imagens no calendário.'); return; }
     var ae=document.activeElement;
     var er=ae&&ae.closest&&ae.closest('tr.lrow-edit');                 // 1) linha da planilha em edição
     if(er&&er.dataset.id){ attachToRow(+er.dataset.id,file); return; }
@@ -1651,6 +1693,15 @@ body.apr-team .apr-add{display:inline-flex}
   }catch(e){}
   var POSTS = [], TEAM = false, cur = null, mediaIdx = 0, editState = null, POLL = null;
 
+  // Miniaturas de vídeo só baixam quando entram na tela (antes: dezenas de .mp4 de todos os meses
+  // de uma vez, que no Safari seguravam as fotos do carrossel e elas apareciam pretas).
+  if(!window.__mgLazyVid){ window.__mgLazyVid=1; (function(){
+    function hyd(v){ var s=v.getAttribute('data-lsrc'); if(s){ v.removeAttribute('data-lsrc'); v.src=s; } }
+    var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); hyd(e.target); } }); },{rootMargin:'300px'}):null;
+    function scan(){ document.querySelectorAll('video[data-lsrc]').forEach(function(v){ if(v.__lv)return; v.__lv=1; if(io)io.observe(v); else hyd(v); }); }
+    var q=0; new MutationObserver(function(){ if(q)return; q=1; setTimeout(function(){ q=0; scan(); },50); }).observe(document.documentElement,{childList:true,subtree:true});
+    scan();
+  })(); }
   function esc(s){ s=(s==null?'':''+s); return s.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;'); }
   function isVideo(u){ var x=(''+u).split('?')[0].toLowerCase(); var e=x.split('.').pop(); return ['mp4','mov','webm','m4v','ogg','avi'].indexOf(e)>=0; }
   function dfmt(d){ if(!d)return '—'; var p=(''+d).split('-'); return p.length===3?(p[2]+'/'+p[1]+'/'+p[0]):d; }
@@ -1658,7 +1709,17 @@ body.apr-team .apr-add{display:inline-flex}
   function toast(msg,ms){ var t=document.getElementById('apr-toast'); if(!t)return; t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); if(ms!==0)t._h=setTimeout(function(){t.classList.remove('on');},ms||2000); }
   function tokenExp(tk){ try{ return parseInt(atob(tk.split('.')[1]),10)||0; }catch(e){ return 0; } }
 
-  function setTeam(on){ TEAM=!!on; document.body.classList.toggle('apr-team',TEAM); renderBar(); render(); }
+  function setTeam(on){ TEAM=!!on; document.body.classList.toggle('apr-team',TEAM); renderBar(); render(); if(TEAM)loadGhl(); }
+  // ---- agendamento nas redes (GHL): quais redes o cliente tem conectadas ----
+  var GHL = {enabled:false};
+  function loadGhl(){ if(!TEAM||!TOKEN)return Promise.resolve(GHL); return api('/ghl-info.php?slug='+encodeURIComponent(SLUG)).then(function(r){ if(r&&r.ok&&r.ghl)GHL=r.ghl; return GHL; }).catch(function(){ return GHL; }); }
+  function ghlSummary(g){
+    if(!g||!g.enabled)return '';
+    var its=g.items||{}, ks=Object.keys(its), ok=ks.filter(function(k){return its[k].status==='scheduled'||its[k].status==='published';});
+    if(g.erro)return 'não enviado: '+g.erro;
+    if(g.mode==='now') return 'publicado agora em '+ok.length+' de '+ks.length+' redes';
+    return ok.length+' de '+ks.length+' redes agendadas para '+(g.time||'');
+  }
   function domStatus(list){ var h={}; list.forEach(function(p){ h[p.status||'pendente']=1; }); if(h.revisar)return 'revisar'; if(h.pendente)return 'pendente'; if(h.aprovado)return 'aprovado'; return 'pendente'; }
   function toClientLink(){ return location.origin+location.pathname; }
   function renderBar(){
@@ -1677,7 +1738,7 @@ body.apr-team .apr-add{display:inline-flex}
   }
   (function initTeam(){ if(TOKEN && tokenExp(TOKEN) > Math.floor(Date.now()/1000)){ TEAM=true; document.body.classList.add('apr-team'); } })();
 
-  function api(path){ return fetch(API+path).then(function(r){return r.json();}); }
+  function api(path){ var _u=API+path+(path.indexOf('?')>=0?'&':'?')+'_='+Date.now(); var o={cache:'no-store'}; if(TEAM&&TOKEN)o.headers={'X-Team-Token':TOKEN}; return fetch(_u,o).then(function(r){return r.json();}); }
   function apiJson(path,body,team){ var h={'Content-Type':'application/json'}; if(team&&TOKEN)h['X-Team-Token']=TOKEN; return fetch(API+path,{method:'POST',headers:h,body:JSON.stringify(body)}).then(function(r){return r.json();}); }
   function apiForm(path,fd){ var h={}; if(TOKEN)h['X-Team-Token']=TOKEN; return fetch(API+path,{method:'POST',headers:h,body:fd}).then(function(r){return r.json();}); }
 
@@ -1705,17 +1766,20 @@ body.apr-team .apr-add{display:inline-flex}
   // mover um post (para aprovar) de dia via drag-and-drop no calendário —
   // persiste no backend (post-save.php) e repinta o calendário E a planilha de baixo.
   window.__aprMovePost = function(id, newDay){
-    if(!TEAM) return; var p=findById(+id); if(!p) return;
+    if(!TEAM) return; var p=findById(id)||findById(+id); if(!p) return;
     if(!newDay || p.day===newDay) return; var prev=p.day;
     p.day=newDay; render();   // move já na tela (otimista) — render() repinta a planilha via __logRepaintPosts
     apiJson('/post-save.php',{slug:SLUG,id:p.id,day:newDay,target:p.target,descricao:p.descricao,midias:p.midias||[]},true).then(function(r){
-      if(r&&r.ok){ var ex=findById(r.post.id); if(ex){ POSTS[POSTS.indexOf(ex)]=r.post; } toast('Post movido para '+dfmt(newDay)); render(); }
+      if(r&&r.ok){ var ex=findById(r.post.id); if(ex){ POSTS[POSTS.indexOf(ex)]=r.post; } var gs=ghlSummary(r.post.ghl); toast('Post movido para '+dfmt(newDay)+(gs?' · '+gs:''),gs?4500:2000); render(); }
       else { p.day=prev; render(); toast((r&&r.error)||'Não foi possível mover o post.'); }
     }).catch(function(){ p.day=prev; render(); toast('Falha de conexão ao mover o post.'); });
   };
 
   // ---- carregar + render dos chips no calendario ----
-  function load(){ return api('/posts-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){ if(r&&r.ok){ POSTS=r.posts||[]; render(); } }).catch(function(){}); }
+  // Só redesenha se os posts mudaram: recriar as miniaturas de vídeo a cada 8s fazia o Safari
+  // reabrir dezenas de downloads de .mp4 sem parar e as fotos do carrossel ficavam pretas na fila.
+  var POSTS_SIG = null;
+  function load(){ return api('/posts-list.php?slug='+encodeURIComponent(SLUG)).then(function(r){ if(r&&r.ok){ var ps=r.posts||[], sig=JSON.stringify(ps); if(sig===POSTS_SIG) return; POSTS_SIG=sig; POSTS=ps; render(); } }).catch(function(){}); }
 
   function render(){
     window.__APR_POSTS__ = POSTS;
@@ -1732,11 +1796,14 @@ body.apr-team .apr-add{display:inline-flex}
         chip.dataset.pid=p.id; chip.draggable=!!TEAM;   // arrastar entre dias (só o time)
         var m=(p.midias&&p.midias[0])||null;
         var thumb;
-        if(m && isVideo(m.url)){ thumb = '<span class="apr-thumb apr-vthumb"><video src="'+esc(mediaUrl(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; }
+        if(m && isVideo(m.url)){ thumb = '<span class="apr-thumb apr-vthumb"><video data-lsrc="'+esc(mediaUrl(m.url))+'#t=0.5" muted playsinline preload="metadata"></video><i>▶</i></span>'; }
         else if(m){ thumb = '<img class="apr-thumb" src="'+esc(mediaUrl(m.url))+'" alt="" draggable="false">'; }
         else { thumb = '<span class="apr-noimg">📝</span>'; }
         var lbl = p.target==='stories'?'Stories':(p.descricao? p.descricao.slice(0,22) : 'Post');
-        chip.innerHTML = thumb + '<span class="apr-dot s-'+st+'"></span><span class="apr-tt">'+esc(lbl)+'</span>';
+        var g=p.ghl, gic='';
+        if(g&&g.enabled){ var its=g.items||{}, bad=g.erro||Object.keys(its).some(function(k){return its[k].status==='erro';});
+          gic='<span class="apr-ghl-ic" title="'+(bad?'Envio pras redes com erro':(g.mode==='now'?'Publicado nas redes':'Agendado nas redes às '+esc(g.time||'')))+'">'+(bad?'⚠️':(g.mode==='now'?'🚀':'📣'))+'</span>'; }
+        chip.innerHTML = thumb + '<span class="apr-dot s-'+st+'"></span><span class="apr-tt">'+esc(lbl)+'</span>'+gic;
         chip.onclick=function(ev){ if(ev)ev.stopPropagation(); openPost(p.id); };
         c.appendChild(chip);
       });
@@ -1750,13 +1817,17 @@ body.apr-team .apr-add{display:inline-flex}
   function findByToken(tk){ for(var i=0;i<POSTS.length;i++) if(POSTS[i].token===tk) return POSTS[i]; return null; }
 
   // ---- modal de aprovacao (cliente) + acoes do time ----
-  function openPost(id){ cur=findById(id); if(!cur)return; mediaIdx=0; drawModal(); document.getElementById('apr-modal').classList.add('on'); }
+  // Pré-carrega todas as fotos do carrossel ao abrir o post (evita tela preta ao avançar)
+  var PRELOADED = {};
+  function preloadMedia(p){ (p&&p.midias||[]).forEach(function(m){ if(!m||isVideo(m.url))return; var u=mediaUrl(m.url); if(PRELOADED[u])return; var im=new Image(); im.decoding='async'; im.src=u; PRELOADED[u]=im; }); }
+  function openPost(id){ cur=findById(id); if(!cur)return; mediaIdx=0; preloadMedia(cur); drawModal(); document.getElementById('apr-modal').classList.add('on'); }
   function closeModal(){ document.getElementById('apr-modal').classList.remove('on'); cur=null; }
 
   function mediaHtml(){
     var ms=(cur.midias||[]); if(!ms.length) return '<div class="apr-stage"><span style="color:#889">Sem mídia</span></div>';
     if(mediaIdx>=ms.length)mediaIdx=0; var m=ms[mediaIdx];
-    var el = isVideo(m.url) ? '<video src="'+esc(mediaUrl(m.url))+'" controls playsinline></video>' : '<img src="'+esc(mediaUrl(m.url))+'" alt="">';
+    var el = isVideo(m.url) ? '<video src="'+esc(mediaUrl(m.url))+'" controls playsinline></video>'
+      : '<span class="apr-loading">Carregando…</span><img src="'+esc(mediaUrl(m.url))+'" alt="" onload="this.previousSibling&&this.previousSibling.remove()" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split(&quot;?&quot;)[0]+&quot;?r=&quot;+Date.now();}">';
     var nav = ms.length>1 ? '<button class="apr-nav pv" data-mv="-1">‹</button><button class="apr-nav nx" data-mv="1">›</button><span class="apr-ind">'+(mediaIdx+1)+' / '+ms.length+'</span>' : '';
     return '<div class="apr-stage">'+el+nav+'</div>';
   }
@@ -1769,7 +1840,18 @@ body.apr-team .apr-add{display:inline-flex}
     }).join('');
     return '<div class="apr-hist"><h4>Histórico</h4>'+items+'</div>';
   }
-  function acaoLabel(a){ return {criado:'Criado',aprovado:'Aprovado',reprovado:'Reprovado',revisar:'Revisão pedida',reenviado:'Reenviado'}[a]||a; }
+  function acaoLabel(a){ return {criado:'Criado',aprovado:'Aprovado',reprovado:'Reprovado',revisar:'Revisão pedida',reenviado:'Reenviado',agendado:'Agendado nas redes',publicado:'Publicado nas redes',desagendado:'Agendamento cancelado'}[a]||a; }
+  function ghlStatusHtml(g){
+    if(!g||!g.enabled)return '';
+    var lbl={scheduled:'agendado',published:'publicado',erro:'erro',ignorado:'não enviado'};
+    var its=g.items||{};
+    var chips=Object.keys(its).map(function(k){ var it=its[k]; var t=it.canal+': '+(lbl[it.status]||it.status);
+      return '<span class="g-'+esc(it.status)+'" title="'+esc(it.error||'')+'">'+esc(t)+'</span>'; }).join('');
+    var head=g.mode==='now'?'<span>🚀 <b>Publicado agora</b>'+(g.published_at?' em '+esc(dfmt((''+g.published_at).slice(0,10))+' '+(''+g.published_at).slice(11,16)):'')+'</span>':'<span>📣 Redes às <b>'+esc(g.time||'')+'</b></span>';
+    var err=(g.erro?'<div class="apr-ghl-err">'+esc(g.erro)+'</div>':'')+(g.aviso?'<div class="apr-ghl-err">'+esc(g.aviso)+'</div>':'');
+    var det=TEAM?Object.keys(its).filter(function(k){return its[k].error;}).map(function(k){ return '<div class="apr-ghl-err">'+esc(its[k].canal)+': '+esc(its[k].error)+'</div>'; }).join(''):'';
+    return '<div class="apr-ghl-st">'+head+chips+'</div>'+err+det;
+  }
 
   function drawModal(){
     var st=cur.status||'pendente';
@@ -1783,6 +1865,7 @@ body.apr-team .apr-add{display:inline-flex}
       +'<h3>'+esc((cur.descricao||'Post').slice(0,70))+'</h3><button class="apr-x" data-t="close">×</button></div>'
       + mediaHtml()
       +'<div class="apr-meta"><span>Data: <b>'+dfmt(cur.day)+'</b></span><span>Destino: <b>'+(cur.target==='stories'?'Stories':'Feed')+'</b></span></div>'
+      + ghlStatusHtml(cur.ghl)
       +'<div class="apr-desc">'+esc(cur.descricao||'Sem descrição.')+'</div>'
       +'<div class="apr-acts">'
         +'<button class="apr-btn apr-ok" data-t="approve">✓ Aprovar</button>'
@@ -1881,10 +1964,120 @@ body.apr-team .apr-add{display:inline-flex}
   // ---- editor do time (novo / editar) ----
   function openEdit(post, day){
     if(!TEAM){ toast('Faça login do time para postar.'); return; }
-    editState={ id: post?post.id:'', day: post?post.day:(day||''), target: post?post.target:'feed', descricao: post?post.descricao:'', midias: post?(post.midias||[]).slice():[], _new:[] };
+    var pg=post&&post.ghl?post.ghl:null;
+    editState={ id: post?post.id:'', day: post?post.day:(day||''), target: post?post.target:'feed', descricao: post?post.descricao:'', midias: post?(post.midias||[]).slice():[], _new:[],
+      ghl:{ enabled: !!(pg&&pg.enabled), mode: (pg&&pg.mode)||'schedule', time: (pg&&pg.time)||'', channels: (pg&&pg.channels)?pg.channels.slice():null,
+            locked: !!(pg&&pg.enabled&&pg.schedule_utc&&Date.parse(pg.schedule_utc)<=Date.now()), published_at:(pg&&pg.published_at)||'' }, _confirmNow:0 };
     drawEdit(); document.getElementById('apr-edit').classList.add('on');
+    loadGhl().then(function(){ if(editState)drawEdit(); });
   }
   function closeEdit(){ document.getElementById('apr-edit').classList.remove('on'); editState=null; }
+  // guarda no estado o que foi digitado antes de redesenhar (upload redesenha o modal)
+  function syncEditFromDom(){
+    var e=editState; if(!e)return; var $=function(i){return document.getElementById(i);};
+    if($('apr-e-day'))e.day=$('apr-e-day').value; if($('apr-e-target'))e.target=$('apr-e-target').value;
+    if($('apr-e-desc'))e.descricao=$('apr-e-desc').value;
+    var md=document.querySelector('input[name="apr-g-mode"]:checked'); if(md)e.ghl.mode=md.value;
+    if($('apr-g-on')){ e.ghl.enabled=$('apr-g-on').checked; if($('apr-g-time'))e.ghl.time=$('apr-g-time').value;
+      e.ghl.channels=[].slice.call(document.querySelectorAll('.apr-chs input:checked')).map(function(x){return x.value;}); }
+  }
+  // minutos entre agora e dia+hora no fuso do cliente (GHL exige folga; backend confere de novo)
+  function ghlTzOffsetMin(tz,d){ try{ var f=new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).formatToParts(d); var o={}; f.forEach(function(x){o[x.type]=x.value;});
+    return (Date.UTC(+o.year,+o.month-1,+o.day,+o.hour,+o.minute)-Math.floor(d.getTime()/60000)*60000)/60000; }catch(e){ return -d.getTimezoneOffset(); } }
+  function ghlMinutesAhead(day,time){ if(!day||!time)return -1; var p=day.split('-'),t=time.split(':'); var tz=(GHL&&GHL.timezone)||'America/Sao_Paulo';
+    var utc=Date.UTC(+p[0],+p[1]-1,+p[2],+t[0],+t[1])-ghlTzOffsetMin(tz,new Date())*60000; return (utc-Date.now())/60000; }
+  // hora sugerida: post de hoje → agora + 20 min (arredondado a 5); senão o padrão da conta
+  function ghlSuggestTime(day){ var tz=(GHL&&GHL.timezone)||'America/Sao_Paulo', def=(GHL&&GHL.default_time)||'12:00';
+    if(!day||ghlMinutesAhead(day,def)>=10)return def; var d=new Date(Date.now()+20*60000); var off=ghlTzOffsetMin(tz,d);
+    var l=new Date(d.getTime()+off*60000); var h=l.getUTCHours(), m=Math.ceil(l.getUTCMinutes()/5)*5; if(m===60){m=0;h=(h+1)%24;}
+    return (h<10?'0':'')+h+':'+(m<10?'0':'')+m; }
+  // ===== regras de cada rede (espelho do ghl-lib.php; o servidor confere de novo) =====
+  var GHL_LIMITS={facebook:63206,instagram:2200,linkedin_page:3000,linkedin_profile:3000,tiktok:2200,pinterest:500,youtube:5000,google_business:1500,twitter:280};
+  function extOf(u){ return ((''+u).split('?')[0].split('.').pop()||'').toLowerCase(); }
+  function isJpgPng(u){ return ['jpg','jpeg','png'].indexOf(extOf(u))>=0; }
+  // devolve null (vai) ou o motivo de NÃO ir pra essa rede
+  function ghlWhyNot(key,st){
+    var cc=(GHL.channels||[]).filter(function(c){return c.key===key;})[0]; if(cc&&cc.platform) key=cc.platform;   // regra pela rede real
+    var vids=st.midias.filter(function(m){return isVideo(m.url);}), imgs=st.midias.filter(function(m){return !isVideo(m.url);});
+    if(!st.midias.length) return 'sem mídia';
+    var lim=GHL_LIMITS[key]; if(lim && st.len>lim) return 'legenda com '+st.len+' caracteres, máximo '+lim;
+    if(st.target==='stories'){ if(key!=='instagram'&&key!=='facebook') return 'Stories só vai pro Instagram e Facebook';
+      if(!vids.length && key==='instagram' && !isJpgPng(imgs[0].url)) return 'Instagram só aceita JPG ou PNG'; return null; }
+    if(key==='tiktok'||key==='youtube') return vids.length?null:'só aceita vídeo';
+    if(key==='google_business'){ if(!imgs.length) return 'só aceita imagem'; if(!isJpgPng(imgs[0].url)) return 'só aceita JPG ou PNG'; return null; }
+    if(key==='instagram' && !vids.length){ if(imgs.length>10) return 'máximo 10 imagens no carrossel'; if(imgs.some(function(m){return !isJpgPng(m.url);})) return 'só aceita JPG ou PNG'; }
+    return null;
+  }
+  function ghlReadState(){
+    var $=function(i){return document.getElementById(i);}; var e=editState||{midias:[],_new:[]};
+    var desc=(($('apr-e-desc')||{}).value||'').trim();
+    return { day:(($('apr-e-day')||{}).value||'').trim(), target:(($('apr-e-target')||{}).value||'feed'), desc:desc, len:desc.length,
+      time:(($('apr-g-time')||{}).value||''), on:!!(($('apr-g-on')||{}).checked),
+      mode:((document.querySelector('input[name="apr-g-mode"]:checked')||{}).value||'schedule'),
+      chans:[].slice.call(document.querySelectorAll('.apr-chs input:checked')).map(function(x){return x.value;}),
+      midias:(e.midias||[]).concat(e._new||[]) };
+  }
+  // painel ao vivo: o que vai, o que não vai e o que impede de salvar
+  function ghlCheck(){
+    var st=ghlReadState(), block=[], vai=[], naoVai=[], info=[];
+    if(!st.on) return {block:block};
+    if(!st.day) block.push('Escolha a data.');
+    if(st.mode==='now'){ /* publicar agora: sem horário e sem folga */ }
+    else if(!/^\d{2}:\d{2}$/.test(st.time)) block.push('Escolha o horário.');
+    else if(st.day){ var ahead=ghlMinutesAhead(st.day,st.time);
+      if(ahead<10) block.push(ahead<0?'Esse horário já passou. O agendamento precisa ser pelo menos 10 minutos à frente.':'Faltam só '+Math.max(0,Math.floor(ahead))+' min pra esse horário. O agendamento precisa ser pelo menos 10 minutos à frente.'); }
+    if(!st.desc) block.push('Escreva a legenda: nenhum post vai pras redes sem legenda.');
+    if(!st.midias.length) block.push('Adicione a imagem ou o vídeo do post.');
+    if(!st.chans.length) block.push('Marque pelo menos uma rede.');
+    (GHL.channels||[]).forEach(function(c){
+      var lb=document.querySelector('.apr-chs input[value="'+c.key+'"]'); lb=lb&&lb.parentNode;
+      var why=st.midias.length?ghlWhyNot(c.key,st):null, sel=st.chans.indexOf(c.key)>=0;   // sem mídia já aparece 1x nos bloqueios
+      if(lb){ lb.classList.toggle('skip',!!why&&sel); var w=lb.querySelector('.why'); if(w)w.remove();
+        if(why&&sel){ var sp=document.createElement('span'); sp.className='why'; sp.textContent='('+why+')'; lb.appendChild(sp); } }
+      if(!sel) return; if(why) naoVai.push(c.canal+': '+why); else vai.push(c.canal);
+    });
+    if(st.chans.length && st.midias.length && st.desc && !vai.length) block.push('Nenhuma das redes marcadas aceita esse post (veja os motivos abaixo).');
+    var imgs=st.midias.filter(function(m){return !isVideo(m.url);}), temVid=st.midias.some(function(m){return isVideo(m.url);});
+    var vaiP=(GHL.channels||[]).filter(function(c){return st.chans.indexOf(c.key)>=0 && vai.indexOf(c.canal)>=0;}).map(function(c){return c.platform||c.key;});
+    if(vaiP.indexOf('pinterest')>=0 && imgs.length>1 && !temVid) info.push('Pinterest recebe só a 1ª imagem.');
+    if(vaiP.indexOf('google_business')>=0 && imgs.length>1) info.push('Google Business recebe só a 1ª imagem.');
+    if(temVid && imgs.length) info.push('Post com vídeo e imagem: vai só o vídeo.');
+    if(vaiP.indexOf('youtube')>=0){ var t=(st.desc.split(/\n/)[0]||'').trim(); info.push('Título do YouTube = 1ª linha da legenda'+(t.length>100?' (cortada em 100 caracteres)':'')+'.'); }
+    var box=document.getElementById('apr-g-check');
+    if(box){
+      var now=st.mode==='now';
+      var h='<h5>'+(block.length?(now?'⛔ Ainda não dá pra publicar':'⛔ Ainda não dá pra agendar'):(now?'✅ Pronto pra publicar agora':'✅ Pronto pra agendar'))+'</h5>';
+      if(block.length) h+='<ul class="r-no">'+block.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';
+      if(vai.length) h+='<div class="r-ok">Vai para: '+esc(vai.join(', '))+'</div>';
+      if(naoVai.length) h+='<div class="r-no">Não vai para: <ul>'+naoVai.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>';
+      if(info.length) h+='<div class="r-info">'+info.map(esc).join('<br>')+'</div>';
+      box.innerHTML=h; box.classList.toggle('block',!!block.length);
+    }
+    var sb=document.querySelector('#apr-edit-card [data-e="save"]');
+    if(sb && !(editState&&editState._confirmNow)){ sb.textContent=(st.on&&st.mode==='now')?'🚀 Publicar agora'+(vai.length?' em '+vai.length+' redes':''):'Salvar post'; }
+    return {block:block, vai:vai, naoVai:naoVai};
+  }
+  function ghlEditHtml(e){
+    if(!GHL||!GHL.enabled)return '';
+    var g=e.ghl, sel=g.channels||GHL.channels.filter(function(c){return c.default!==false;}).map(function(c){return c.key;});
+    var chs=GHL.channels.map(function(c){ return '<label><input type="checkbox" value="'+esc(c.key)+'"'+(sel.indexOf(c.key)>=0?' checked':'')+'>'+esc(c.canal)+'</label>'; }).join('');
+    var tz=(GHL.timezone||'').split('/').pop().replace(/_/g,' ');
+    if(g.locked){  // já foi pro ar: nada aqui mexe nas redes
+      return '<div class="row apr-ghl"><div class="apr-locked">✅ <b>Este post já foi publicado nas redes'+(g.mode==='now'?'':' (às '+esc(g.time)+')')+'.</b><br>Editar, mover ou excluir aqui <b>não altera nem apaga</b> o que já saiu nas redes. Pra publicar de novo, crie um post novo.</div></div>';
+    }
+    var now=g.mode==='now';
+    return '<div class="row apr-ghl"><label class="apr-sw"><input type="checkbox" id="apr-g-on"'+(g.enabled?' checked':'')+'>📣 Enviar pras redes sociais</label>'
+      +'<div class="apr-ghl-body'+(g.enabled?'':' off')+'" id="apr-g-body">'
+      +'<div class="apr-mode"><label class="'+(now?'':'on')+'"><input type="radio" name="apr-g-mode" value="schedule"'+(now?'':' checked')+'>⏰ Agendar</label>'
+      +'<label class="'+(now?'on':'')+'"><input type="radio" name="apr-g-mode" value="now"'+(now?' checked':'')+'>🚀 Publicar agora</label></div>'
+      +'<div class="apr-now-warn" id="apr-g-nowwarn"'+(now?'':' style="display:none"')+'>🚀 <b>Publica na hora</b>, assim que você confirmar. <b>Não dá pra desfazer pelo calendário:</b> depois de publicado, editar ou excluir aqui não apaga das redes. O post fica no dia de hoje.</div>'
+      +'<div class="apr-ghl-row" id="apr-g-timerow"'+(now?' style="display:none"':'')+'><div><label>Horário</label><input id="apr-g-time" type="time" value="'+esc(g.time||ghlSuggestTime(e.day))+'"></div>'
+      +'<span class="apr-ghl-tz">Fuso: '+esc(tz)+'</span></div>'
+      +'<label style="display:block;margin-top:8px">Redes</label><div class="apr-chs">'+chs+'</div>'
+      +'<div class="apr-rules" id="apr-g-check"></div>'
+      +'<div class="apr-ghl-hint"><b>Regras:</b> agendado precisa ser pelo menos <b>10 minutos à frente</b> (o GHL recusa em cima da hora; pra sair já, use Publicar agora) · legenda e mídia obrigatórias · Stories só Instagram e Facebook · TikTok e YouTube só vídeo · Google Business só 1 imagem JPG/PNG · Instagram até 10 imagens JPG/PNG · legenda até 2.200 caracteres no Instagram e TikTok, 1.500 no Google Business, 500 no Pinterest, 3.000 no LinkedIn.<br>Salvando, o post fica agendado nessas redes. Editar, mover ou excluir aqui também muda ou cancela nas redes.</div>'
+      +'</div></div>';
+  }
   function drawEdit(){
     var e=editState;
     var prev = e.midias.map(function(m,i){ var t=isVideo(m.url)?'<video src="'+esc(mediaUrl(m.url))+'"></video>':'<img src="'+esc(mediaUrl(m.url))+'">'; return '<div class="pv" data-rm="'+i+'">'+t+'<b>×</b></div>'; }).join('')
@@ -1896,6 +2089,7 @@ body.apr-team .apr-add{display:inline-flex}
       +'<div class="row"><label>Descrição / legenda</label><textarea id="apr-e-desc" placeholder="Legenda do post...">'+esc(e.descricao)+'</textarea></div>'
       +'<div class="row"><label>Mídias (imagem/vídeo)</label><div class="apr-drop" id="apr-drop">Clique ou arraste arquivos aqui</div>'
       +'<input id="apr-file" type="file" accept="image/*,video/*" multiple style="display:none"><div class="apr-prev" id="apr-prev">'+prev+'</div></div>'
+      + ghlEditHtml(e)
       +'</div>'
       +'<div class="apr-msg" id="apr-emsg"></div>'
       +'<div class="apr-acts"><button class="apr-btn apr-ok" data-e="save">Salvar post</button><button class="apr-btn apr-no" data-e="close">Cancelar</button></div>';
@@ -1907,15 +2101,26 @@ body.apr-team .apr-add{display:inline-flex}
     drop.ondragleave=function(){ drop.classList.remove('hot'); };
     drop.ondrop=function(ev){ ev.preventDefault(); drop.classList.remove('hot'); handleFiles(ev.dataTransfer.files); };
     fi.onchange=function(){ handleFiles(fi.files); fi.value=''; };
-    card.querySelectorAll('[data-rm]').forEach(function(x){ x.onclick=function(){ editState.midias.splice(parseInt(x.getAttribute('data-rm'),10),1); drawEdit(); }; });
-    card.querySelectorAll('[data-rmn]').forEach(function(x){ x.onclick=function(){ editState._new.splice(parseInt(x.getAttribute('data-rmn'),10),1); drawEdit(); }; });
+    var gon=document.getElementById('apr-g-on'); if(gon)gon.onchange=function(){ document.getElementById('apr-g-body').classList.toggle('off',!gon.checked); ghlCheck(); };
+    card.querySelectorAll('input[name="apr-g-mode"]').forEach(function(r){ r.addEventListener('change',function(){
+      var now=r.value==='now'&&r.checked; editState._confirmNow=0;
+      card.querySelectorAll('.apr-mode label').forEach(function(l){ l.classList.toggle('on',l.querySelector('input').checked); });
+      document.getElementById('apr-g-timerow').style.display=now?'none':''; document.getElementById('apr-g-nowwarn').style.display=now?'':'none';
+      if(now){ var dd=document.getElementById('apr-e-day'); if(dd){ var tz=(GHL&&GHL.timezone)||'America/Sao_Paulo'; try{ dd.value=new Intl.DateTimeFormat('en-CA',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()); }catch(e){} } }
+      var sb=card.querySelector('[data-e="save"]'); if(sb)sb.classList.remove('apr-confirm');
+      ghlCheck(); }); });
+    ['apr-e-day','apr-e-target','apr-e-desc','apr-g-time'].forEach(function(i){ var x=document.getElementById(i); if(x){ x.addEventListener('input',ghlCheck); x.addEventListener('change',ghlCheck); } });
+    card.querySelectorAll('.apr-chs input').forEach(function(x){ x.addEventListener('change',ghlCheck); });
+    if(gon) ghlCheck();
+    card.querySelectorAll('[data-rm]').forEach(function(x){ x.onclick=function(){ syncEditFromDom(); editState.midias.splice(parseInt(x.getAttribute('data-rm'),10),1); drawEdit(); }; });
+    card.querySelectorAll('[data-rmn]').forEach(function(x){ x.onclick=function(){ syncEditFromDom(); editState._new.splice(parseInt(x.getAttribute('data-rmn'),10),1); drawEdit(); }; });
   }
   function emsg(m,cls){ var e=document.getElementById('apr-emsg'); if(e){ e.textContent=m||''; e.className='apr-msg'+(cls?' '+cls:''); } }
   function handleFiles(files){
     if(!files||!files.length)return; var arr=[].slice.call(files); var i=0;
     emsg('Enviando mídia...');
     (function next(){
-      if(i>=arr.length){ emsg(''); drawEdit(); return; }
+      if(i>=arr.length){ emsg(''); syncEditFromDom(); drawEdit(); return; }
       var fd=new FormData(); fd.append('slug',SLUG); fd.append('file',arr[i]);
       apiForm('/media-upload.php',fd).then(function(r){
         if(r&&r.ok){ editState._new.push({url:r.url,tipo:r.tipo,name:r.name}); }
@@ -1931,11 +2136,31 @@ body.apr-team .apr-add{display:inline-flex}
     var target=document.getElementById('apr-e-target').value;
     var desc=(document.getElementById('apr-e-desc').value||'').trim();
     var midias=e.midias.concat(e._new);
-    emsg('Salvando...');
-    apiJson('/post-save.php',{slug:SLUG,id:e.id,day:day,target:target,descricao:desc,midias:midias},true).then(function(r){
-      if(r&&r.ok){ var ex=findById(r.post.id); if(ex){ POSTS[POSTS.indexOf(ex)]=r.post; } else { POSTS.push(r.post); } toast(e.id?'Post atualizado':'Post criado'); closeEdit(); render(); }
-      else { emsg((r&&r.error)||'Não foi possível salvar.','err'); }
-    }).catch(function(){ emsg('Falha de conexão.','err'); });
+    var body={slug:SLUG,id:e.id,day:day,target:target,descricao:desc,midias:midias};
+    if(GHL&&GHL.enabled&&document.getElementById('apr-g-on')){ syncEditFromDom(); var g=e.ghl;
+      if(g.enabled){
+        var ck=ghlCheck();
+        if(ck.block.length){ emsg((g.mode==='now'?'Não publiquei: ':'Não agendei: ')+ck.block.join(' '),'err'); var bx=document.getElementById('apr-g-check'); if(bx)bx.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+        if(g.mode==='now' && !(e._confirmNow && Date.now()-e._confirmNow<15000)){
+          e._confirmNow=Date.now(); var sb=document.querySelector('#apr-edit-card [data-e="save"]');
+          if(sb){ sb.textContent='✋ Confirmar: publicar AGORA em '+ck.vai.join(', '); sb.classList.add('apr-confirm'); }
+          emsg('Confira: vai ser publicado agora em '+ck.vai.join(', ')+'. Não dá pra desfazer pelo calendário. Clique de novo pra confirmar.','err');
+          setTimeout(function(){ if(editState&&editState._confirmNow&&Date.now()-editState._confirmNow>=15000){ editState._confirmNow=0; var b2=document.querySelector('#apr-edit-card [data-e="save"]'); if(b2)b2.classList.remove('apr-confirm'); emsg(''); ghlCheck(); } },15200);
+          return;
+        }
+      }
+      body.ghl={enabled:g.enabled,mode:g.mode,time:g.time,channels:g.channels||[]};
+      if(g.enabled && g.mode==='now') body.day=day;
+    }
+    emsg(body.ghl&&body.ghl.enabled?(body.ghl.mode==='now'?'Publicando nas redes... pode levar alguns segundos.':'Salvando e agendando nas redes... pode levar alguns segundos.'):'Salvando...');
+    var sbt=document.querySelector('#apr-edit-card [data-e="save"]'); if(sbt)sbt.disabled=true;
+    apiJson('/post-save.php',body,true).then(function(r){
+      if(r&&r.ok){ var ex=findById(r.post.id); if(ex){ POSTS[POSTS.indexOf(ex)]=r.post; } else { POSTS.push(r.post); }
+        var gs=ghlSummary(r.post.ghl), gg=r.post.ghl, bad=gg&&gg.enabled&&(gg.erro||Object.keys(gg.items||{}).some(function(k){return gg.items[k].status==='erro';}));
+        if(bad){ cur=r.post; closeEdit(); render(); openPost(r.post.id); toast('⚠️ Post salvo, mas o envio pras redes teve problema: veja no post',5000); return; }
+        toast((e.id?'Post atualizado':'Post criado')+(gs?' · '+gs:''),gs?4500:2000); closeEdit(); render(); }
+      else { if(sbt)sbt.disabled=false; e._confirmNow=0; emsg((r&&r.error)||'Não foi possível salvar.','err'); }
+    }).catch(function(){ if(sbt)sbt.disabled=false; e._confirmNow=0; emsg('Falha de conexão. Antes de tentar de novo, confira se o post já não saiu nas redes.','err'); });
   }
 
   // fechar overlay clicando fora
@@ -1946,6 +2171,11 @@ body.apr-team .apr-add{display:inline-flex}
   function deepLink(){ var tk=new URLSearchParams(location.search).get('post'); if(!tk)return; var p=findByToken(tk); if(p)openPost(p.id); }
 
   renderBar();
+  // 🌱 SEED baked: pinta os posts + os botões "+ Post" NA HORA (server-side), sem
+  // depender do fetch — no Safari o fetch cross-origin falha em hard-reload e some
+  // tudo. O load() por baixo atualiza ao vivo onde funciona.
+  if(window.__CAL_SEEDPOSTS__ && window.__CAL_SEEDPOSTS__.length){ POSTS=window.__CAL_SEEDPOSTS__; }
+  try{ render(); }catch(e){}
   load().then(deepLink);
   POLL=setInterval(function(){ if(!document.getElementById('apr-modal').classList.contains('on') && !document.getElementById('apr-edit').classList.contains('on')) load(); }, 8000);
 })();
