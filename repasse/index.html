@@ -1115,7 +1115,9 @@ body.apr-team .apr-add{display:inline-flex}
   window.__logRepaintPosts = function(){ try{ renderLogTable(); }catch(e){} };
   // ===== Migracao calendar_log: Supabase (padrao) x Hostinger PHP (CALSTORE) =====
   function _hlApi(){ var a=CALAPI||(window.__APPROVAL__&&window.__APPROVAL__.api)||''; return (''+a).replace(/\/+$/,''); }
-  function _hlTok(){ try{ return (window.__apprToken&&window.__apprToken())||null; }catch(e){ return null; } }
+  // 30-09-26: o módulo de aprovação (que define __apprToken) carrega DEPOIS deste script;
+  // sem o fallback, a checagem do reload via null e a página abria sempre deslogada.
+  function _hlTok(){ try{ var t=(window.__apprToken&&window.__apprToken()); if(t)return t; var s=localStorage.getItem('mgAprTk'); if(s){ var e=parseInt(atob(s.split('.')[1]),10)||0; if(e>Math.floor(Date.now()/1000))return s; } }catch(e){} return null; }
   function _hlSplit(all){ window.__PLANOS__=all.filter(function(x){return (''+(x.categoria||''))==='__plano__';}); LOG=all.filter(function(x){return (''+(x.categoria||''))!=='__plano__';}); try{renderPlano();}catch(e){} renderLog(); }
   var _hlSig = null;   // só repinta se o log mudou (mesmo motivo do POSTS_SIG: não recriar vídeos à toa)
   function _hlPull(quiet){ fetch(_hlApi()+'/log-list.php?slug='+encodeURIComponent(SLUG)+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){ if(d&&d.ok&&d.rows){ var s=JSON.stringify(d.rows); if(quiet&&s===_hlSig) return; _hlSig=s; _hlSplit(d.rows); } }).catch(function(){}); }
@@ -1173,6 +1175,7 @@ body.apr-team .apr-add{display:inline-flex}
     if(window.__CAL_SEEDLOG__ && window.__CAL_SEEDLOG__.length){ try{ _hlSplit(window.__CAL_SEEDLOG__); }catch(e){} }
     _hlPull();
     setMode(!!_hlTok());
+    setTimeout(function(){ if(_hlTok()&&!EDIT)setMode(true); },0);   // reaplica depois que o módulo de aprovação carregar
     // sem websocket: polling leve — 15s em edicao, ~60s so-leitura (aba visivel)
     var _hlT=0; setInterval(function(){ if(document.hidden)return; if(EDIT){ _hlPull(true); } else { _hlT++; if(_hlT%4===0)_hlPull(true); } }, 15000);
   }
